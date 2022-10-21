@@ -1,4 +1,4 @@
-## FastJson  的使用
+## 一、FastJson  的使用
 
 ```xml
 <dependency>
@@ -321,7 +321,7 @@ Assert.assertEquals(123456, vo.getAttributes().get("value")); // value本应该�
 
 【1】[W3Cschool](https://www.w3cschool.cn/fastjson/fastjson-intro.html)
 
-## Gson 的使用
+## 二、Gson 的使用
 
 ```xml
 <dependency>
@@ -655,7 +655,7 @@ Gson gson = new GsonBuilder()
 
 以下几种不同的命名策略演示：
 
-**2.1、FieldNamingPolicy.IDENTITY**
+**6.1、FieldNamingPolicy.IDENTITY**
 
 使用此命名策略字段名称不变。这个是默认的策略：
 
@@ -668,7 +668,7 @@ Gson gson = new GsonBuilder()
 }
 ```
 
-**2.2、FieldNamingPolicy.LOWER_CASE_WITH_DASHES**
+**6.2、FieldNamingPolicy.LOWER_CASE_WITH_DASHES**
 
 Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名称，其中每个单词都用破折号（-）分隔。
 
@@ -681,7 +681,7 @@ Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名
 }
 ```
 
-**2.3、FieldNamingPolicy.LOWER_CASE_WITH_DOTS**
+**6.3、FieldNamingPolicy.LOWER_CASE_WITH_DOTS**
 
 Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名称，其中每个单词都用点（.）分隔:
 
@@ -694,7 +694,7 @@ Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名
 }
 ```
 
-**2.4、FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES**
+**6.4、FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES**
 
 Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名称，其中每个单词都用下划线（_）分隔。
 
@@ -707,7 +707,7 @@ Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名
 }
 ```
 
-**2.5、FieldNamingPolicy.UPPER_CAMEL_CASE**
+**6.5、FieldNamingPolicy.UPPER_CAMEL_CASE**
 
 Gson将确保序列化为JSON格式的Java字段名称的第一个“字母”大写：
 
@@ -720,7 +720,7 @@ Gson将确保序列化为JSON格式的Java字段名称的第一个“字母”�
 }
 ```
 
-**2.6、FieldNamingPolicy.UPPER_CAMEL_CASE_WITH_SPACES**
+**6.6、FieldNamingPolicy.UPPER_CAMEL_CASE_WITH_SPACES**
 
 Gson将确保在将Java字段名称的第一个“字母”序列化为JSON格式时将其大写，并且单词之间将使用空格分隔：
 
