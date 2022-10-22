@@ -357,7 +357,7 @@ Employee empObject = gson.fromJson(jsonString, Employee.class);
 
 ### 1、JSON 数据解析
 
-**1.1、JSON 数据转对象**
+#### 1.1、JSON 数据转对象
 
 ```json
 {"name": "Alex","id": 1,"users":[{"name": "Alex","id": 1},{"name": "Brian","id": 2},{"name": "Charles","id": 3}]}
@@ -367,7 +367,7 @@ Employee empObject = gson.fromJson(jsonString, Employee.class);
 User user = gson.fromJson(userJson, User.class);
 ```
 
-**1.2、JSON Array 转数组**
+#### 1.2、JSON Array 转数组
 
 ```json
 [{"name": "Alex","id": 1},{"name": "Brian","id": 2},{"name": "Charles","id": 3}]
@@ -377,14 +377,14 @@ User user = gson.fromJson(userJson, User.class);
 User[] userArray = gson.fromJson(userJson, User[].class);
 ```
 
-**1.3、JSON Array 转 List**
+#### 1.3、JSON Array 转 List
 
 ```java
 List<User> userList = gson.fromJson(userJson, new TypeToken<ArrayList<User>>() {
 }.getType());
 ```
 
-**1.4、Set 转 JSON**
+#### 1.4、Set 转 JSON
 
 使用Gson.toJson()方法将HashSet序列化为JSON:
 
@@ -412,7 +412,7 @@ Gson中实现的默认行为是忽略空对象字段。
 
 例如，如果在Employee对象中未指定电子邮件（即email值为null），则电子邮件将不会被序列化JSON输出。Gson会忽略null字段，因为此行为允许使用更紧凑的JSON输出格式。
 
-**2.1、如何在序列化时允许空值**
+#### 2.1、如何在序列化时允许空值
 
 要配置Gson实例以输出null，我们必须使用GsonBuilder对象的serializeNulls()。
 
@@ -431,7 +431,7 @@ Gson gson = new GsonBuilder()
 `@Since` 代表从某个版本启用
 `@Until` 代表从某个版本弃用
 
-**3.1、@Since注解**
+#### 3.1、@Since注解
 
 在Gson中，可以使用@Since注释维护同一对象的多个版本。可以在类，字段以及将来的方法中使用此注释。
 
@@ -444,7 +444,7 @@ Gson gson = new GsonBuilder()
 private String email;
 ```
 
-**3.2、如何使用@Since注解编写版本化的类**
+#### 3.2、如何使用@Since注解编写版本化的类
 
 在Employee类下面，我们对三个字段进行了版本控制，即firstName，lastName和email。
 
@@ -466,7 +466,7 @@ public class Employee {
 }
 ```
 
-**3.3、创建具备版本支持的Gson实例**
+#### 3.3、创建具备版本支持的Gson实例
 
 要创建使用过@Since注解的Gson实例，需要使用GsonBuilder.setVersion()方法:
 
@@ -476,9 +476,9 @@ Gson gson = new GsonBuilder()
     .create();
 ```
 
-**3.4、实例**
+#### 3.4、实例
 
-**3.4.1、序列化**
+##### 3.4.1、序列化
 
 ```java
 Gson gson = new GsonBuilder()
@@ -497,7 +497,7 @@ Gson gson = new GsonBuilder()
 }
 ```
 
-**3.4.2、反序列化**
+##### 3.4.2、反序列化
 
 ```java
 String json = "{'id': 1001, "
@@ -515,7 +515,7 @@ Employee [id=1001, firstName=Lokesh, lastName=Gupta, email=null]
 
 ### 4、常用注解注解
 
-**4.1、@SerializedName注解**
+#### 4.1、@SerializedName注解
 
 ```java
 @SerializedName("user_name")
@@ -528,7 +528,7 @@ private String userName;
 
 * `alternate`备用字段映射，在反序列化时不论JSON中字段是`value`还是`alternate`中的值都会被匹配上
 
-**4.2、@Expose注解**
+#### 4.2、@Expose注解
 
 GSON @Expose注解（com.google.gson.annotations.Expose）可用于标记对象序列化或反序列化时是否忽略的字段。
 
@@ -551,7 +551,7 @@ Gson gson = new GsonBuilder()
 
 > 不加@Expose，意味着该字段不能正反序列化。
 
-**4.2.1、用修饰符排除字段**
+##### 4.2.1、用修饰符排除字段
 
 `transient`修饰符具有与@Expose相同的效果（serialize = false，deserialize = false）。
 
@@ -559,7 +559,7 @@ Gson gson = new GsonBuilder()
 private transient String emailAddress;
 ```
 
-**4.2.2、其它修饰符排除字段**
+##### 4.2.2、其它修饰符排除字段
 
 通过使用GsonBuilder的excludeFieldsWithModifiers()方法，我们可以排除具有某些公共修饰符的字段。
 
@@ -569,7 +569,7 @@ Gson gson = new GsonBuilder()
     .create();
 ```
 
-**4.2.3、自定义排除策略**
+##### 4.2.3、自定义排除策略
 
 如果以上任何一种技术都不适合我们，那么我们可以创建自己的策略。
 
@@ -655,7 +655,7 @@ Gson gson = new GsonBuilder()
 
 以下几种不同的命名策略演示：
 
-**6.1、FieldNamingPolicy.IDENTITY**
+#### 6.1、FieldNamingPolicy.IDENTITY
 
 使用此命名策略字段名称不变。这个是默认的策略：
 
@@ -668,7 +668,7 @@ Gson gson = new GsonBuilder()
 }
 ```
 
-**6.2、FieldNamingPolicy.LOWER_CASE_WITH_DASHES**
+#### 6.2、FieldNamingPolicy.LOWER_CASE_WITH_DASHES
 
 Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名称，其中每个单词都用破折号（-）分隔。
 
@@ -681,7 +681,7 @@ Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名
 }
 ```
 
-**6.3、FieldNamingPolicy.LOWER_CASE_WITH_DOTS**
+#### 6.3、FieldNamingPolicy.LOWER_CASE_WITH_DOTS
 
 Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名称，其中每个单词都用点（.）分隔:
 
@@ -694,7 +694,7 @@ Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名
 }
 ```
 
-**6.4、FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES**
+#### 6.4、FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES
 
 Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名称，其中每个单词都用下划线（_）分隔。
 
@@ -707,7 +707,7 @@ Gson会将Java字段名称从其驼峰大小写形式修改为小写的字段名
 }
 ```
 
-**6.5、FieldNamingPolicy.UPPER_CAMEL_CASE**
+#### 6.5、FieldNamingPolicy.UPPER_CAMEL_CASE
 
 Gson将确保序列化为JSON格式的Java字段名称的第一个“字母”大写：
 
@@ -720,7 +720,7 @@ Gson将确保序列化为JSON格式的Java字段名称的第一个“字母”�
 }
 ```
 
-**6.6、FieldNamingPolicy.UPPER_CAMEL_CASE_WITH_SPACES**
+#### 6.6、FieldNamingPolicy.UPPER_CAMEL_CASE_WITH_SPACES
 
 Gson将确保在将Java字段名称的第一个“字母”序列化为JSON格式时将其大写，并且单词之间将使用空格分隔：
 
