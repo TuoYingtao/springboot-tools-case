@@ -766,3 +766,700 @@ Gson将确保在将Java字段名称的第一个“字母”序列化为JSON格�
 【14】：[Gson – JsonParser](https://howtodoinjava.com/gson/gson-jsonparser/) 
 
 【15】：[GSON - JsonParser](http://tutorials.jenkov.com/java-json/gson-jsonparser.html)
+
+## 三、Jackson 的使用
+
+```xml
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.12.5</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.12.5</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-annotations</artifactId>
+    <version>2.12.5</version>
+</dependency>
+```
+
+### 1、Jackson 的核心模块。
+
+`jackson-core`核心包，提供基于"流模式"解析的相关 API，它包括 JsonPaser 和 JsonGenerator。 Jackson 内部实现正是通过高性能的流模式 API 的 JsonGenerator 和 JsonParser 来生成和解析 json。
+
+`jackson-annotations`注解包，提供标准注解功能；
+
+`jackson-databind`数据绑定包， 提供基于"对象绑定" 解析的相关 API （ ObjectMapper ） 和"树模型" 解析的相关 API （JsonNode）；基于"对象绑定" 解析的 API 和"树模型"解析的 API 依赖基于"流模式"解析的 API。
+
+源码地址：[FasterXML/jackson](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2FFasterXML%2Fjackson.git)
+
+### 2、ObjectMapper 序列化对象
+
+* ObjectMapper 主要用于对 Java 对象（比如 POJO、List、Set、Map 等等）进行序列化与反序列化。
+
+* ObjectMapper 除了能在 json 字符串与 Java 对象之间进行转换，还能将 json 字符串与 JsonNode 进行转换。
+
+```java
+/**  Java 对象与 Json 字符串的转换   */
+public String writeValueAsString(Object value); // 将任何Java对象序列化为json字符串，如果对象中某个属性的值为null，则默认也会序列化为null
+
+public byte[] writeValueAsBytes(Object value); // 将Java对象序列化为字节数组
+
+public void writeValue(File resultFile, Object value); // 将任何Java对象序列化为JSON输出，并写入File中。
+
+public void writeValue(OutputStream out, Object value); // 将任何Java对象序列化并输出到指定字节输出流中
+
+public void writeValue(Writer w, Object value); // 将任何Java对象序列化并输出到指定字符输出流中
+
+public <T> T readValue(String content, Class<T> valueType); // 从给定的JSON内容字符串反序列化JSON内容，比如 POJO、List、Set、Map 等等
+
+public <T> T readValue(byte[] src, Class<T> valueType); // 从给定的JSON内容的字节数组反序列化为java对象
+
+public <T> T readValue(File src, Class<T> valueType); // 将JSON内容从给定的文件反序列化为给定的Java类型
+
+public <T> T readValue(InputStream src, Class<T> valueType); // 将JSON内容从给定的字节流反序列化为给定的Java类型
+
+ public <T> T readValue(Reader src, Class<T> valueType); // 将JSON内容从给定的字符流反序列化为给定的Java类型
+
+public <T> T readValue(URL src, Class<T> valueType); // 将JSON内容从给定的网络资源反序列化为给定的Java类型
+
+/**  Json 字符串内容反序列化为 Json 节点对象  */
+public JsonNode readTree(String content); // 将JSON字符串反序列化为JsonNode对象，即JSON节点对象
+
+public JsonNode readTree(URL source); // 将JSON内容从给定的网络资源反序列化为JsonNode对象
+
+public JsonNode readTree(InputStream in); // 将JSON内容从给定的字节流反序列化为JsonNode对象
+
+public JsonNode readTree(byte[] content); // 将JSON内容从给定的字节数组反序列化为JsonNode对象
+
+public JsonNode readTree(File file); // 将JSON内容从给定的文件反序列化为JsonNode对象
+
+/** Java 对象与 Json 节点对象的转换 */
+public <T> T convertValue(Object fromValue, Class<T> toValueType); // 将Java对象（如 POJO、List、Map、Set 等）序列化为Json节点对象。
+
+public <T> T treeToValue(TreeNode n, Class<T> valueType); // Json树节点对象转Java对象（如 POJO、List、Set、Map 等等）TreeNode树节点是整个Json节点对象模型的根接口。
+```
+
+### 3、Jackson 常用配置
+
+#### 3.1、JSON 忽略未知字段
+
+有时候从JSON反序列化为Java对象，JSON中的字段更多。 默认情况下，Jackson在这种情况下会抛出异常，报不知道XXX字段异常，因为在Java对象中找不到该字段。在这种情况下，可以使用Jackson配置忽略这些额外的字段。 
+
+```java
+objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+```
+
+#### 3.2、不允许基本类型为null
+
+当JSON数据中存在基本类型字段值为null，而在Java对象中是不允许基本类型的值为null，反序列化时Jackson会忽略该字段。我们也可以修改Jackson ObjectMapper 配置使它在反序列化过程中，该字段存在null值则抛出一个异常。
+
+```java
+objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+```
+
+#### 3.3、序列化结果格式化
+
+```java
+objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+```
+
+#### 3.4、空对象不要抛出异常
+
+```java
+mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+```
+
+#### 3.5、Date、Calendar等序列化为时间格式的字符串(如果不执行以下设置，就会序列化成时间戳格式)
+
+```java
+mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+```
+
+#### 3.6、反序列化时，空字符串对于的实例属性为null
+
+```java
+mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+```
+
+#### 3.7、允许C和C++样式注释
+
+```java
+mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+```
+
+#### 3.8、允许字段名没有引号（可以进一步减小json体积）
+
+```java
+mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+```
+
+#### 3.9、允许单引号
+
+```java
+mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+```
+
+#### 3.10、properties 配置
+
+```yaml
+spring:
+  jackson:
+    # 设置属性命名策略,对应jackson下PropertyNamingStrategy中的常量值，SNAKE_CASE-返回的json驼峰式转下划线，json body下划线传到后端自动转驼峰式
+    property-naming-strategy: SNAKE_CASE
+    # 全局设置@JsonFormat的格式pattern
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 当地时区
+    locale: zh_CN
+    # 设置全局时区
+    time-zone: GMT+8
+    # 常用，全局设置pojo或被@JsonInclude注解的属性的序列化方式
+    default-property-inclusion: NON_NULL #不为空的属性才会序列化,具体属性可看JsonInclude.Include
+    # 常规默认,枚举类SerializationFeature中的枚举属性为key，值为boolean设置jackson序列化特性,具体key请看SerializationFeature源码
+    visibility:
+      #属性序列化的可见范围
+      getter: non_private
+      #属性反序列化的可见范围
+      setter: protected_and_public
+      #静态工厂方法的反序列化
+      CREATOR: public_only
+      #字段
+      FIELD: public_only
+      #布尔的序列化
+      IS_GETTER: public_only
+      #所有类型(即getter setter FIELD）不受影响,无意义
+      NONE: public_only
+      #所有类型(即getter setter FIELD）都受其影响（慎用）
+      ALL: public_only
+    serialization:
+      #反序列化是否有根节点
+      WRAP_ROOT_VALUE: false
+      #是否使用缩进，格式化输出
+      INDENT_OUTPUT: false
+      FAIL_ON_EMPTY_BEANS: true # 对象不含任何字段时是否报错，默认true
+      FAIL_ON_SELF_REFERENCES: true #循环引用报错
+      WRAP_EXCEPTIONS: true #是否包装异常
+      FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS: true #JsonUnwrapped标记的类有类型信息是否报错
+      WRITE_SELF_REFERENCES_AS_NULL: false #循环引用返回null
+      CLOSE_CLOSEABLE: true #若对象实现了CLOSEABLE接口，在序列化后是否调用Close方法
+      FLUSH_AFTER_WRITE_VALUE: false #流对象序列化之后是否强制刷新
+      WRITE_DATES_AS_TIMESTAMPS: true # 返回的java.util.date转换成时间戳
+      WRITE_DATES_WITH_ZONE_ID: true #2011-12-03T10:15:30+01:00[Europe/Paris]带时区id
+      WRITE_DURATIONS_AS_TIMESTAMPS: true #将DURATIONS转换成时间戳
+      WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS: false #是否字符数组输出json数组 (false则输出字符串)
+      WRITE_ENUMS_USING_TO_STRING: false # 将枚举输出toString
+      WRITE_ENUMS_USING_INDEX: false #枚举下标
+      WRITE_ENUM_KEYS_USING_INDEX: false #枚举key类似
+      WRITE_NULL_MAP_VALUES: false #是否输出map中的空entry(此特性已过期，请使用JsonInclude注解)
+      WRITE_EMPTY_JSON_ARRAYS: true # 对象属性值是空集合是否输出空json数组
+      WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED: false #是否将单个元素的集合展开，（即：去除数组符号"[]"）
+      WRITE_BIGDECIMAL_AS_PLAIN: false #是否调用BigDecimal#toPlainString()输出
+      WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS: #将timestamp输出为纳秒
+      ORDER_MAP_ENTRIES_BY_KEYS: false #map序列化后，是否用key对其排序
+      EAGER_SERIALIZER_FETCH: true #是否马上获取序列化器
+      USE_EQUALITY_FOR_OBJECT_ID: false #是否使用objectId比较是否相等（在ORM框架Hibernate中有应用）
+
+    # 枚举类DeserializationFeature中的枚举属性为key，值为boolean设置jackson反序列化特性,具体key请看DeserializationFeature源码
+    deserialization:
+      USE_BIG_DECIMAL_FOR_FLOATS: false #将浮点数反序列化为BIG_DECIMAL
+      USE_BIG_INTEGER_FOR_INTS: false #将整数反序列化为BIG_INTEGER
+      USE_LONG_FOR_INTS: false #将整型反序列化为长整
+      USE_JAVA_ARRAY_FOR_JSON_ARRAY: false #无明确类型时，是否将json数组反序列化为java数组（若是true，就对应Object[] ,反之就是List<?>）
+      FAIL_ON_UNKNOWN_PROPERTIES: false # 常用,json中含pojo不存在属性时是否失败报错,默认true
+      FAIL_ON_NULL_FOR_PRIMITIVES: false #将null反序列化为基本数据类型是否报错
+      FAIL_ON_NUMBERS_FOR_ENUMS: false #用整数反序列化为枚举是否报错
+      FAIL_ON_INVALID_SUBTYPE: false #找不至合适的子类否报错 （如注解JsonTypeInfo指定的子类型）
+      FAIL_ON_READING_DUP_TREE_KEY: false #出现重复的json字段是否报错
+      FAIL_ON_IGNORED_PROPERTIES: false #如果json中出现了java实体字段中已显式标记应当忽略的字段，是否报错
+      FAIL_ON_UNRESOLVED_OBJECT_IDS: true #如果反序列化发生了不可解析的ObjectId是否报错
+      FAIL_ON_MISSING_CREATOR_PROPERTIES: false #如果缺少静态工厂方法的参数是否报错（false,则使用null代替需要的参数）
+      FAIL_ON_NULL_CREATOR_PROPERTIES: false #将空值绑定到构造方法或静态工厂方法的参数是否报错
+      FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY: false #注解JsonTypeInfo.As#EXTERNAL_PROPERTY标记的属性缺失，是否报错
+      FAIL_ON_TRAILING_TOKENS: false #出现尾随令牌是否报错（如果是true,则调用JsonParser#nextToken，检查json的完整性）
+      WRAP_EXCEPTIONS: true #是否包装反序列化出现的异常
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true #反序列化时是否将一个对象封装成单元素数组
+      UNWRAP_SINGLE_VALUE_ARRAYS: false #反序列化时是否将单元素数组展开为一个对象
+      UNWRAP_ROOT_VALUE: false #是否将取消根节点的包装
+      ACCEPT_EMPTY_STRING_AS_NULL_OBJECT: false #是否将空字符("")串当作null对象
+      ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT: false #是否接受将空数组("[]")作为null
+      ACCEPT_FLOAT_AS_INT: true #是否接受将浮点数作为整数
+      READ_ENUMS_USING_TO_STRING: false #按照枚举toString()方法读取，（false则按枚举的name()方法读取）
+      READ_UNKNOWN_ENUM_VALUES_AS_NULL: false #读取到未知的枚举当作null
+      READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE: false #读取到未知的枚举,将其当作被JsonEnumDefaultValue注解标记的枚举
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: true #将时间戳视为纳秒(false,则视为毫秒)
+      ADJUST_DATES_TO_CONTEXT_TIME_ZONE: true #反序列化是否会适应DeserializationContext#getTimeZone()提供的时区 （此特性仅对java8的时间/日期有效）
+      EAGER_DESERIALIZER_FETCH: true  #是否马上获取反序列化器
+    # 枚举类MapperFeature中的枚举属性为key，值为boolean设置jackson ObjectMapper特性
+    # ObjectMapper在jackson中负责json的读写、json与pojo的互转、json tree的互转,具体特性请看MapperFeature,常规默认即可
+    mapper:
+      USE_ANNOTATIONS: true #是否使用注解自省（检查JsonProperties这些）
+      # 使用getter取代setter探测属性，这是针对集合类型，可以直接修改集合的属性
+      USE_GETTERS_AS_SETTERS: true #默认false
+      PROPAGATE_TRANSIENT_MARKER: false #如何处理transient字段，如果true(不能访问此属性) ，若是false则不能通过字段访问（还是可以使用getter和setter访问）
+      AUTO_DETECT_CREATORS: true #是否自动检测构造方法或单参且名为valueOf的静态工厂方法
+      AUTO_DETECT_FIELDS: true #是否自动检测字段 （若true,则将所有public实例字段视为为属性）
+      AUTO_DETECT_GETTERS: true #确定是否根据标准 Bean 命名约定自动检测常规“getter”方法的（不包括is getter）
+      AUTO_DETECT_IS_GETTERS: true #确定是否根据标准 Bean 命名约定自动检测“is getter”方法
+      AUTO_DETECT_SETTERS: false # 确定是否根据标准 Bean 命名约定自动检测“setter”方法
+      REQUIRE_SETTERS_FOR_GETTERS: false #getter方法必需要有对应的setter或字段或构造方法参数，才能视为一个属性
+      ALLOW_FINAL_FIELDS_AS_MUTATORS: true #是否可以修改final成员字段
+      INFER_PROPERTY_MUTATORS: true #是否能推断属性，(即使用字段和setter是不可见的，但getter可见即可推断属性)
+      INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES: true #是否自动推断ConstructorProperties注解
+      CAN_OVERRIDE_ACCESS_MODIFIERS: true #调用AccessibleObject#setAccessible设为true .将原来不可见的属性，变为可见
+      OVERRIDE_PUBLIC_ACCESS_MODIFIERS: true #对所有的属性调用AccessibleObject#setAccessible设为true .（即使用是公共的）
+      USE_STATIC_TYPING: false #序列化使用声明的静态类型还是动态类型  JsonSerialize#typing注解可覆盖它
+      USE_BASE_TYPE_AS_DEFAULT_IMPL: false # 反序列化是否使用基本类作为默实现 @JsonTypeInfo.defaultImpl
+      DEFAULT_VIEW_INCLUSION: true #没有JsonView注解标记的属性是否会被包含在json序列化视图中
+      SORT_PROPERTIES_ALPHABETICALLY: false #按字母表顺序序列化字段（若false，按字段声明的顺序）
+      ACCEPT_CASE_INSENSITIVE_PROPERTIES: false #反序列化属性时不区分大小写 （true时，会影响性能）
+      ACCEPT_CASE_INSENSITIVE_ENUMS: false #枚举反序列化不区别大小写
+      ACCEPT_CASE_INSENSITIVE_VALUES: false #允许解析一些枚举的基于文本的值类型但忽略反序列化值的大小写 如日期/时间类型反序列化器
+      USE_WRAPPER_NAME_AS_PROPERTY_NAME: false # 使用包装器名称覆盖属性名称 AnnotationIntrospector#findWrapperName指定的
+      USE_STD_BEAN_NAMING: false # 是否以强制与 Bean 名称自省严格兼容的功能，若开启后（getURL()）变成URL （jackson默认false, url）
+      ALLOW_EXPLICIT_PROPERTY_RENAMING: false #是否允许JsonProperty注解覆盖PropertyNamingStrategy
+      ALLOW_COERCION_OF_SCALARS: true # 是否允许强制使用文本标题 ，即将字符串的"true"当作布尔的true ,字符串的"1.0"当作"double"
+      IGNORE_DUPLICATE_MODULE_REGISTRATIONS: true #如果模块相同（Module#getTypeId()返回值相同），只有第一次能会真正调用注册方法
+      IGNORE_MERGE_FOR_UNMERGEABLE: true #在合并不能合并的属性时是否忽略错误
+      BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES: false #阻止不安全的基类（如Object Closeable Cloneable AutoCloseable Serializable）
+    parser:
+      AUTO_CLOSE_SOURCE: true #是否自动关闭不属于解析器的底层输入流
+      ALLOW_COMMENTS: false #是否允许json注解（Json规范是不能加注释的，但这里可以配置）
+      ALLOW_YAML_COMMENTS: false #是否允许出现yaml注释
+      ALLOW_UNQUOTED_FIELD_NAMES: false #是否允许出现字段名不带引号
+      ALLOW_SINGLE_QUOTES: false # 是否允许出现单引号,默认false
+      ALLOW_UNQUOTED_CONTROL_CHARS: false #是否允许出现未加转义的控制字符
+      ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER: false #是否允许对所有字符都可加反斜杠转义
+      ALLOW_NUMERIC_LEADING_ZEROS: false #是否允许前导的零 000001
+      ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS: false #是否允许前导的小点数 如 ".04314"会被解析成"0.04314"
+      ALLOW_NON_NUMERIC_NUMBERS: false #是否允许NaN型的浮点数 （"INF"当作正无穷  "-INF"当作负无穷 "NaN"非数字，类型于除数为0）
+      ALLOW_MISSING_VALUES: false # 是否允许json数组中出现缺失值 （如["value1",,"value3",]将被反序列化为["value1", null, "value3", null]）
+      ALLOW_TRAILING_COMMA: false # 是否允许json尾部有逗号 （如{"a": true,}）
+      STRICT_DUPLICATE_DETECTION: false #是否启用严格的字段名重复检查（开启后会增加20-30%左右的性能开销）
+      IGNORE_UNDEFINED: false #属性定义未找到是否报错（这不是针对json,是针对Avro, protobuf等需要Schema的格式）
+      INCLUDE_SOURCE_IN_LOCATION: false #是否包含其源信息（如总字节数，总字符数 行号 列号 ）
+    generator:
+      AUTO_CLOSE_TARGET: true #是否自动关闭不属于生成器的底层输出流
+      AUTO_CLOSE_JSON_CONTENT: true #是否自动补全json(当有不匹配的JsonToken#START_ARRAY JsonToken#START_OBJECT时)
+      FLUSH_PASSED_TO_STREAM: true #是否刷新generator
+      QUOTE_FIELD_NAMES: true #是否为字段名添加引号
+      QUOTE_NON_NUMERIC_NUMBERS: true #对于NaN浮点数是否加引号
+      ESCAPE_NON_ASCII: false #非ASCII码是否需要转义
+      WRITE_NUMBERS_AS_STRINGS: false #将数字当作字符串输出 （防止Javascript长度限制被截断）
+      WRITE_BIGDECIMAL_AS_PLAIN: false #按BigDecimal的toPlainString()输出
+      STRICT_DUPLICATE_DETECTION: false #是否启用严格的字段名重复检查
+      IGNORE_UNKNOWN: false #属性定义未找到是否报错（这不是针对json,是针对Avro, protobuf等需要Schema的格式）
+```
+
+### 4、自定义序列化
+
+#### 4.1、使用自定义JsonSerializer
+
+Jackson库中有一个抽象类`JsonSerializer`，其中要实现一个抽象方法`serialize`。
+
+```Java
+public abstract void serialize(T value, JsonGenerator gen, SerializerProvider serializers) throws IOException;
+```
+
+我们定义自己的`serialize`并继承`JsonSerializer`。
+
+```Java
+public class CarSerializer extends JsonSerializer<Car> {
+    @Override
+    public void serialize(Car car, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField("producer", car.getBrand());
+        jsonGenerator.writeNumberField("doorCount", car.getDoors());
+        jsonGenerator.writeEndObject();
+    }
+}
+```
+
+#### 4.2、注册序列化器
+
+1. 通过`SimpleModule`的`addSerializer`方法将`CarSerializer`进行注册。
+
+   ```java
+   //通过simpleModule进行注册
+   SimpleModule simpleModule = new SimpleModule();
+   simpleModule.addSerializer(Car.class, new CarSerializer());
+   ObjectMapper objectMapper = new ObjectMapper();
+   //注册simpleModule
+   objectMapper.registerModule(simpleModule);
+   Car car = objectMapper.writeValueAsString(json, Car.class);
+   ```
+
+2. 通过注解进行注册。
+
+   ```Java
+   @JsonSerialize(using = CarSerializer.class)
+   public class Car {
+       private String brand;
+       private Integer doors;
+       private Boolean isCheckout;
+   }
+   ```
+
+   ```Java
+   Car car = new Car();
+   car.setBrand("Mercedes");
+   car.setDoors(5);
+   String carJson = objectMapper.writeValueAsString(car);
+   ```
+
+### 5、自定义反序列化
+
+#### 5.1、使用自定义JsonDeserializer
+
+Jackson库中有一个抽象类`JsonDeserializer`，其中要实现一个抽象方法`deserialize`。
+
+```java
+public abstract T deserialize(JsonParser var1, DeserializationContext var2) throws IOException, JacksonException;
+```
+
+我们定义自己的`deserializer`并继承`JsonDeserializer`。
+
+```Java
+public class OrderStatusDeserializer extends JsonDeserializer<Order.OrderStatus> {
+    @Override
+    public Order.OrderStatus deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+        //解析Json
+        TreeNode treeNode = jsonParser.getCodec().readTree(jsonParser);
+        Set<String> fieldSet = new HashSet<>();
+        //遍历Json字符串里面存在属性，并存在set中
+        Iterator<String> iterator = treeNode.fieldNames();
+        while(iterator.hasNext()) {
+            fieldSet.add(iterator.next());
+        }
+        //创建实例
+        Order.OrderStatus orderStatus = new Order.OrderStatus();
+        //获取Class实例
+        Class<Order.OrderStatus> orderStatusClass = Order.OrderStatus.class;
+        //获取Class的所有属性
+        Field[] declaredFields = orderStatusClass.getDeclaredFields();
+        for(Field field : declaredFields) {
+            //设置属性可写
+            field.setAccessible(true);
+            //如果JSON字符串存在该属性则设置true
+            if(fieldSet.contains(field.getName())) {
+                try {
+                    //注入值
+                    field.set(orderStatus,true);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            //否则设置false
+            else {
+                try {
+                    //注入值
+                    field.set(orderStatus,false);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return orderStatus;
+    }
+}
+
+```
+
+#### 5.2、注册反序列化器
+
+1. 通过`SimpleModule`的`addDeserializer`方法将`OrderStatusDeserializer `进行注册。
+
+   ```Java
+   //通过simpleModule进行注册
+   SimpleModule simpleModule = new SimpleModule();
+   simpleModule.addDeserializer(Order.OrderStatus.class, new OrderStatusDeserializer());
+   ObjectMapper objectMapper = new ObjectMapper();
+   //注册simpleModule
+   objectMapper.registerModule(simpleModule);
+   Order.OrderStatus orderStatus = objectMapper.readValue(json, Order.OrderStatus.class);
+   ```
+
+2. 通过注解进行注册。
+
+   ```java
+   @JsonDeserialize(using = OrderStatusDeserializer.class)
+   public static class OrderStatus {
+       private Boolean isDelayed;
+       private Boolean isBulk;
+       private Boolean isCheckout;
+       private Boolean isAllocated;
+   }
+   ```
+
+   ```java
+   String json="{\"isAllocated\":true,\"isCheckout\":true}";
+   ObjectMapper objectMapper = new ObjectMapper();
+   //使用注解注册后直接调用即可
+   Order.OrderStatus orderStatus = objectMapper.readValue(json, Order.OrderStatus.class);
+   ```
+
+### 6、Jackson日期序列化
+
+默认情况下，Jackson会将`java.util.Date`对象序列化为其`long`型的值，该值是自1970年1月1日以来的毫秒数。
+
+Jackson支持将日期格式化为字符串，通过在`ObjectMapper`上设置`SimpleDateFormat`来指定要使用的确切Jackson日期格式。
+
+```java
+SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+ObjectMapper objectMapper = new ObjectMapper();
+objectMapper.setDateFormat(dateFormat);
+String output2 = objectMapper.writeValueAsString(transaction);
+```
+
+### 7、Jackson JsonNode 树模型
+
+Jackson具有内置的树模型，可用于表示JSON对象。 如果不知道接收到的JSON的格式，或者由于某种原因而不能创建一个类来表示它，那么就要用到Jackson的树模型。 如果需要在使用或转化JSON之前对其进行操作，也需要被用到Jackson树模型。 所有这些情况在数据流场景中都很常见。
+
+#### 7.1、操作Jackson树模型访问JSON字段、数组和嵌套对象
+
+```java
+String carJson = "{ \"brand\" : \"Mercedes\", \"doors\" : 5," +
+        "  \"owners\" : [\"John\", \"Jack\", \"Jill\"]," +
+        "  \"nestedObject\" : { \"field\" : \"value\" } }";
+
+ObjectMapper objectMapper = new ObjectMapper();
+try {
+    JsonNode jsonNode = objectMapper.readValue(carJson, JsonNode.class);
+    
+    JsonNode brandNode = jsonNode.get("brand");
+    String brand = brandNode.asText();
+    System.out.println("brand = " + brand);
+
+    JsonNode doorsNode = jsonNode.get("doors");
+    int doors = doorsNode.asInt();
+    System.out.println("doors = " + doors);
+
+    JsonNode array = jsonNode.get("owners");
+    JsonNode jsonNode = array.get(0);
+    String john = jsonNode.asText();
+    System.out.println("john  = " + john);
+
+    JsonNode child = jsonNode.get("nestedObject");
+    JsonNode childField = child.get("field");
+    String field = childField.asText();
+    System.out.println("field = " + field);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+#### 7.2、Java 对象转 JsonNode
+
+```java
+ObjectMapper objectMapper = new ObjectMapper();
+Car car = new Car();
+JsonNode carJsonNode = objectMapper.valueToTree(car);
+```
+
+#### 7.3、JsonNode 转 Java对象
+
+```java
+ObjectMapper objectMapper = new ObjectMapper();
+String carJson = "{ \"brand\" : \"Mercedes\", \"doors\" : 5 }";
+JsonNode carJsonNode = objectMapper.readTree(carJson);
+Car car = objectMapper.treeToValue(carJsonNode);
+```
+
+#### 7.3、在路径中获取JsonNode字段
+
+JsonNode有一个`at()`的特殊方法。 `at()`方法可以从给定的JsonNode为根的任何位置访问JSON字段。 假设JSON结构如下所示：
+
+```json
+{
+  "identification" :  {
+        "name" : "James",
+        "ssn: "ABC123552"
+    }
+}
+```
+
+将此JSON解析为JsonNode，使用`at()`方法访问名称字段，请注意JSON路径表达式必须以斜杠字符（`/`字符）开头。返回一个JsonNode它表示请求的JSON字段，如果没有节点与给定的路径表达式匹配，则将返回null。另外你可以给他定义一个默认值`Default`如下所示：
+
+```java
+JsonNode nameNode = jsonNode.at("/identification/name");
+String name = nameNode.get("name").asText("Default");
+```
+
+#### 7.4、遍历JsonNode字段
+
+JsonNode类具有一个名为`fieldNames()`的方法，该方法返回一个`Iterator`，可以迭代JsonNode的所有字段名称。之后在使用字段名称来获取字段值。
+
+```java
+Iterator<String> fieldNames = jsonNode.fieldNames();
+while(fieldNames.hasNext()) {
+    String fieldName = fieldNames.next();
+    JsonNode field = jsonNode.get(fieldName);
+}
+```
+
+### 8、Jackson ObjectNode
+
+JsonNode类是不可变的，如果要设置属性值和子JsonNode实例等操作，无法直接使用JsonNode来实现。而ObjectNode实例它提供了这些操作，该实例是JsonNode的子类。 
+
+#### 8.1、创建ObjectNode
+
+通过`createObjectNode()`方法创建ObjectNode的示例：
+
+```java
+ObjectMapper objectMapper = new ObjectMapper();
+ObjectNode objectNode = objectMapper.createObjectNode();
+```
+
+#### 8.2、Set ObjectNode 字段
+
+```java
+String carJson = "{ \"brand\" : \"Mercedes\", \"doors\" : 5 }";
+objectNode.set("name", objectMapper.readTree(carJson));
+```
+
+#### 8.3、Put ObjectNode 字段
+
+```java
+objectNode.put("name", "zhangsan");
+```
+
+#### 8.4、Remove ObjectNode 字段
+
+```java
+objectNode.remove("name");
+```
+
+### 9、Jackson JsonParser
+
+使用JsonParser它来解析JSON，将JSON分解为一系列JsonToken，JsonToken它有一组常量令牌，可以使用这组令牌来判断当前的JsonToken是什么类型的令牌。
+
+```java
+START_OBJECT
+END_OBJECT
+START_ARRAY
+END_ARRAY
+FIELD_NAME
+VALUE_EMBEDDED_OBJECT
+VALUE_FALSE
+VALUE_TRUE
+VALUE_NULL
+VALUE_STRING
+VALUE_NUMBER_INT
+VALUE_NUMBER_FLOAT
+```
+
+#### 9.1、创建JsonParser
+
+首先需要一个JsonFactory用于创建JsonParser实例。 JsonFactory类包含几个`createParser()`方法，每个方法都使用不同的JSON源作为参数。
+
+```java
+String carJson = "{ \"brand\" : \"Mercedes\", \"doors\" : 5 }";
+JsonFactory factory = new JsonFactory();
+JsonParser parser = factory.createParser(carJson);
+```
+
+#### 9.2、遍历JsonParser
+
+通过JsonParser的`isClosed()`方法来判断是否存在令牌，返回`false`代表JSON源中仍然存在令牌。使用JsonParser的`nextToken()`获取一个JsonToken。
+
+```java
+String carJson = "{ \"brand\" : \"Mercedes\", \"doors\" : 5 }";
+JsonFactory factory = new JsonFactory();
+JsonParser parser = factory.createParser(carJson);
+Car car = new Car();
+while(!parser.isClosed()) {
+    JsonToken jsonToken = parser.nextToken();
+    if(JsonToken.FIELD_NAME.equals(jsonToken)) {
+        // 返回当前字段名称
+        String fieldName = parser.getCurrentName();
+        jsonToken = parser.nextToken();
+        if("brand".equals(fieldName)) {
+            car.setBrand = parser.getValueAsString();
+        } else if ("doors".equals(fieldName)) {
+            car.setDoors = parser.getValueAsInt();
+        }
+    }
+}
+```
+
+### 10、JsonGenerator 生成 JSON 数据
+
+首先创建JsonFactory实例，通过`createGenerator()`方法得到JsonGenerator的实例，提供了有关生成的JSON写入何处的参数，可以是File对象或是OutputStream流等。第二个参数则是生成JSON时使用的字符编码。最后用`close()`方法关闭资源。
+
+```java
+JsonFactory factory = new JsonFactory();
+JsonGenerator generator = factory.createGenerator(new File("data/output.json"), JsonEncoding.UTF8);
+generator.writeStartObject();
+generator.writeStringField("brand", "Mercedes");
+generator.writeNumberField("doors", 5);
+generator.writeEndObject();
+generator.close();
+```
+
+
+
+### 参考文献
+
+【1】[Jackson API 详细汇总 与 使用介绍、格式化日期请求与响应](https://blog.csdn.net/wangmx1993328/article/details/88598625)
+
+【2】[Jackson配置大全](https://blog.csdn.net/Xiaowu_First/article/details/123846121)
+
+【3】[jackson学习之三：常用API操作](https://blog.csdn.net/boling_cavalry/article/details/108192174)
+
+【4】[jackson自定义反序列化器JsonDeserializer](https://blog.csdn.net/weixin_43335392/article/details/124864390)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
