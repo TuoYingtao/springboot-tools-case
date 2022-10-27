@@ -795,6 +795,8 @@ Gson将确保在将Java字段名称的第一个“字母”序列化为JSON格�
 
 `jackson-databind`数据绑定包， 提供基于"对象绑定" 解析的相关 API （ ObjectMapper ） 和"树模型" 解析的相关 API （JsonNode）；基于"对象绑定" 解析的 API 和"树模型"解析的 API 依赖基于"流模式"解析的 API。
 
+> Jackson支持以下格式：[Avro](https://github.com/FasterXML/jackson-dataformats-binary/blob/master/avro)、[BSON](https://github.com/michel-kraemer/bson4jackson)、[CBOR](https://github.com/FasterXML/jackson-dataformats-binary/blob/master/cbor)、[CSV](https://github.com/FasterXML/jackson-dataformats-text/blob/master/csv)、[Smile](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/smile)、[(Java) Properties](https://github.com/FasterXML/jackson-dataformats-text/blob/master/properties)、[Protobuf](https://github.com/FasterXML/jackson-dataformats-binary/tree/master/protobuf)、[TOML](https://github.com/FasterXML/jackson-dataformats-text/blob/2.13/toml)、[XML](https://github.com/FasterXML/jackson-dataformat-xml) or [YAML](https://github.com/FasterXML/jackson-dataformats-text/blob/master/yaml)
+
 源码地址：[FasterXML/jackson](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2FFasterXML%2Fjackson.git)
 
 ### 2、ObjectMapper 序列化对象
@@ -1054,7 +1056,7 @@ spring:
       IGNORE_UNKNOWN: false #属性定义未找到是否报错（这不是针对json,是针对Avro, protobuf等需要Schema的格式）
 ```
 
-### 4、自定义序列化
+### 4、<span id="自定义序列化">自定义序列化</span>
 
 #### 4.1、使用自定义JsonSerializer
 
@@ -1110,7 +1112,7 @@ public class CarSerializer extends JsonSerializer<Car> {
    String carJson = objectMapper.writeValueAsString(car);
    ```
 
-### 5、自定义反序列化
+### 5、<span id="自定义反序列化">自定义反序列化</span>
 
 #### 5.1、使用自定义JsonDeserializer
 
@@ -1399,9 +1401,58 @@ generator.writeEndObject();
 generator.close();
 ```
 
+### 11、Jackson 注解
 
+#### 11.1、基础注解
 
-### 参考文献
+|            注解            | 用法                                                         |
+| :------------------------: | :----------------------------------------------------------- |
+|      `@JsonProperty`       | 用于属性，把属性的名称序列化时转换为另外一个名称。示例：`@JsonProperty("birth_date") private Date birthDate` |
+|       `@JsonIgnore`        | 可用于字段、getter/setter、构造函数参数上，作用相同，都会对相应的字段产生影响。使相应字段不参与序列化和反序列化。 |
+|  `@JsonIgnoreProperties`   | 该注解是类注解，使得相应字段不参与序列化和反序列化。eg:`@JsonIgnoreProperties({"password","id"}) public class Person` |
+|       `@JsonFormat`        | 用于属性或者方法，把属性的格式序列化时转换成指定的格式。示例：`@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm") public Date getBirthDate()` |
+|    `@JsonPropertyOrder`    | 该注解是类注解，和 `@JsonProperty`的index属性类似，指定属性在序列化时 json 中的顺序 ， 示例：`@JsonPropertyOrder({ "birth_Date", "name" }) public class Person` |
+|       `@JsonCreator`       | 用于构造方法，和 `@JsonProperty` 配合使用，适用有参数的构造方法。示例：`@JsonCreator public Person(@JsonProperty("name")String name) {…}` |
+|      `@JsonAnySetter`      | 用于属性或者方法，设置未反序列化的属性名和值作为键值存储到 map 中 `@JsonAnySetter public void set(String key, Object value) { map.put(key, value); }` |
+|      `@JsonAnyGetter`      | 应用于属性或方法，获取所有未序列化的属性 `public Map<String, Object> any() { return map; }` |
+|       `@JsonSetter`        | 应用于属性或方法，指定反序列化的字段名 `@JsonSetter("_id") public String setId(String id) { return this.id=id; }` |
+|       `@JsonGetter`        | 应用于方法或字段，指定序列化的字段名 `@JsonGetter("_id") public String getId() { return id; }` |
+|       `@JsonNaming`        | 类注解。序列化的时候该注解可将驼峰命名的字段名转换为下划线分隔的小写字母命名方式。反序列化的时候可以将下划线分隔的小写字母转换为驼峰命名的字段名。示例：`@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)` |
+|      `@JsonRootName`       | 类注解。需开启`mapper.enable(SerializationFeature.WRAP_ROOT_VALUE)`，用于序列化时输出带有根属性名称的JSON串，形式如 `{"root_name":{"id":1,"name":"zhangsan"}}`。 |
+|     `@JsonAutoDetect`      | 指定属性（反）序列化范围                                     |
+|     `@JsonIgnoreType`      | 将忽略这个类型的（反）序列化                                 |
+|       `@JsonInclude`       | 对空值如何序列化                                             |
+| `@JsonPropertyDescription` | json的schema描述                                             |
+|      `@JsonUnwrapped`      | 将其属性上拉一个层级展开                                     |
+|        `@JsonView`         | 不同接口下返回不同的属性 eg：[@JsonView的使用](https://blog.csdn.net/Dongguabai/article/details/80884774) |
+|      `@JacksonInject`      | json字段有一些缺少的属性，转换成实体类的时候没有的属性将为null，但是我们在某些需求当中需要将为null的属性都设置为默认 |
+|  `@JsonEnumDefaultValue`   | 反序列化时未知时的枚举值                                     |
+|      `@JsonRawValue`       | 使用原始值，而不会进行转义 eg:`"content":"Test content"`,而不是`\"content\":\"Test content\"` |
+|        `@JsonValue`        | 最多能用于类的一个属性(多个属性应用此注解将抛出异常)，并将此属性上拉一个层级展开，其他字段不参与（反）序列化 |
+|         `@JsonKey`         | 最多能用于类的一个属性(多个属性应用此注解将抛出异常)，这个类型对象作为Map数据结构的Key时，标记此注解的属性值将作为json字符串的字段名 |
+|       `@JsonFilter`        | 应用于属性， 过滤属性 eg:`@JsonFilter("non-pwd") private char[] password = new char[]{'0', '\u0343', '&'}; mapper.setFilterProvider(new SimpleFilterProvider().addFilter("non-pwd", SimpleBeanPropertyFilter.serializeAllExcept("password")));` |
+|        `@JsonAlias`        | 应用于属性，反序列化时多个候选字段名能够映射到同一个属性上   |
+|        `@JsonMerge`        | 应用于属性，反序列化时集合类型属性时，将Json中的元素与字段中的默认元素融合 eg:`@JsonMerge private List<String> hobbies = new ArrayList<>(Collections.singletonList("篮球"));` |
+|      `@JsonSerialize`      | 应用于类、属性，指定自定义序列化器。详细请看[自定义序列化](#自定义序列化) |
+|     `@JsonDeserialize`     | 应用于类、属性，指定自定义反序列化器。详细请看[自定义反序列化](#自定义反序列化) |
+
+#### 11.2、多态类型处理注解
+
+|      注解       | 用法                                                         |
+| :-------------: | ------------------------------------------------------------ |
+| `@JsonSubTypes` | 类注解 类注解用于指示注解类型的子类型； 使用逻辑类型名称（而不是类名称）指定反序列化多态类型 |
+|  `@JsonTypeId`  | 类/属性/方法注解 用于指示属性值应该用作对象的 [Type Id](https://blog.csdn.net/qq_20919883/article/details/116424393) ，而不是使用类名或外部类型名。 |
+| `@JsonTypeInfo` | 类/属性注解 用于指示序列化中包含哪些类型信息以及如何包含在内的详细信息。 |
+| `@JsonTypeName` | 类注解 用于定义用于注释类的逻辑类型名称；类型名称可以用作`Type Id`（取决于`@JsonTypeInfo`的设置） [Java Jackson @JsonTypeInfo 多态类型处理](https://www.jianshu.com/p/a21f1633d79c) |
+
+#### 11.3、对象双向引用及对象ID
+
+| 注解                                          | 用法                                                         |
+| --------------------------------------------- | ------------------------------------------------------------ |
+| `@JsonManagedReference`，`@JsonBackReference` | 这对注解，用于指示和处理用一对匹配属性表示的父/子关系 (双向引用将导致无限递归) |
+| `@JsonIdentityInfo`                           | 类/属性注解 用于指示在序列化/反序列化值时要使用“对象标识id”，以便可以正确反序列化对单个 Java 对象的多个引用。 |
+
+### 12、参考文献
 
 【1】[Jackson API 详细汇总 与 使用介绍、格式化日期请求与响应](https://blog.csdn.net/wangmx1993328/article/details/88598625)
 
@@ -1411,9 +1462,15 @@ generator.close();
 
 【4】[jackson自定义反序列化器JsonDeserializer](https://blog.csdn.net/weixin_43335392/article/details/124864390)
 
+【5】[Jackson使用详解](https://juejin.cn/post/6844904166809157639#heading-0)
 
+## 四、JsonLib 的使用（不推荐）
 
+json-lib最开始的也是应用最广泛的JSON解析工具，json-lib 不好的地方确实是依赖于很多第三方包，对于复杂类型的转换，json-lib对于json转换成bean还有缺陷， 比如一个类里面会出现另一个类的`list`或者`map`集合，json-lib从JSON到Bean的转换就会出现问题。json-lib在功能和性能上面都不能满足现在互联网化的需求。
 
+### 1、参考文献
+
+【1】[Json-lib](https://json-lib.sourceforge.net/index.html)
 
 
 

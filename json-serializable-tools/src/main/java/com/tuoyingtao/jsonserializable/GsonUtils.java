@@ -88,10 +88,13 @@ public class GsonUtils {
 
     /**
      * 将json转化为对应的实体对象
-     * @param typeOfT 目标对象类型 new TypeToken<List<T>>() {}.getType()
+     * @param typeOfT 目标对象类型
+     *<pre>
+     *                new TypeToken<List<T>>() {}.getType()
      *                new TypeToken<List<T>>() {}.getType()
      *                new TypeToken<Map<String, T>>() {}.getType()
      *                new TypeToken<List<Map<String, T>>>() {}.getType()
+     *</pre>
      */
     public static <T> T fromJson(String json, Type typeOfT) {
         return GSON.fromJson(json, typeOfT);
@@ -111,7 +114,7 @@ public class GsonUtils {
     /**
      * 转成list中有map的
      * @param gsonString Json 数据
-     * @return List<Map<String, T>> 集合
+     * @return {@code List<Map<String, T>>} 集合
      */
     public static <T> List<Map<String, T>> strToListMaps(String gsonString) {
         return GSON.fromJson(gsonString, new TypeToken<List<Map<String, String>>>() {
@@ -121,7 +124,7 @@ public class GsonUtils {
     /**
      * 转成map
      * @param gsonString Json 数据
-     * @return Map<String, T> 集合
+     * @return {@code Map<String, T>} 集合
      */
     public static <T> Map<String, T> strToMaps(String gsonString) {
         return GSON.fromJson(gsonString, new TypeToken<Map<String, T>>() {

@@ -38,7 +38,7 @@ public class FastJsonUtils {
      * @param jsonStr  JSON数据
      * @param objClass JAVA对象
      * @param <T> 需要转换的JAVA对象类型
-     * @return List 集合
+     * @return {@link List} 集合
      */
     public static <T> List<T> getJsonToList(String jsonStr, Class<T> objClass) {
         return JSON.parseArray(jsonStr, objClass);
@@ -49,7 +49,7 @@ public class FastJsonUtils {
      * @param jsonString JSON数据
      * @param objClass JAVA对象
      * @param <T> JAVA对象类型
-     * @return List 集合
+     * @return {@link List} 集合
      */
     public static <T> List<T> getJsonToList2(String jsonString, Class<T> objClass) {
         @SuppressWarnings("unchecked")
@@ -58,9 +58,9 @@ public class FastJsonUtils {
     }
 
     /**
-     * JSON数据转换成 List<Map<String, Object>>
+     * JSON数据转换成 {@code List<Map<String, Object>>}
      * @param jsonStr JSON数据
-     * @return List<Map<String, Object>>
+     * @return {@code List<Map<String, Object>>}
      */
     public static List<Map<String, Object>> getJsonToListMap(String jsonStr) {
         return JSON.parseObject(jsonStr, new TypeReference<List<Map<String, Object>>>(){
@@ -68,8 +68,8 @@ public class FastJsonUtils {
     }
 
     /**
-     *  List<T> 转 json 保存到数据库
-     * @param tList List 集合
+     *  {@code List<T>} 转 json 保存到数据库
+     * @param tList {@link List} 集合
      * @param <T> JAVA对象类型
      * @return JSON 数据
      */
