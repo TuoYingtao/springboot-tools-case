@@ -1,0 +1,13 @@
+server:
+  port: 8080
+management: # actuator \u73AF\u5883\u76D1\u63A7 \u8BBF\u95EE\u5730\u5740\uFF1Ahttp://localhost:8081/httptrace
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /
+springfox:
+  documentation:
+    enabled: true
