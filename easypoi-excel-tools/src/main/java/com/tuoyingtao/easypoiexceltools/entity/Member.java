@@ -1,6 +1,7 @@
 package com.tuoyingtao.easypoiexceltools.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 
 import java.io.Serializable;
