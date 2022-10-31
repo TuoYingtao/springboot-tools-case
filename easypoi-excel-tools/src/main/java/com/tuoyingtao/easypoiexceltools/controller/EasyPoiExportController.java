@@ -8,6 +8,7 @@ import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.view.PoiBaseView;
 import com.tuoyingtao.easypoiexceltools.entity.Member;
 import com.tuoyingtao.easypoiexceltools.entity.Order;
+import com.tuoyingtao.easypoiexceltools.handler.ExcelDataStyleHandler;
 import com.tuoyingtao.easypoiexceltools.handler.MemberExcelDataHandler;
 import com.tuoyingtao.easypoiexceltools.util.DataJsonUtil;
 import com.tuoyingtao.easypoiexceltools.util.LocalJsonUtil;
@@ -72,6 +73,23 @@ public class EasyPoiExportController {
         MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
         memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
         exportParams.setDataHandler(memberExcelDataHandler);
+        modelMap.put(NormalExcelConstants.DATA_LIST, memberList);
+        modelMap.put(NormalExcelConstants.CLASS, Member.class);
+        modelMap.put(NormalExcelConstants.PARAMS, exportParams);
+        modelMap.put(NormalExcelConstants.FILE_NAME, "customFieldMemberList");
+        PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
+    }
+
+    @ApiOperation(value = "自定义样式处理器-导出Excel")
+    @RequestMapping(value = "exportMemberListCustomStyle", method = RequestMethod.GET)
+    public void exportMemberListCustomStyle(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+        List<Member> memberList = DataJsonUtil.getMemberList();
+        ExportParams exportParams = new ExportParams("会员列表", "会员列表", ExcelType.XSSF);
+        // 对导出结果进行自定义处理
+        MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
+        memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
+        exportParams.setDataHandler(memberExcelDataHandler);
+        exportParams.setStyle(ExcelDataStyleHandler.class);
         modelMap.put(NormalExcelConstants.DATA_LIST, memberList);
         modelMap.put(NormalExcelConstants.CLASS, Member.class);
         modelMap.put(NormalExcelConstants.PARAMS, exportParams);
