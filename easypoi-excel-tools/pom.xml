@@ -59,7 +59,7 @@
             <artifactId>easypoi-spring-boot-starter</artifactId>
             <version>4.4.0</version>
         </dependency>
-
+        <!-- JSR 303 规范校验 -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>

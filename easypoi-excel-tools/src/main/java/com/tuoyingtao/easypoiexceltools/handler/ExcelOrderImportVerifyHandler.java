@@ -88,7 +88,7 @@ public class ExcelOrderImportVerifyHandler implements IExcelVerifyHandler<OrderV
      * PoiValidationUtil 进行校验 Collection 中的对象
      */
     private void nestCollectionVerify(StringJoiner stringJoiner, Object obj) {
-        // 调用 Validation 对有@Excel所标识的数据进行验证
+        // 调用JSR 303 Validation 对有@Excel所标识的数据进行验证
         String validationMsg = PoiValidationUtil.validation(obj, new Class[]{ ExcelVerify.class });
         if (StringUtils.isNotEmpty(validationMsg)) {
             try {

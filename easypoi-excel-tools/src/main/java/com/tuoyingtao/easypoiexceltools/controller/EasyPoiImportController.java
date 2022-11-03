@@ -13,6 +13,7 @@ import com.tuoyingtao.easypoiexceltools.vo.MemberVo;
 import com.tuoyingtao.easypoiexceltools.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -111,7 +112,7 @@ public class EasyPoiImportController {
         }
     }
 
-    @ApiOperation(value = "【会员列表】Excel文件导入并验证")
+    @ApiOperation(value = "【会员列表】Excel文件导入（验证）")
     @RequestMapping(value = "importMemberValidator", method = RequestMethod.POST)
     @ResponseBody
     public R importMemberValidatorEasyPoi(@RequestPart("file") MultipartFile file) {
@@ -133,8 +134,13 @@ public class EasyPoiImportController {
             params.setVerifyHandler(excelMemberImportVerifyHandler);
             // importExcelMore方法返回带有校验结果
             ExcelImportResult<MemberVo> result = ExcelImportUtil.importExcelMore(file.getInputStream(), MemberVo.class, params);
+
             // 判断是否校验成功
             if (!result.isVerifyFail()) {
+                /** ReflectionToStringBuilder */
+                for (int i = 0; i < result.getList().size(); i++) {
+                    System.out.println(ReflectionToStringBuilder.toString(result.getList().get(i)));
+                }
                 // 通过的结果集
                 return R.ok().put("data", result.getList());
             }
@@ -155,7 +161,7 @@ public class EasyPoiImportController {
         }
     }
 
-    @ApiOperation(value = "【订单列表】Excel文件导入嵌套集合并验证")
+    @ApiOperation(value = "【订单列表】Excel文件导入嵌套集合（验证）")
     @RequestMapping(value = "importOrderValidator", method = RequestMethod.POST)
     @ResponseBody
     public R importOrderNestExcel(@RequestPart("file") MultipartFile file) {
