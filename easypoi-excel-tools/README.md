@@ -144,7 +144,88 @@ public class TeacherEntity implements java.io.Serializable {
 | height   | double | 10     | 设置行高     |
 | fontSize | short  | 11     | 设置文字大小 |
 
+## 2、自定义数据处理器
 
+EasyPoi 提供了一个`IExcelDataHandler<T>`接口供我们实现自定义数据处理。
+
+```java
+/**
+ * Excel 导入导出 数据处理接口
+ */
+public interface IExcelDataHandler<T> {
+    /**
+     * 导出处理方法
+     * @param obj 当前对象
+     * @param name 当前字段名称
+     * @param value 当前值
+     * @return
+     */
+    public Object exportHandler(T obj, String name, Object value);
+    /**
+     * 获取需要处理的字段,导入和导出统一处理了, 减少书写的字段
+     * @return
+     */
+    public String[] getNeedHandlerFields();
+    /**
+     * 导入处理方法
+     * @param obj 当前对象
+     * @param name 当前字段名称
+     * @param value 当前值
+     * @return
+     */
+    public Object importHandler(T obj, String name, Object value);
+    /**
+     * 设置需要处理的属性列表
+     * @param fields
+     */
+    public void setNeedHandlerFields(String[] fields);
+    /**
+     * 设置Map导入,自定义 put
+     * @param map 数据对象
+     * @param originKey 字段名
+     * @param value 当前值
+     */
+    public void setMapValue(Map<String, Object> map, String originKey, Object value);
+    /**
+     * 获取这个字段的 Hyperlink ,07版本需要,03版本不需要
+     * @param creationHelper
+     * @param obj
+     * @param name
+     * @param value
+     * @return
+     */
+    public Hyperlink getHyperlink(CreationHelper creationHelper, T obj, String name, Object value);
+}
+```
+
+通常我们只需要继承`ExcelDataHandlerDefaultImpl`类，避免实现多余的接口。重写`setNeedHandlerFields`方法来完成自己的字段处理逻辑。
+
+这里提供一下官方的Demo：将map导入的时候把map的key给转了，从中文转为习惯的英文
+
+```java
+public class MapImportHandler extends ExcelDataHandlerDefaultImpl<Map<String, Object>> {
+    @Override
+    public void setMapValue(Map<String, Object> map, String originKey, Object value) {
+        if (value instanceof Double) {
+            map.put(getRealKey(originKey), PoiPublicUtil.doubleToString((Double) value));
+        } else {
+            map.put(getRealKey(originKey), value != null ? value.toString() : null);
+        }
+    }
+    private String getRealKey(String originKey) {
+        if (originKey.equals("交易账户")) {
+            return "accountNo";
+        }
+        if (originKey.equals("姓名")) {
+            return "name";
+        }
+        if (originKey.equals("客户类型")) {
+            return "type";
+        }
+        return originKey;
+    }
+}
+```
 
 
 

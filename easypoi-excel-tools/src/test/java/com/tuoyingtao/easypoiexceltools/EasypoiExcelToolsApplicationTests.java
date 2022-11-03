@@ -1,7 +1,7 @@
 package com.tuoyingtao.easypoiexceltools;
 
-import com.tuoyingtao.easypoiexceltools.entity.Member;
-import com.tuoyingtao.easypoiexceltools.entity.Order;
+import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
+import com.tuoyingtao.easypoiexceltools.entity.OrderEntity;
 import com.tuoyingtao.easypoiexceltools.util.DataJsonUtil;
 import com.tuoyingtao.easypoiexceltools.util.LocalJsonUtil;
 import org.junit.jupiter.api.Test;
@@ -14,14 +14,14 @@ class EasypoiExcelToolsApplicationTests {
 
     @Test
     void contextLoads() {
-        List<Member> memberList = LocalJsonUtil.getListFromJson("json/members.json", Member.class);
-        System.out.println(memberList);
+        List<MemberEntity> memberEntityList = LocalJsonUtil.getListFromJson("json/members.json", MemberEntity.class);
+        System.out.println(memberEntityList);
     }
 
     @Test
     void getOrderList() {
-        List<Order> orderList = DataJsonUtil.getOrderList();
-        System.out.println(orderList);
+        List<OrderEntity> orderEntityList = DataJsonUtil.getOrderList();
+        System.out.println(orderEntityList);
     }
 
 }

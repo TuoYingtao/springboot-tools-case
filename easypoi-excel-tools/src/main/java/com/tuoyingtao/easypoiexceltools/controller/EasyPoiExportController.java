@@ -6,12 +6,11 @@ import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.view.PoiBaseView;
-import com.tuoyingtao.easypoiexceltools.entity.Member;
-import com.tuoyingtao.easypoiexceltools.entity.Order;
+import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
+import com.tuoyingtao.easypoiexceltools.entity.OrderEntity;
 import com.tuoyingtao.easypoiexceltools.handler.ExcelDataStyleHandler;
 import com.tuoyingtao.easypoiexceltools.handler.MemberExcelDataHandler;
 import com.tuoyingtao.easypoiexceltools.util.DataJsonUtil;
-import com.tuoyingtao.easypoiexceltools.util.LocalJsonUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -42,10 +41,10 @@ public class EasyPoiExportController {
     @ApiOperation(value = "会员列表-导出Excel")
     @RequestMapping(path = "exportMemberList", method = RequestMethod.GET)
     public void exportMemberList(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-        List<Member> memberList = DataJsonUtil.getMemberList();
+        List<MemberEntity> memberEntityList = DataJsonUtil.getMemberList();
         ExportParams exportParams = new ExportParams("会员列表", "会员列表", ExcelType.XSSF);
-        modelMap.put(NormalExcelConstants.DATA_LIST, memberList);
-        modelMap.put(NormalExcelConstants.CLASS, Member.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, memberEntityList);
+        modelMap.put(NormalExcelConstants.CLASS, MemberEntity.class);
         modelMap.put(NormalExcelConstants.PARAMS, exportParams);
         modelMap.put(NormalExcelConstants.FILE_NAME, "memberList");
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
@@ -54,11 +53,11 @@ public class EasyPoiExportController {
     @ApiOperation(value = "订单嵌套列表-导出Excel")
     @RequestMapping(value = "exportOrderList", method = RequestMethod.GET)
     public void exportOrderList(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-        List<Order> orderList = DataJsonUtil.getOrderList();
+        List<OrderEntity> orderEntityList = DataJsonUtil.getOrderList();
         ExportParams exportParams = new ExportParams("订单列表", "订单列表", ExcelType.XSSF);
         exportParams.setExclusions(new String[]{"出生日期", "订单ID", "商品ID", "性别"});
-        modelMap.put(NormalExcelConstants.DATA_LIST, orderList);
-        modelMap.put(NormalExcelConstants.CLASS, Order.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, orderEntityList);
+        modelMap.put(NormalExcelConstants.CLASS, OrderEntity.class);
         modelMap.put(NormalExcelConstants.PARAMS, exportParams);
         modelMap.put(NormalExcelConstants.FILE_NAME, "orderList");
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
@@ -67,14 +66,14 @@ public class EasyPoiExportController {
     @ApiOperation(value = "自定义字段处理器-导出Excel")
     @RequestMapping(value = "exportMemberListCustomField", method = RequestMethod.GET)
     public void exportMemberListCustomField(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-        List<Member> memberList = DataJsonUtil.getMemberList();
+        List<MemberEntity> memberEntityList = DataJsonUtil.getMemberList();
         ExportParams exportParams = new ExportParams("会员列表", "会员列表", ExcelType.XSSF);
         // 对导出结果进行自定义处理
         MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
         memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
         exportParams.setDataHandler(memberExcelDataHandler);
-        modelMap.put(NormalExcelConstants.DATA_LIST, memberList);
-        modelMap.put(NormalExcelConstants.CLASS, Member.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, memberEntityList);
+        modelMap.put(NormalExcelConstants.CLASS, MemberEntity.class);
         modelMap.put(NormalExcelConstants.PARAMS, exportParams);
         modelMap.put(NormalExcelConstants.FILE_NAME, "customFieldMemberList");
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
@@ -83,15 +82,15 @@ public class EasyPoiExportController {
     @ApiOperation(value = "自定义样式处理器-导出Excel")
     @RequestMapping(value = "exportMemberListCustomStyle", method = RequestMethod.GET)
     public void exportMemberListCustomStyle(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-        List<Member> memberList = DataJsonUtil.getMemberList();
+        List<MemberEntity> memberEntityList = DataJsonUtil.getMemberList();
         ExportParams exportParams = new ExportParams("会员列表", "会员列表", ExcelType.XSSF);
         // 对导出结果进行自定义处理
         MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
         memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
         exportParams.setDataHandler(memberExcelDataHandler);
         exportParams.setStyle(ExcelDataStyleHandler.class);
-        modelMap.put(NormalExcelConstants.DATA_LIST, memberList);
-        modelMap.put(NormalExcelConstants.CLASS, Member.class);
+        modelMap.put(NormalExcelConstants.DATA_LIST, memberEntityList);
+        modelMap.put(NormalExcelConstants.CLASS, MemberEntity.class);
         modelMap.put(NormalExcelConstants.PARAMS, exportParams);
         modelMap.put(NormalExcelConstants.FILE_NAME, "customFieldMemberList");
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
@@ -133,7 +132,7 @@ public class EasyPoiExportController {
     @RequestMapping(value = "exportNest", method = RequestMethod.GET)
     public void exportNest(HttpServletResponse response) {
         try {
-            List<Order> orderList = DataJsonUtil.getOrderList();
+            List<OrderEntity> orderEntityList = DataJsonUtil.getOrderList();
             // 创建参数对象（用来设定excel得sheet得内容等信息）
             ExportParams orderExportParams = new ExportParams("订单列表", "订单列表");
             // 创建sheet1使用得map
@@ -141,16 +140,16 @@ public class EasyPoiExportController {
             // title的参数为ExportParams类型
             orderMap.put("title", orderExportParams);
             // 模版导出对应得实体类型
-            orderMap.put("entity", Order.class);
+            orderMap.put("entity", OrderEntity.class);
             // sheet中要填充得数据
-            orderMap.put("data", orderList);
+            orderMap.put("data", orderEntityList);
 
             ExportParams memberExportParams = new ExportParams();
             memberExportParams.setSheetName("会员信息");
             Map<String, Object> memberMap = new HashMap<>();
             memberMap.put("title", memberMap);
-            memberMap.put("entity", Order.class);
-            memberMap.put("data", orderList);
+            memberMap.put("entity", OrderEntity.class);
+            memberMap.put("data", orderEntityList);
 
             List<Map<String, Object>> sheetList = new ArrayList<>();
             sheetList.add(orderMap);

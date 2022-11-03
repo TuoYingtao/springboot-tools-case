@@ -1,8 +1,8 @@
 package com.tuoyingtao.easypoiexceltools.util;
 
-import com.tuoyingtao.easypoiexceltools.entity.Member;
-import com.tuoyingtao.easypoiexceltools.entity.Order;
-import com.tuoyingtao.easypoiexceltools.entity.Product;
+import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
+import com.tuoyingtao.easypoiexceltools.entity.OrderEntity;
+import com.tuoyingtao.easypoiexceltools.entity.ProductEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,43 +14,43 @@ import java.util.stream.Collectors;
  */
 public class DataJsonUtil {
 
-    private static List<Order> orderList;
-    private static List<Member> memberList;
-    private static List<Product> productList;
+    private static List<OrderEntity> orderEntityList;
+    private static List<MemberEntity> memberEntityList;
+    private static List<ProductEntity> productEntityList;
 
     static  {
-        orderList = LocalJsonUtil.getListFromJson("json/orders.json", Order.class);
-        memberList = LocalJsonUtil.getListFromJson("json/members.json", Member.class);
-        productList = LocalJsonUtil.getListFromJson("json/products.json", Product.class);
+        orderEntityList = LocalJsonUtil.getListFromJson("json/orders.json", OrderEntity.class);
+        memberEntityList = LocalJsonUtil.getListFromJson("json/members.json", MemberEntity.class);
+        productEntityList = LocalJsonUtil.getListFromJson("json/products.json", ProductEntity.class);
     }
 
     /**
      * 会员列表
      * @return
      */
-    public static List<Member> getMemberList() {
-        return memberList;
+    public static List<MemberEntity> getMemberList() {
+        return memberEntityList;
     }
 
     /**
      * 商品列表
      * @return
      */
-    public static List<Product> getProductList() {
-        return productList;
+    public static List<ProductEntity> getProductList() {
+        return productEntityList;
     }
 
     /**
      * 生产订单列表
      * @return
      */
-    public static List<Order> getOrderList() {
-        return orderList.stream().map(order -> {
-            if (productList.size() != 0) {
-                order.setProductList(productList);
+    public static List<OrderEntity> getOrderList() {
+        return orderEntityList.stream().map(order -> {
+            if (productEntityList.size() != 0) {
+                order.setProductEntityList(productEntityList);
             }
-            if (memberList.size() != 0) {
-                order.setMember(memberList.get((int) Math.round(Math.random() * (memberList.size() - 1))));
+            if (memberEntityList.size() != 0) {
+                order.setMemberEntity(memberEntityList.get((int) Math.round(Math.random() * (memberEntityList.size() - 1))));
             }
             return order;
         }).collect(Collectors.toList());

@@ -1,7 +1,6 @@
 package com.tuoyingtao.easypoiexceltools.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
-import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 
 import java.io.Serializable;
@@ -14,27 +13,35 @@ import java.util.Objects;
  * @create 2022-10-28 11:08
  */
 @ExcelTarget("member")
-public class Member implements Serializable {
+public class MemberEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Excel(name = "会员用户ID", width = 10, type = 10)
+
+    @Excel(name = "会员用户ID", width = 10, type = 10, needMerge = true)
     private Long id;
+
     @Excel(name = "姓名", width = 20, needMerge = true)
     private String username;
+
     private String password;
+
     @Excel(name = "昵称", width = 20, needMerge = true)
     private String nickname;
+
     @Excel(name = "出生日期", width = 20, format = "yyyy-MM-dd")
     private Date birthday;
+
     @Excel(name = "手机号", width = 20, needMerge = true, desensitizationRule = "3_4")
     private String phone;
+
     private String icon;
+
     @Excel(name = "性别", width = 10, replace = {"男_0", "女_1"})
     private Integer gender;
 
-    public Member() {
+    public MemberEntity() {
     }
 
-    public Member(Long id, String username, String password, String nickname, Date birthday, String phone, String icon, Integer gender) {
+    public MemberEntity(Long id, String username, String password, String nickname, Date birthday, String phone, String icon, Integer gender) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -127,12 +134,13 @@ public class Member implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Member member = (Member) o;
-        return Objects.equals(id, member.id) && Objects.equals(username, member.username) && Objects.equals(password, member.password) && Objects.equals(nickname, member.nickname) && Objects.equals(birthday, member.birthday) && Objects.equals(phone, member.phone) && Objects.equals(icon, member.icon) && Objects.equals(gender, member.gender);
+        MemberEntity memberEntity = (MemberEntity) o;
+        return Objects.equals(id, memberEntity.id) && Objects.equals(username, memberEntity.username) && Objects.equals(password, memberEntity.password) && Objects.equals(nickname, memberEntity.nickname) && Objects.equals(birthday, memberEntity.birthday) && Objects.equals(phone, memberEntity.phone) && Objects.equals(icon, memberEntity.icon) && Objects.equals(gender, memberEntity.gender);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, nickname, birthday, phone, icon, gender);
     }
+
 }

@@ -14,27 +14,33 @@ import java.util.Objects;
  * @create 2022-10-28 11:13
  */
 @ExcelTarget("product")
-public class Product implements Serializable {
+public class ProductEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Excel(name = "商品ID", width = 10, type = 10)
     private Long id;
+
     @Excel(name = "商品编号", width = 20)
     private String productSn;
+
     @Excel(name = "商品名称", width = 20)
     private String name;
+
     @Excel(name = "商品副标题", width = 20)
     private String subTitle;
+
     @Excel(name = "品牌名称", width = 20)
     private String brandName;
+
     @Excel(name = "价格", width = 10, type = 10)
     private BigDecimal price;
+
     @Excel(name = "购买数量", width = 10, suffix = "件")
     private Integer count;
 
-    public Product() {
+    public ProductEntity() {
     }
 
-    public Product(Long id, String productSn, String name, String subTitle, String brandName, BigDecimal price, Integer count) {
+    public ProductEntity(Long id, String productSn, String name, String subTitle, String brandName, BigDecimal price, Integer count) {
         this.id = id;
         this.productSn = productSn;
         this.name = name;
@@ -104,8 +110,8 @@ public class Product implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(productSn, product.productSn) && Objects.equals(name, product.name) && Objects.equals(subTitle, product.subTitle) && Objects.equals(brandName, product.brandName) && Objects.equals(price, product.price) && Objects.equals(count, product.count);
+        ProductEntity productEntity = (ProductEntity) o;
+        return Objects.equals(id, productEntity.id) && Objects.equals(productSn, productEntity.productSn) && Objects.equals(name, productEntity.name) && Objects.equals(subTitle, productEntity.subTitle) && Objects.equals(brandName, productEntity.brandName) && Objects.equals(price, productEntity.price) && Objects.equals(count, productEntity.count);
     }
 
     @Override
