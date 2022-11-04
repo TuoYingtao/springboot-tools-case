@@ -134,7 +134,6 @@ public class EasyPoiImportController {
             params.setVerifyHandler(excelMemberImportVerifyHandler);
             // importExcelMore方法返回带有校验结果
             ExcelImportResult<MemberVo> result = ExcelImportUtil.importExcelMore(file.getInputStream(), MemberVo.class, params);
-
             // 判断是否校验成功
             if (!result.isVerifyFail()) {
                 /** ReflectionToStringBuilder */
@@ -170,6 +169,7 @@ public class EasyPoiImportController {
         if (!postfix.matches("XLS|XLSX")){
             return R.error("文件格式不正确");
         }
+        ExcelImportResult<OrderVo> result = null;
         try {
             ImportParams params = new ImportParams();
             // 设置标题列占几行 默认0
@@ -184,30 +184,36 @@ public class EasyPoiImportController {
             // 导入文件分割设置为 false 解决：Cannot add merged region B6:B8 to sheet because it overlaps with an existing merged region (B4:B6).
             params.setVerifyFileSplit(false);
             // importExcelMore方法返回带有校验结果
-            ExcelImportResult<OrderVo> result = ExcelImportUtil.importExcelMore(file.getInputStream(), OrderVo.class, params);
-            // 判断是否校验成功
-            if (!result.isVerifyFail()) {
-                // 通过的结果集
-                return R.ok().put("data", result.getList());
-            }
-            // 校验失败 失败的结果集
-            List<OrderVo> failList = result.getFailList();
-            List<String> failMessageList = new ArrayList<>();
-            StringBuilder stringBuilder = new StringBuilder();
-            for (OrderVo orderVo : failList) {
-                // 设置错误内容在第几行
-                int line = orderVo.getRowNum() + 1;
-                // 设置错误信息
-                stringBuilder.append("第").append(line).append("行的错误是：").append(orderVo.getErrorMsg());
-                // 添加错误信息
-                failMessageList.add(stringBuilder.substring(0, stringBuilder.length()));
-                stringBuilder.delete(0, stringBuilder.length());
-            }
-            return R.error(20000, "导入失败").put("errorData", failMessageList);
+            result = ExcelImportUtil.importExcelMore(file.getInputStream(), OrderVo.class, params);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error("导入失败");
+        } finally {
+            // 清除threadLocal 防止内存泄漏
+            ThreadLocal<Map<Integer, String>> threadLocal = excelOrderImportVerifyHandler.getThreadLocal();
+            if (threadLocal != null) {
+                threadLocal.remove();
+            }
         }
+        // 判断是否校验成功
+        if (!result.isVerifyFail()) {
+            // 通过的结果集
+            return R.ok().put("data", result.getList());
+        }
+        // 校验失败 失败的结果集
+        List<OrderVo> failList = result.getFailList();
+        List<String> failMessageList = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (OrderVo orderVo : failList) {
+            // 设置错误内容在第几行
+            int line = orderVo.getRowNum() + 1;
+            // 设置错误信息
+            stringBuilder.append("第").append(line).append("行的错误是：").append(orderVo.getErrorMsg());
+            // 添加错误信息
+            failMessageList.add(stringBuilder.substring(0, stringBuilder.length()));
+            stringBuilder.delete(0, stringBuilder.length());
+        }
+        return R.error(20000, "导入失败").put("errorData", failMessageList);
     }
 
 }

@@ -117,4 +117,8 @@ public class ExcelOrderImportVerifyHandler implements IExcelVerifyHandler<OrderV
             }
         }
     }
+
+    public ThreadLocal<Map<Integer, String>> getThreadLocal() {
+        return threadLocal;
+    }
 }

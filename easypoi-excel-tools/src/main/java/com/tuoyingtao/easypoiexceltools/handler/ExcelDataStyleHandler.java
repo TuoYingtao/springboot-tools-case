@@ -5,6 +5,7 @@ import cn.afterturn.easypoi.excel.entity.params.ExcelForEachParams;
 import cn.afterturn.easypoi.excel.export.styler.IExcelExportStyler;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.stereotype.Component;
 
 /**
  * @author tuoyingtao

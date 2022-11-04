@@ -19,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,7 +39,11 @@ import java.util.Map;
 @Api(tags = "EasyPoiExportController", description = "导出Excel列表")
 public class EasyPoiExportController {
 
-    @ApiOperation(value = "会员列表-导出Excel")
+    // 自定义字段处理器
+    @Resource
+    MemberExcelDataHandler memberExcelDataHandler;
+
+    @ApiOperation(value = "【会员列表】导出Excel")
     @RequestMapping(path = "exportMemberList", method = RequestMethod.GET)
     public void exportMemberList(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
         List<MemberEntity> memberEntityList = DataJsonUtil.getMemberList();
@@ -50,7 +55,7 @@ public class EasyPoiExportController {
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
     }
 
-    @ApiOperation(value = "订单嵌套列表-导出Excel")
+    @ApiOperation(value = "【订单列表】导出嵌套Excel")
     @RequestMapping(value = "exportOrderList", method = RequestMethod.GET)
     public void exportOrderList(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
         List<OrderEntity> orderEntityList = DataJsonUtil.getOrderList();
@@ -63,13 +68,12 @@ public class EasyPoiExportController {
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
     }
 
-    @ApiOperation(value = "自定义字段处理器-导出Excel")
+    @ApiOperation(value = "【会员列表】导出Excel-自定义字段处理器")
     @RequestMapping(value = "exportMemberListCustomField", method = RequestMethod.GET)
     public void exportMemberListCustomField(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
         List<MemberEntity> memberEntityList = DataJsonUtil.getMemberList();
         ExportParams exportParams = new ExportParams("会员列表", "会员列表", ExcelType.XSSF);
         // 对导出结果进行自定义处理
-        MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
         memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
         exportParams.setDataHandler(memberExcelDataHandler);
         modelMap.put(NormalExcelConstants.DATA_LIST, memberEntityList);
@@ -79,13 +83,12 @@ public class EasyPoiExportController {
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
     }
 
-    @ApiOperation(value = "自定义样式处理器-导出Excel")
+    @ApiOperation(value = "【会员列表】导出Excel-自定义样式处理器")
     @RequestMapping(value = "exportMemberListCustomStyle", method = RequestMethod.GET)
     public void exportMemberListCustomStyle(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
         List<MemberEntity> memberEntityList = DataJsonUtil.getMemberList();
         ExportParams exportParams = new ExportParams("会员列表", "会员列表", ExcelType.XSSF);
         // 对导出结果进行自定义处理
-        MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
         memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
         exportParams.setDataHandler(memberExcelDataHandler);
         exportParams.setStyle(ExcelDataStyleHandler.class);
@@ -96,7 +99,7 @@ public class EasyPoiExportController {
         PoiBaseView.render(modelMap, request, response, NormalExcelConstants.EASYPOI_EXCEL_VIEW);
     }
 
-    @ApiOperation(value = "自定义动态列-导出Excel")
+    @ApiOperation(value = "【会员列表】导出Excel-自定义动态列")
     @RequestMapping(value = "exportMemberListCustomRow", method = RequestMethod.GET)
     public void exportMemberListCustomRow(HttpServletResponse response) {
         try {
@@ -110,7 +113,6 @@ public class EasyPoiExportController {
 
             ExportParams exportParams = new ExportParams("订单列表", "订单列表", ExcelType.XSSF);
             // 构建字段处理器
-            MemberExcelDataHandler memberExcelDataHandler = new MemberExcelDataHandler();
             memberExcelDataHandler.setNeedHandlerFields(new String[]{"昵称"});
             // 设置字段处理器
             exportParams.setDataHandler(memberExcelDataHandler);

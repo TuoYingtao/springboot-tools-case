@@ -3,12 +3,14 @@ package com.tuoyingtao.easypoiexceltools.handler;
 import cn.afterturn.easypoi.handler.impl.ExcelDataHandlerDefaultImpl;
 import cn.hutool.core.util.StrUtil;
 import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
+import org.springframework.stereotype.Component;
 
 /**
  * 导出自定义字段处理器
  * @author TuoYingtao
  * @create 2022-10-30 20:41
  */
+@Component
 public class MemberExcelDataHandler extends ExcelDataHandlerDefaultImpl<MemberEntity> {
 
     /**
