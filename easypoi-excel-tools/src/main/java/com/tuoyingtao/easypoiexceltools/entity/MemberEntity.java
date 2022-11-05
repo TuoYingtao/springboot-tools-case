@@ -2,6 +2,8 @@ package com.tuoyingtao.easypoiexceltools.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +30,8 @@ public class MemberEntity implements Serializable {
     private String nickname;
 
     @Excel(name = "出生日期", width = 20, format = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     @Excel(name = "手机号", width = 20, needMerge = true, desensitizationRule = "3_4")

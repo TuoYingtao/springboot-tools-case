@@ -6,6 +6,7 @@ import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
 import cn.afterturn.easypoi.view.PoiBaseView;
+import cn.hutool.db.Page;
 import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
 import com.tuoyingtao.easypoiexceltools.entity.OrderEntity;
 import com.tuoyingtao.easypoiexceltools.handler.ExcelDataStyleHandler;
@@ -168,5 +169,11 @@ public class EasyPoiExportController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @ApiOperation(value = "【会员列表】导出Excel-大量数据")
+    @RequestMapping(value = "exportMemberLargerData", method = RequestMethod.GET)
+    public void exportMemberLargerData() {
+        ExportParams exportParams = new ExportParams("会员列表", "会员列表");
     }
 }

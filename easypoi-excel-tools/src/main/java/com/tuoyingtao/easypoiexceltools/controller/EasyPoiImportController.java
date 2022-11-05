@@ -216,4 +216,13 @@ public class EasyPoiImportController {
         return R.error(20000, "导入失败").put("errorData", failMessageList);
     }
 
+    @ApiOperation(value = "导入Excel-海量数据导入")
+    @RequestMapping(value = "importLargerData", method = RequestMethod.POST)
+    @ResponseBody
+    public R importLargerData(@RequestPart("file") MultipartFile file) {
+
+
+        return R.ok();
+    }
+
 }
