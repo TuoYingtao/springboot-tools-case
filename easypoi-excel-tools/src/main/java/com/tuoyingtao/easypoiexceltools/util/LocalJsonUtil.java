@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -61,25 +60,25 @@ public class LocalJsonUtil {
                 while (((UTF8StreamJsonParser) parser).getTokenLineNr() < targetRow) {
                     if (currentJson == JsonToken.START_OBJECT) {
                         parser.readValueAsTree();
-                        currentJson = getNextToken(parser);
+                        currentJson = parser.nextToken();
                     } else {
-                        currentJson = getNextToken(parser);
+                        currentJson = parser.nextToken();
                     }
                 }
             } else {
-                currentJson = getNextToken(parser);
+                currentJson = parser.nextToken();
                 if (currentJson != JsonToken.START_ARRAY) {
                     System.out.println("Error: 当前不是一个JSON数组");
                     return null;
                 } else {
-                    currentJson = getNextToken(parser);
+                    currentJson = parser.nextToken();
                 }
             }
 
             List<MemberEntity> memberEntities = new ArrayList<>();
             while (currentJson != JsonToken.END_ARRAY) {
                 if (currentJson == JsonToken.START_OBJECT) {
-                    currentJson = getNextToken(parser);
+                    currentJson = parser.nextToken();
                     while (currentJson != JsonToken.END_OBJECT && currentJson != JsonToken.END_ARRAY) {
                         if (currentObjNum > 500) {
                             threadLocalMap.put("targetRow", ((UTF8StreamJsonParser) parser).getTokenLineNr());
@@ -99,7 +98,7 @@ public class LocalJsonUtil {
                             Integer gender = Integer.parseInt(node.get("gender").asText());
                             MemberEntity memberEntity = new MemberEntity(id, username, null, nickname, birthday, phone, null, gender);
                             memberEntities.add(memberEntity);
-                            currentJson = getNextToken(parser);
+                            currentJson = parser.nextToken();
                             currentObjNum++;
                         }
                     }
@@ -114,9 +113,5 @@ public class LocalJsonUtil {
             currentObjNum = 0;
         }
         return null;
-    }
-
-    private static JsonToken getNextToken(JsonParser parser) throws IOException {
-        return parser.nextToken();
     }
 }
