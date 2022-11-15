@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class EasypoiExcelToolsApplicationTests {
@@ -28,12 +29,28 @@ class EasypoiExcelToolsApplicationTests {
 
     @Test
     void createLargerData() throws IOException {
-        ArrayList<MemberEntity> entities = new ArrayList<>();
-        List<MemberEntity> memberEntities = LocalJsonUtil.readLargerJsonData();
-        List<MemberEntity> memberEntities1 = LocalJsonUtil.readLargerJsonData();
-        entities.addAll(memberEntities);
-        entities.addAll(memberEntities1);
-        System.out.println(entities);
+        try {
+            long startTime = System.currentTimeMillis();
+            ArrayList<MemberEntity> entities = new ArrayList<>();
+            Boolean flag = true;
+            Integer i = 0;
+            while (flag) {
+                List<MemberEntity> memberEntities = LocalJsonUtil.readLargerJsonData();
+                if (memberEntities != null) {
+                    entities.addAll(memberEntities);
+                } else {
+                    flag = false;
+                }
+            }
+            System.out.println("总耗时：" + (System.currentTimeMillis() - startTime));
+            System.out.println("执行完成");
+        } finally {
+            ThreadLocal<Map<String, Integer>> threadLocal = LocalJsonUtil.threadLocal;
+            if (threadLocal != null) {
+                threadLocal.remove();
+            }
+            System.out.println("清空");
+        }
 //        System.out.println(memberLargerData);
 //        String path = ResourceUtils.getURL("classpath:json").getPath();
 //        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("json/members1.json");

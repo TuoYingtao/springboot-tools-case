@@ -7,6 +7,7 @@ import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.json.UTF8StreamJsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
@@ -23,7 +24,7 @@ import java.util.*;
  * @create 2022-10-28 11:50
  */
 public class LocalJsonUtil {
-    private static final ThreadLocal<Map<String, Integer>> threadLocal = new ThreadLocal<>();
+    public static final ThreadLocal<Map<String, Integer>> threadLocal = new ThreadLocal<>();
 
     private static Integer currentRow = 0;
 
@@ -57,25 +58,31 @@ public class LocalJsonUtil {
             }
             Integer targetRow = threadLocalMap.get("targetRow");
             if (targetRow != 1) {
-                while ((currentRow = currentRow++) < targetRow) {
-                    currentJson = getNextToken(parser);
+                while (((UTF8StreamJsonParser) parser).getTokenLineNr() < targetRow) {
+                    if (currentJson == JsonToken.START_OBJECT) {
+                        parser.readValueAsTree();
+                        currentJson = getNextToken(parser);
+                    } else {
+                        currentJson = getNextToken(parser);
+                    }
                 }
             } else {
                 currentJson = getNextToken(parser);
                 if (currentJson != JsonToken.START_ARRAY) {
                     System.out.println("Error: 当前不是一个JSON数组");
                     return null;
+                } else {
+                    currentJson = getNextToken(parser);
                 }
             }
 
-            currentJson = getNextToken(parser);
             List<MemberEntity> memberEntities = new ArrayList<>();
             while (currentJson != JsonToken.END_ARRAY) {
                 if (currentJson == JsonToken.START_OBJECT) {
                     currentJson = getNextToken(parser);
-                    while (currentJson != JsonToken.END_OBJECT) {
-                        if (currentObjNum > 10) {
-                            threadLocalMap.put("targetRow", currentRow);
+                    while (currentJson != JsonToken.END_OBJECT && currentJson != JsonToken.END_ARRAY) {
+                        if (currentObjNum > 500) {
+                            threadLocalMap.put("targetRow", ((UTF8StreamJsonParser) parser).getTokenLineNr());
                             threadLocal.set(threadLocalMap);
                             return memberEntities;
                         } else {
@@ -104,14 +111,12 @@ public class LocalJsonUtil {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            currentRow = 0;
             currentObjNum = 0;
         }
         return null;
     }
 
     private static JsonToken getNextToken(JsonParser parser) throws IOException {
-        currentRow++;
         return parser.nextToken();
     }
 }
