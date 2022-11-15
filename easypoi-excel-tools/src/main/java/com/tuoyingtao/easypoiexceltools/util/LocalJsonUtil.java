@@ -7,15 +7,17 @@ import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.json.UTF8StreamJsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 从本地获取JSON数据的工具类
@@ -23,13 +25,18 @@ import java.util.*;
  * @create 2022-10-28 11:50
  */
 public class LocalJsonUtil {
-    public static final ThreadLocal<Map<String, Integer>> threadLocal = new ThreadLocal<>();
-
-    private static Integer currentRow = 0;
 
     private static Integer currentObjNum = 0;
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static InputStream inputStream;
+
+    private static JsonToken  currentJson;
+
+    private static JsonParser parser;
+
+
 
     /**
      * 从指定路径获取JSON并转换为List
@@ -44,28 +51,13 @@ public class LocalJsonUtil {
     }
 
     public static List<MemberEntity> readLargerJsonData() {
+        List<MemberEntity> memberEntities = null;
         try {
-            JsonToken currentJson = null;
-            JsonFactory jsonFactory = new MappingJsonFactory();
-            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("json/members2.json");
-            JsonParser parser = jsonFactory.createParser(inputStream);
+            if (parser == null) {
+                inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("json/members2.json");
+                JsonFactory jsonFactory = new MappingJsonFactory();
+                parser = jsonFactory.createParser(inputStream);
 
-            Map<String, Integer> threadLocalMap = threadLocal.get();
-            if (threadLocalMap == null) {
-                threadLocalMap = new HashMap<>();
-                threadLocalMap.put("targetRow", 1);
-            }
-            Integer targetRow = threadLocalMap.get("targetRow");
-            if (targetRow != 1) {
-                while (((UTF8StreamJsonParser) parser).getTokenLineNr() < targetRow) {
-                    if (currentJson == JsonToken.START_OBJECT) {
-                        parser.readValueAsTree();
-                        currentJson = parser.nextToken();
-                    } else {
-                        currentJson = parser.nextToken();
-                    }
-                }
-            } else {
                 currentJson = parser.nextToken();
                 if (currentJson != JsonToken.START_ARRAY) {
                     System.out.println("Error: 当前不是一个JSON数组");
@@ -75,17 +67,14 @@ public class LocalJsonUtil {
                 }
             }
 
-            List<MemberEntity> memberEntities = new ArrayList<>();
+            memberEntities = new ArrayList<>();
             while (currentJson != JsonToken.END_ARRAY) {
                 if (currentJson == JsonToken.START_OBJECT) {
                     currentJson = parser.nextToken();
                     while (currentJson != JsonToken.END_OBJECT && currentJson != JsonToken.END_ARRAY) {
-                        if (currentObjNum > 500) {
-                            threadLocalMap.put("targetRow", ((UTF8StreamJsonParser) parser).getTokenLineNr());
-                            threadLocal.set(threadLocalMap);
+                        if (currentObjNum > 1000) {
                             return memberEntities;
                         } else {
-
                             // 将记录读入树模型，
                             // 这会将解析位置移动到它的末尾
                             JsonNode node = parser.readValueAsTree();
@@ -112,6 +101,25 @@ public class LocalJsonUtil {
         } finally {
             currentObjNum = 0;
         }
+        if (memberEntities != null && memberEntities.size() > 0) {
+            return memberEntities;
+        }
         return null;
+    }
+
+    public static void clearLargerJsonData() {
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (parser != null) {
+                parser.close();
+            }
+            if (currentJson != null) {
+                currentJson = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

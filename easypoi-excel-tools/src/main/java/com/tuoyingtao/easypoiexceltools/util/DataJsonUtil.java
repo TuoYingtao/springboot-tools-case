@@ -80,7 +80,8 @@ public class DataJsonUtil {
         List<MemberVo> memberVos = new ArrayList<>();
         Integer id = 10000;
         for (int i = 0; i < num; i++) {
-            Long memberId = Long.parseLong(String.valueOf(id + 1));
+            id++;
+            Long memberId = Long.parseLong(String.valueOf(id));
             MemberVo memberVo = new MemberVo(memberId,
                     "测试" + i,
                     null,

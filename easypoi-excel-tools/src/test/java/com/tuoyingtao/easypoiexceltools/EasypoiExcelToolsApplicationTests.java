@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 class EasypoiExcelToolsApplicationTests {
@@ -28,12 +27,16 @@ class EasypoiExcelToolsApplicationTests {
     }
 
     @Test
+    void createMemberLargerData() {
+        DataJsonUtil.createMemberLargerData(1000000);
+    }
+
+    @Test
     void createLargerData() throws IOException {
         try {
             long startTime = System.currentTimeMillis();
-            ArrayList<MemberEntity> entities = new ArrayList<>();
+            List<MemberEntity> entities = new ArrayList<>();
             Boolean flag = true;
-            Integer i = 0;
             while (flag) {
                 List<MemberEntity> memberEntities = LocalJsonUtil.readLargerJsonData();
                 if (memberEntities != null) {
@@ -43,12 +46,9 @@ class EasypoiExcelToolsApplicationTests {
                 }
             }
             System.out.println("总耗时：" + (System.currentTimeMillis() - startTime));
-            System.out.println("执行完成");
+            System.out.println("执行完成：" + entities.size() + " " + entities.get(entities.size() - 1).getUsername());
         } finally {
-            ThreadLocal<Map<String, Integer>> threadLocal = LocalJsonUtil.threadLocal;
-            if (threadLocal != null) {
-                threadLocal.remove();
-            }
+            LocalJsonUtil.clearLargerJsonData();
             System.out.println("清空");
         }
 //        System.out.println(memberLargerData);
