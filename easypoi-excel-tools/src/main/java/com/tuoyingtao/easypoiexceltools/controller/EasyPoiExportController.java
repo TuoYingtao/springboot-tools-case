@@ -5,13 +5,14 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.params.ExcelExportEntity;
+import cn.afterturn.easypoi.handler.inter.IWriter;
 import cn.afterturn.easypoi.view.PoiBaseView;
-import cn.hutool.db.Page;
 import com.tuoyingtao.easypoiexceltools.entity.MemberEntity;
 import com.tuoyingtao.easypoiexceltools.entity.OrderEntity;
 import com.tuoyingtao.easypoiexceltools.handler.ExcelDataStyleHandler;
 import com.tuoyingtao.easypoiexceltools.handler.MemberExcelDataHandler;
 import com.tuoyingtao.easypoiexceltools.util.DataJsonUtil;
+import com.tuoyingtao.easypoiexceltools.util.LocalJsonUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -173,7 +174,30 @@ public class EasyPoiExportController {
 
     @ApiOperation(value = "【会员列表】导出Excel-大量数据")
     @RequestMapping(value = "exportMemberLargerData", method = RequestMethod.GET)
-    public void exportMemberLargerData() {
-        ExportParams exportParams = new ExportParams("会员列表", "会员列表");
+    public void exportMemberLargerData(HttpServletResponse response) {
+        try {
+            long startTime = System.currentTimeMillis();
+            ExportParams exportParams = new ExportParams("会员列表大数据测试", "会员列表大数据测试");
+            IWriter<Workbook> workbookIWriter = ExcelExportUtil.exportBigExcel(exportParams, MemberEntity.class);
+            Boolean flag = true;
+            while (flag) {
+                List<MemberEntity> memberEntities = LocalJsonUtil.readLargerJsonData();
+                if (memberEntities != null) {
+                    workbookIWriter.write(memberEntities);
+                } else {
+                    flag = false;
+                }
+            }
+            response.setHeader("content-Type","application/vnd.ms-excel");
+            String excelFileName = URLEncoder.encode("【会员列表】导出Excel-大量数据", String.valueOf(StandardCharsets.UTF_8)) + ".xlsx";
+            response.setHeader("Content-Disposition", "attachment;filename=" + excelFileName);
+            response.setCharacterEncoding(String.valueOf(StandardCharsets.UTF_8));
+            Workbook workbook = workbookIWriter.get();
+            workbook.write(response.getOutputStream());
+            workbook.close();
+            System.out.println("总耗时：" + (System.currentTimeMillis() - startTime));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
