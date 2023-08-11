@@ -16,6 +16,7 @@ target/
 ### IntelliJ IDEA ###
 .idea
 .mvn
+.gradle
 *.iws
 *.iml
 *.ipr
@@ -34,3 +35,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### MyProject ###
+logs/
+/design-patterns-tools/

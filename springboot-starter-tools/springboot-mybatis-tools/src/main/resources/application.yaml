@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: springboot-mybatis-tools
+  profiles:
+    active: ${spring.application.name}
+# DB 配置 数据库连接信息，本地使用 mysql 服务版本为：8.0.32
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true&autoReconnect=true&useSSL=false
+    username: root
+    password: root
+# mybatis 配置
+mybatis:
+  # 映射实体文件路径
+  type-aliases-package: com.tuoyingtao.entity
+  # 映射文件路径
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  # 配置文件路径
+  config-location: classpath:mybatis/mybatis-config.xml
+
