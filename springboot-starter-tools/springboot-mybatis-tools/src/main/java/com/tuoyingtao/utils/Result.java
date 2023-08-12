@@ -1,5 +1,8 @@
 package com.tuoyingtao.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -12,7 +15,10 @@ import java.util.Map;
  * @create 2023-04-19 11:34
  */
 public class Result extends HashMap<String, Object> implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
+	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	/** 状态码 */
 	public static final String CODE_TAG = "code";
@@ -116,6 +122,39 @@ public class Result extends HashMap<String, Object> implements Serializable {
 	 */
 	public Integer getCode() {
 		return Integer.parseInt(this.get(CODE_TAG).toString());
+	}
+
+	/**
+	 * 利用 Jackson 对当前{@link Result}对象的{@value DATA_TAG}进行反序列化为目标类型
+	 * @param typeReference {@link com.fasterxml.jackson.core.type.TypeReference} 的实例对象
+	 * @param <T> 需要转换的类型
+	 * @return 返回目标对象T
+	 */
+	public <T> T getData(TypeReference<T> typeReference) {
+		try {
+			Object data = get(DATA_TAG);
+			String jsonString = objectMapper.writeValueAsString(data);
+			return objectMapper.readValue(jsonString, typeReference);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException("Result 反序列化为目标类型异常 ->", e);
+		}
+	}
+
+	/**
+	 * 利用 Jackson 对当前{@link Result}对象中的某个Key进行反序列化为目标类型
+	 * @param key {@link String}类型的值
+	 * @param typeReference {@link com.fasterxml.jackson.core.type.TypeReference} 的实例对象
+	 * @param <T> 需要转换的类型
+	 * @return 返回目标对象T
+	 */
+	public <T> T getData(String key,TypeReference<T> typeReference) {
+		try {
+			Object data = get(key);
+			String jsonString = objectMapper.writeValueAsString(data);
+			return objectMapper.readValue(jsonString, typeReference);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException("Result 反序列化为目标类型异常 ->", e);
+		}
 	}
 
 }

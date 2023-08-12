@@ -35,4 +35,9 @@
             id = #{id}
         </where>
     </select>
+
+    <select id="selectUserList" resultType="com.tuoyingtao.entity.User">
+        SELECT <include refid="selectFields"></include>
+        FROM `t_user`
+    </select>
 </mapper>

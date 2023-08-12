@@ -1,5 +1,6 @@
 package com.tuoyingtao.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.tuoyingtao.entity.User;
 import com.tuoyingtao.service.UserService;
 import com.tuoyingtao.utils.Result;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * @author TuoYingtao
@@ -19,6 +22,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public Result userList(@RequestParam Map<String, Object> param) {
+         PageInfo<User> userList = userService.getUserList(param);
+        return Result.ok().put(userList);
+    }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public Result addUser(User user) {
