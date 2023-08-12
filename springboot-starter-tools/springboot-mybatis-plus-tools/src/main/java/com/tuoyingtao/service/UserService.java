@@ -1,7 +1,7 @@
 package com.tuoyingtao.service;
 
 import com.github.pagehelper.PageInfo;
-import com.tuoyingtao.entity.UserEntity;
+import com.tuoyingtao.entity.User;
 
 import java.util.Map;
 
@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public interface UserService {
 
-    PageInfo<UserEntity> getUserList(Map param);
+    PageInfo<User> getUserList(Map param);
 
-    Long insertUser(UserEntity userEntity);
+    Long insertUser(User user);
 
-    UserEntity getUserDetail(Long id);
+    User getUserDetail(Long id);
 }

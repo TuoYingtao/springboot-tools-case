@@ -1,7 +1,7 @@
 package com.tuoyingtao.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.tuoyingtao.entity.UserEntity;
+import com.tuoyingtao.entity.User;
 import com.tuoyingtao.service.UserService;
 import com.tuoyingtao.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +25,19 @@ public class UserController {
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public Result userList(@RequestParam Map<String, Object> param) {
-         PageInfo<UserEntity> userList = userService.getUserList(param);
+         PageInfo<User> userList = userService.getUserList(param);
         return Result.ok().put(userList);
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public Result addUser(UserEntity userEntity) {
-        Long userId = userService.insertUser(userEntity);
+    public Result addUser(User user) {
+        Long userId = userService.insertUser(user);
         return Result.ok().put("userId", userId);
     }
 
     @RequestMapping(value = "detail", method = RequestMethod.GET)
     public Result getUserDetail(@RequestParam("userId") Long userId) {
-        UserEntity userEntityDetail = userService.getUserDetail(userId);
-        return Result.ok().put(userEntityDetail);
+        User userDetail = userService.getUserDetail(userId);
+        return Result.ok().put(userDetail);
     }
 }

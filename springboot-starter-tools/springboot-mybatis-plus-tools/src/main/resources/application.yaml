@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: springboot-mybatis-tools
+  profiles:
+    active: ${spring.application.name}
+  datasource:     # DB 配置 数据库连接信息，本地使用 mysql 服务版本为：8.0.32
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true&autoReconnect=true&useSSL=false
+    username: root
+    password: root
+# mybatis 配置
+mybatis:
+  type-aliases-package: com.tuoyingtao.entity              # 映射实体文件路径
+  mapper-locations: classpath:mybatis/mapper/*.xml         # 映射文件路径
+  config-location: classpath:mybatis/mybatis-config.xml    # 配置文件路径
+pagehelper:
+  helper-dialect: mysql                  # 指定数据库
+  reasonable: false                      # 默认是false。启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages（最大页数）会查询最后一页。禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  support-methods-arguments: true        # 是否支持接口参数来传递分页参数，默认false
+  params: count=countSql                 # 为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值， 可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值， 默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero
+  row-bounds-with-count: true

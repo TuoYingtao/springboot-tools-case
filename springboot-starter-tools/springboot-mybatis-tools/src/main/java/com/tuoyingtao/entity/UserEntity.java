@@ -12,7 +12,7 @@ import java.util.Date;
  * @create 2023-08-11 16:24
  */
 @Data
-public class User implements Serializable {
+public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;

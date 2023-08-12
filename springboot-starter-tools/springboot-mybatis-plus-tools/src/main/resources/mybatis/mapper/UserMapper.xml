@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tuoyingtao.mapper.UserMapper">
-    <resultMap id="UserMap" type="com.tuoyingtao.entity.UserEntity">
+    <resultMap id="UserMap" type="com.tuoyingtao.entity.User">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="gender" column="gender" jdbcType="TINYINT"/>
@@ -23,7 +23,7 @@
         `id`, `name`, `gender`, `age`, `email`, `address`, `create_time`, `update_time`
     </sql>
 
-    <insert id="insertUser" parameterType="com.tuoyingtao.entity.UserEntity" keyProperty="id">
+    <insert id="insertUser" parameterType="com.tuoyingtao.entity.User" keyProperty="id">
         INSERT INTO `t_user` (<include refid="insertFields"></include>)
         VALUES (#{name}, #{gender}, #{age}, #{email}, #{address}, #{createTime}, #{updateTime})
     </insert>
@@ -36,7 +36,7 @@
         </where>
     </select>
 
-    <select id="selectUserList" resultType="com.tuoyingtao.entity.UserEntity">
+    <select id="selectUserList" resultType="com.tuoyingtao.entity.User">
         SELECT <include refid="selectFields"></include>
         FROM `t_user`
     </select>

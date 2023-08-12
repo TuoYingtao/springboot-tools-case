@@ -1,6 +1,6 @@
 package com.tuoyingtao.mapper;
 
-import com.tuoyingtao.entity.UserEntity;
+import com.tuoyingtao.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface UserMapper {
 
-    Long insertUser(UserEntity userEntity);
+    Long insertUser(User user);
 
-    UserEntity getUserDetail(@Param("id") Long id);
+    User getUserDetail(@Param("id") Long id);
 
-    List<UserEntity> selectUserList();
+    List<User> selectUserList();
 }

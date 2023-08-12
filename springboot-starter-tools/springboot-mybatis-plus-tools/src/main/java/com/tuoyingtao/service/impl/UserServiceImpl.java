@@ -2,7 +2,7 @@ package com.tuoyingtao.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.tuoyingtao.entity.UserEntity;
+import com.tuoyingtao.entity.User;
 import com.tuoyingtao.mapper.UserMapper;
 import com.tuoyingtao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public PageInfo<UserEntity> getUserList(Map param) {
+    public PageInfo<User> getUserList(Map param) {
         String page = String.valueOf(param.get("page"));
         String limit = String.valueOf(param.get("limit"));
         if (!StringUtils.hasText(page)) {
@@ -34,21 +34,21 @@ public class UserServiceImpl implements UserService {
             param.put("limit", 10);
         }
         PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
-        List<UserEntity> userEntityList = userMapper.selectUserList();
-        PageInfo<UserEntity> userPageInfo = PageInfo.of(userEntityList);
+        List<User> userList = userMapper.selectUserList();
+        PageInfo<User> userPageInfo = PageInfo.of(userList);
 
         return userPageInfo;
     }
 
     @Override
-    public Long insertUser(UserEntity userEntity) {
-        userEntity.setCreateTime(new Date());
-        userEntity.setUpdateTime(new Date());
-        return userMapper.insertUser(userEntity);
+    public Long insertUser(User user) {
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+        return userMapper.insertUser(user);
     }
 
     @Override
-    public UserEntity getUserDetail(Long id) {
+    public User getUserDetail(Long id) {
         return userMapper.getUserDetail(id);
     }
 }
