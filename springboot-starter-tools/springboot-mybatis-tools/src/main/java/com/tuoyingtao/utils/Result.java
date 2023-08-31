@@ -18,7 +18,7 @@ public class Result extends HashMap<String, Object> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	/** 状态码 */
 	public static final String CODE_TAG = "code";
@@ -112,6 +112,7 @@ public class Result extends HashMap<String, Object> implements Serializable {
 	 * @param value {@link Object}对象
 	 * @return 返回当前 {@link Result} 对象
 	 */
+	@Override
 	public Result put(String key, Object value) {
 		super.put(key, value);
 		return this;
@@ -133,8 +134,8 @@ public class Result extends HashMap<String, Object> implements Serializable {
 	public <T> T getData(TypeReference<T> typeReference) {
 		try {
 			Object data = get(DATA_TAG);
-			String jsonString = objectMapper.writeValueAsString(data);
-			return objectMapper.readValue(jsonString, typeReference);
+			String jsonString = OBJECT_MAPPER.writeValueAsString(data);
+			return OBJECT_MAPPER.readValue(jsonString, typeReference);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Result 反序列化为目标类型异常 ->", e);
 		}
@@ -150,8 +151,8 @@ public class Result extends HashMap<String, Object> implements Serializable {
 	public <T> T getData(String key,TypeReference<T> typeReference) {
 		try {
 			Object data = get(key);
-			String jsonString = objectMapper.writeValueAsString(data);
-			return objectMapper.readValue(jsonString, typeReference);
+			String jsonString = OBJECT_MAPPER.writeValueAsString(data);
+			return OBJECT_MAPPER.readValue(jsonString, typeReference);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Result 反序列化为目标类型异常 ->", e);
 		}
