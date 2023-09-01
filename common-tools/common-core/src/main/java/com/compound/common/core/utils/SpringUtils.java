@@ -12,14 +12,16 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * spring工具类 方便在非spring管理环境中获取bean
- * @author tuoyingtao
- * @create 2021-10-25 9:44
- */
+ * @Author: TuoYingtao
+ * @Date: 2023-09-01 14:55:52
+ * @Version: v1.0.0
+ * @Description: Spring工具类 方便在非Spring管理环境中获取bean
+*/
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringUtils.class);
-    /** spring 应用上下文环境 */
+
+    /** Spring 应用上下文环境 */
     private static ConfigurableListableBeanFactory beanFactory;
 
     private static ApplicationContext applicationContext;
@@ -27,14 +29,14 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
-        LOGGER.info("自定义BeanFactoryPostProcessor查看已注册的beanDef，共计：{}",beanDefinitionNames.length);
+        LOGGER.info("自定义BeanFactoryPostProcessor查看已注册的beanDef，共计：{}", beanDefinitionNames.length);
         SpringUtils.beanFactory = beanFactory;
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-        LOGGER.info("自定义ApplicationContextAware查看已注册的beanDef，共计：{}",beanDefinitionNames.length);
+        LOGGER.info("自定义ApplicationContextAware查看已注册的beanDef，共计：{}", beanDefinitionNames.length);
         SpringUtils.applicationContext = applicationContext;
     }
 

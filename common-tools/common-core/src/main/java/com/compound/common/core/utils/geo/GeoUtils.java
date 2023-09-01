@@ -1,11 +1,12 @@
-package com.compound.common.core.utils;
+package com.compound.common.core.utils.geo;
 
 /**
- * 其它工具类
- * @author TuoYingtao
- * @create 2023-06-17 10:19
+ * @Author: TuoYingtao
+ * @Date: 2023-09-01 16:09
+ * @Version: v1.0.0
+ * @Description: 经纬度计算工具
  */
-public class CommonUtils {
+public class GeoUtils {
 
     /**
      * 地球半径，单位为千米

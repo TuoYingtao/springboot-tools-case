@@ -3,13 +3,20 @@ package com.compound.common.core.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
- * 线程相关工具类.
- */
-public class Threads {
-    private static final Logger logger = LoggerFactory.getLogger(Threads.class);
+ * @Author: TuoYingtao
+ * @Date: 2023-09-01 16:07:36
+ * @Version: v1.0.0
+ * @Description: 线程相关工具类
+*/
+public class ThreadUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ThreadUtils.class);
 
     /**
      * sleep等待,单位为毫秒
