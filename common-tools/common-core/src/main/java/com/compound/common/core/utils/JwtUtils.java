@@ -1,142 +1,192 @@
 package com.compound.common.core.utils;
 
+import com.compound.common.core.constant.SecurityConstants;
+import com.compound.common.core.constant.TokenConstants;
+import com.compound.common.core.text.Convert;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * JWT 工具类
- * @author tuoyingtao
- * @create 2021-10-18 11:03
- */
-@Component
-@ConfigurationProperties(prefix = "jwt")
+ * @Author: TuoYingtao
+ * @Date: 2023-09-01 16:07:23
+ * @Version: v1.0.0
+ * @Description: JWT 工具类
+*/
 public class JwtUtils {
 
     /** JWT加解密使用的密钥 */
-    private String secret;
+    public static String secret = TokenConstants.SECRET;
 
     /** JWT的超期限时间 */
-    private Long expiration;
-
-    /** JWT 客户端名称 */
-    private String clientHeader;
-
-    /** JWT 管理系统名称 */
-    private String systemHeader;
+    public static Long expiration = TokenConstants.EXPIRATION;
 
     /**
-     * 创建Token
-     * @param username 主题信息 可以是用户名或是 JSON 对象
-     * @return
+     * 从数据声明生成令牌
+     * @param claims 身份信息
+     * @return Token 令牌
      */
-    public String generateToken(String username) {
-        return generateToken(username,null);
+    public static String generateToken(Claims claims) {
+        JwtBuilder jwtBuilder = getJwtBuilder(null).setClaims(claims);
+        return generateToken(jwtBuilder);
     }
 
-    public String generateToken(String username, Claims claims) {
-        if (StringUtils.isEmpty(username)) throw new RuntimeException("主题名不能为空");
-        if (StringUtils.isNull(expiration)) throw new RuntimeException("过期时间不能为空");
-        if (StringUtils.isEmpty(secret)) throw new RuntimeException("密钥不能为空");
-        JwtBuilder jwtBuilder = Jwts.builder();
-        jwtBuilder.setHeaderParam("typ", "JWT")
-                .setClaims(claims)
+    /**
+     * 从数据声明生成令牌
+     * @param claims 身份信息
+     * @return Token 令牌
+     */
+    public static String generateToken(Map<String, Object> claims) {
+        JwtBuilder jwtBuilder = getJwtBuilder(null).setClaims(claims);
+        return generateToken(jwtBuilder);
+    }
+
+    /**
+     * 从数据声明生成令牌
+     * @param subject 主题信息
+     * @param claims 身份信息
+     * @return Token 令牌
+     */
+    public static String generateToken(String subject, Claims claims) {
+        JwtBuilder jwtBuilder = getJwtBuilder(subject).setClaims(claims);
+        return generateToken(jwtBuilder);
+    }
+
+    /**
+     * 从数据声明生成令牌
+     * @param subject 主题信息
+     * @param claims 身份信息
+     * @return Token 令牌
+     */
+    public static String generateToken(String subject, Map<String, Object> claims) {
+        JwtBuilder jwtBuilder = getJwtBuilder(subject).setClaims(claims);
+        return generateToken(jwtBuilder);
+    }
+
+    private static JwtBuilder getJwtBuilder(String subject) {
+        return Jwts.builder().setSubject(subject);
+    }
+
+    private static String generateToken(JwtBuilder jwtBuilder) {
+        return jwtBuilder.setHeaderParam("typ", "JWT")
                 .setId(UUID.randomUUID().toString())
-                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret);
-        return jwtBuilder.compact();
-
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
     }
 
-    /** 解析 Token 获取信息体 */
-    public Claims tokenParser(String token) {
-        if (StringUtils.isEmpty(token)) throw new RuntimeException("token参数不能为空");
-        if (StringUtils.isEmpty(secret)) throw new RuntimeException("密钥不能为空");
-        Claims body = null;
-        try {
-            body = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            throw e;
-        }
-        return body;
+    /** 从令牌中获取数据声明 */
+    public static Claims parserToken(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
-    /** 从Token中获取用户名 */
-    public String getUserNameFromToken(String token) {
-        return tokenParser(token).getSubject();
+    /** 从令牌中获取主题信息 */
+    public static String getSubject(String token) {
+        return parserToken(token).getSubject();
     }
 
-    /** 获取Token主题中的信息 */
-    public Object getTokenBody(String key, String token) {
-        return tokenParser(token).get(key);
+    /** 根据身份信息获取键值 */
+    public static Object getBody(String key, String token) {
+        Claims claims = parserToken(token);
+        return claims.get(key);
     }
 
     /**
-     * 验证Token是否过期
-     * @param token 用户请求中的令牌
+     * 根据令牌获取用户标识
+     * @param token token 令牌
+     * @return 用户标识
+     */
+    public static String getUserKey(String token) {
+        Claims claims = parserToken(token);
+        return getValue(claims, SecurityConstants.USER_KEY);
+    }
+
+    /**
+     * 根据令牌获取用户标识
+     * @param claims 身份信息
+     * @return 用户标识
+     */
+    public static String getUserKey(Claims claims) {
+        return getValue(claims, SecurityConstants.USER_KEY);
+    }
+
+    /**
+     * 根据令牌获取用户ID
+     * @param token token 令牌
+     * @return 用户ID
+     */
+    public static String getUserId(String token) {
+        Claims claims = parserToken(token);
+        return getValue(claims, SecurityConstants.DETAILS_USER_ID);
+    }
+
+    /**
+     * 根据令牌获取用户ID
+     * @param claims 身份信息
+     * @return 用户ID
+     */
+    public static String getUserId(Claims claims) {
+        return getValue(claims, SecurityConstants.DETAILS_USER_ID);
+    }
+
+    /**
+     * 根据令牌获取用户名
+     * @param token token 令牌
+     * @return 用户名
+     */
+    public static String getUserName(String token) {
+        Claims claims = parserToken(token);
+        return getValue(claims, SecurityConstants.DETAILS_USERNAME);
+    }
+
+    /**
+     * 根据令牌获取用户名
+     * @param claims 身份信息
+     * @return 用户名
+     */
+    public static String getUserName(Claims claims) {
+        return getValue(claims, SecurityConstants.DETAILS_USERNAME);
+    }
+
+    /**
+     * 根据身份信息获取键值
+     * @param claims 身份信息
+     * @param key 键
+     * @return 值
+     */
+    public static String getValue(Claims claims, String key) {
+        return Convert.toStr(claims.get(key), "");
+    }
+
+    /**
+     * 验证令牌是否过期
+     * @param token token 令牌
      * @return true：过期了 false：没有过期
      */
-    public boolean isExpiration(String token) {
-        return tokenParser(token).getExpiration().before(new Date());
+    public static boolean isExpiration(String token) {
+        return parserToken(token).getExpiration().before(new Date());
     }
 
     /**
-     * 验证 Token 是否失效
+     * 验证令牌是否失效
      * @param currentToken 用户请求中的令牌
      * @param cacheToken 缓存中存贮的令牌
-     * @return 验证 Token 唯一ID（jit）false-同一个凭证 true-不是同一个凭证
+     * @return 验证令牌唯一ID（jit）true：不是同一个凭证 false：同一个凭证
      */
-    public boolean isExpiration(String currentToken, String cacheToken) {
-        Claims currentBody = tokenParser(currentToken);
-        Claims cacheBody = tokenParser(cacheToken);
-        String currentTokenID = currentBody.get(Claims.ID).toString();
-        String cacheTokenID = cacheBody.get(Claims.ID).toString();
-        if (!currentTokenID.equals(cacheTokenID)) {
+    public static boolean isExpiration(String currentToken, String cacheToken) {
+        Claims currentClaims = parserToken(currentToken);
+        Claims cacheClaims = parserToken(cacheToken);
+        String currentTokenId = Convert.toStr(currentClaims.get(Claims.ID), "");
+        String cacheTokenId = Convert.toStr(cacheClaims.get(Claims.ID), "");
+        if (!currentTokenId.equals(cacheTokenId)) {
             return true;
         }
         return false;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public Long getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(Long expiration) {
-        this.expiration = expiration;
-    }
-
-    public String getClientHeader() {
-        return clientHeader;
-    }
-
-    public void setClientHeader(String clientHeader) {
-        this.clientHeader = clientHeader;
-    }
-
-    public String getSystemHeader() {
-        return systemHeader;
-    }
-
-    public void setSystemHeader(String systemHeader) {
-        this.systemHeader = systemHeader;
     }
 }

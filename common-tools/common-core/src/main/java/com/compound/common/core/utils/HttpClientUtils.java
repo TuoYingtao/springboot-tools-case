@@ -15,7 +15,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -30,10 +35,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Http请求工具类
- * @author TuoYingtao
- * @create 2023-04-28 11:21
- */
+ * @Author: TuoYingtao
+ * @Date: 2023-09-01 16:06:46
+ * @Version: v1.0.0
+ * @Description: Http请求客户端工具类
+*/
 public class HttpClientUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
 

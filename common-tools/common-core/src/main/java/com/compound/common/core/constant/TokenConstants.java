@@ -9,6 +9,11 @@ package com.compound.common.core.constant;
 public class TokenConstants {
 
     /**
+     * 令牌的超期限时间(60*60*24*1) 1天
+     */
+    public final static Long EXPIRATION = 86400L;
+
+    /**
      * 令牌自定义标识
      */
     public static final String AUTHENTICATION = "Authorization";

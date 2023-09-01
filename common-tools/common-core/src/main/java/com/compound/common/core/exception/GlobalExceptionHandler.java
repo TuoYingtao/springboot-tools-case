@@ -1,6 +1,7 @@
 package com.compound.common.core.exception;
 
 import com.compound.common.core.constant.HttpStatus;
+import com.compound.common.core.domain.Result;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,62 +39,62 @@ public class GlobalExceptionHandler {
      * 权限校验异常
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public R handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
+    public Result handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
-        return R.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+        return Result.fail(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
     }
 
     /**
      * Token异常
      */
     @ExceptionHandler(JwtException.class)
-    public R handleJwtException(JwtException e,HttpServletRequest request) {
+    public Result handleJwtException(JwtException e,HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',认证失败'{}'", requestURI, e.getMessage());
-        return R.error(HttpStatus.UNAUTHORIZED, e.getMessage());
+        return Result.fail(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     /**
      * 请求方式不支持
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public R handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+    public Result handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
-        return R.error(HttpStatus.BAD_METHOD,"不支持" + e.getMessage() + "请求");
+        return Result.fail(HttpStatus.BAD_METHOD,"不支持" + e.getMessage() + "请求");
     }
 
     /**
      * 业务异常
      */
     @ExceptionHandler(ServiceException.class)
-    public R handleServiceException(ServiceException e, HttpServletRequest request) {
+    public Result handleServiceException(ServiceException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',业务异常'{}'",requestURI, e.getMessage(), e);
         Integer code = e.getCode();
-        return code == null ? R.error(e.getMessage()) : R.error(code, e.getMessage());
+        return code == null ? Result.fail(e.getMessage()) : Result.fail(code, e.getMessage());
     }
 
     /**
      * 断言-业务异常
      */
     @ExceptionHandler(BusinessException.class)
-    public R handlerBusinessException(BusinessException e, HttpServletRequest request) {
+    public Result handlerBusinessException(BusinessException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         Throwable cause = e.getCause() == null ? e : e.getCause();
         LOGGER.error("请求地址'{}',业务异常'{}'\r\n", requestURI, e.getMessage(), cause);
-        return R.error(e.getResponseEnum().getCode(), e.getMessage());
+        return Result.fail(e.getResponseEnum().getCode(), e.getMessage());
     }
 
     /**
      * 缺少所需的请求体异常处理
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public R handlerHttpMessageNotReadableException(HttpMessageNotReadableException e,HttpServletRequest request) {
+    public Result handlerHttpMessageNotReadableException(HttpMessageNotReadableException e,HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',缺少所需的请求体",requestURI,e.getMessage(),e);
-        return R.error(HttpStatus.BAD_REQUEST,"缺少所需的请求体");
+        return Result.fail(HttpStatus.BAD_REQUEST,"缺少所需的请求体");
     }
 
     /**
@@ -104,14 +105,14 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',校验异常'{}'",requestURI, e.getMessage(), e);
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        return R.error(HttpStatus.BAD_REQUEST,message);
+        return Result.fail(HttpStatus.BAD_REQUEST,message);
     }
 
     /**
      * 校验异常：表单提交有效，对于以json格式提交将会失效
      */
     @ExceptionHandler(BindException.class)
-    public R handleBindException(BindException e,HttpServletRequest request) {
+    public Result handleBindException(BindException e,HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',校验异常'{}'",requestURI,e.getMessage(), e);
         String message = "";
@@ -119,26 +120,26 @@ public class GlobalExceptionHandler {
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             message += fieldError.getField() + "：" + fieldError.getDefaultMessage() + "!";
         }
-        return R.error(HttpStatus.BAD_REQUEST,message);
+        return Result.fail(HttpStatus.BAD_REQUEST,message);
     }
 
     /**
      * 缺少所需的请求参数异常处理
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public R handlerMissingParameter(MissingServletRequestParameterException e, HttpServletRequest request) {
+    public Result handlerMissingParameter(MissingServletRequestParameterException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',缺少所需的请求参数'{}'", requestURI, e.getMessage(), e);
         String parameterName = e.getParameterName();
         String message = new StringBuilder().append("缺少所需的请求参数:").append(parameterName).toString();
-        return R.error(HttpStatus.BAD_REQUEST, message);
+        return Result.fail(HttpStatus.BAD_REQUEST, message);
     }
 
     /**
      * 校验异常：参数上加@RequestParam或参数加@NotBlank @NotNull等
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public R ConstraintViolationExceptionHandler(ConstraintViolationException e,HttpServletRequest request) {
+    public Result ConstraintViolationExceptionHandler(ConstraintViolationException e,HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         Iterator<ConstraintViolation<?>> iterator = constraintViolations.iterator();
@@ -148,36 +149,36 @@ public class GlobalExceptionHandler {
             msgList.add(cvl.getMessageTemplate());
         }
         LOGGER.error("请求地址'{}',校验异常'{}'", requestURI, e.getMessage(), e);
-        return R.error(HttpStatus.BAD_REQUEST,String.join(",",msgList));
+        return Result.fail(HttpStatus.BAD_REQUEST,String.join(",",msgList));
     }
 
     /**
      * SQL异常
      */
     @ExceptionHandler(SQLException.class)
-    public R handleSQLException(SQLException e, HttpServletRequest request) {
+    public Result handleSQLException(SQLException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}'，发生SQL异常",requestURI,e);
-        return R.error(HttpStatus.ERROR,e.getMessage());
+        return Result.fail(HttpStatus.ERROR,e.getMessage());
     }
 
     /**
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(RuntimeException.class)
-    public R handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+    public Result handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return R.error(e.getMessage());
+        return Result.fail(e.getMessage());
     }
 
     /**
      * 系统异常
      */
     @ExceptionHandler(Exception.class)
-    public R handleException(Exception e, HttpServletRequest request) {
+    public Result handleException(Exception e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',发生系统异常.", requestURI, e);
-        return R.error(e.getMessage());
+        return Result.fail(e.getMessage());
     }
 }
