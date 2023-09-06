@@ -6,10 +6,11 @@ import com.compound.common.core.utils.StringUtils;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 序列生成类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:02
  * @Version: v1.0.0
- * @Description: 序列生成类
  */
 public class Seq {
 

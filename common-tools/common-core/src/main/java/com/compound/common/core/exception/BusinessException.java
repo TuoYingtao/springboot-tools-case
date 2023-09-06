@@ -3,10 +3,11 @@ package com.compound.common.core.exception;
 import com.compound.common.core.enums.IResponseEnum;
 
 /**
+ * 断言-业务异常
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 16:29:18
  * @Version: v1.0.0
- * @Description: 断言-业务异常
 */
 public class BusinessException extends BaseException {
     private static final long serialVersionUID = 1L;

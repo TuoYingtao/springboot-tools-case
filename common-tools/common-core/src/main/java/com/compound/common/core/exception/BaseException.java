@@ -3,10 +3,11 @@ package com.compound.common.core.exception;
 import java.io.Serializable;
 
 /**
+ * 异常基类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 16:15:58
  * @Version: v1.0.0
- * @Description: 异常基类
 */
 public class BaseException extends RuntimeException implements Serializable {
     private static final long serialVersionUID = 1L;

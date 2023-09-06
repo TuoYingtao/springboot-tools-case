@@ -6,10 +6,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
+ * 错误信息处理类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 12:03
  * @Version: v1.0.0
- * @Description: 错误信息处理类
  */
 public class ExceptionUtil {
 

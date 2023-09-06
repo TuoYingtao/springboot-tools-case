@@ -1,10 +1,11 @@
 package com.compound.common.core.utils.file;
 
 /**
+ * 媒体类型工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:52
  * @Version: v1.0.0
- * @Description: 媒体类型工具类
  */
 public class MimeTypeUtils {
 

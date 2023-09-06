@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * 通用常量信息
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 14:45:02
  * @Version: v1.0.0
- * @Description: 通用常量信息
 */
 public class Constants {
 

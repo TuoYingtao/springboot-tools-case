@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * Token的Key常量
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:14
  * @Version: v1.0.0
- * @Description: Token的Key常量
  */
 public class TokenConstants {
 

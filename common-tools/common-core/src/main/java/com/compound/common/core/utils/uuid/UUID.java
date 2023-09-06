@@ -10,10 +10,11 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * 提供通用唯一识别码（universally unique identifier）（UUID）实现
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:08
  * @Version: v1.0.0
- * @Description: 提供通用唯一识别码（universally unique identifier）（UUID）实现
  */
 public class UUID implements Serializable, Comparable<UUID> {
     private static final long serialVersionUID = -1185015143654744140L;

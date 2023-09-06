@@ -9,10 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 
 /**
+ * 响应信息主体
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:36
  * @Version: v1.0.0
- * @Description: 响应信息主体
  */
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;

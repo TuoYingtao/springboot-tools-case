@@ -4,10 +4,11 @@ import com.compound.common.core.exception.UtilException;
 import com.compound.common.core.utils.StringUtils;
 
 /**
+ * sql操作工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:12
  * @Version: v1.0.0
- * @Description: sql操作工具类
  */
 public class SqlUtil {
 

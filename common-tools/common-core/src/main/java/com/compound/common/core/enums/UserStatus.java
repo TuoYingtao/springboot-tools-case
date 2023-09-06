@@ -1,10 +1,11 @@
 package com.compound.common.core.enums;
 
 /**
+ * 用户状态枚举
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:56
  * @Version: v1.0.0
- * @Description: 用户状态枚举
  */
 public enum UserStatus {
     /** 状态值, 描述 */

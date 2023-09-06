@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * 任务调度通用常量
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:12
  * @Version: v1.0.0
- * @Description: 任务调度通用常量
  */
 public class ScheduleConstants {
 

@@ -8,10 +8,11 @@ import java.io.File;
 import java.util.Objects;
 
 /**
+ * 文件类型工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:38
  * @Version: v1.0.0
- * @Description: 文件类型工具类
  */
 public class FileTypeUtils {
 

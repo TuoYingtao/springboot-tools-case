@@ -11,10 +11,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * HTML过滤器，用于去除XSS漏洞隐患。
+ *
+ * HTML filtering utility for protecting against XSS (Cross Site Scripting).
+ *
+ * This code is licensed LGPLv3
+ *
+ * This code is a Java port of the original work in PHP by Cal Hendersen.
+ * http://code.iamcal.com/php/lib_filter/
+ *
+ * The trickiest part of the translation was handling the differences in regex handling
+ * between PHP and Java.  These resources were helpful in the process:
+ *
+ * http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html
+ * http://us2.php.net/manual/en/reference.pcre.pattern.modifiers.php
+ * http://www.regular-expressions.info/modifiers.html
+ *
+ * A note on naming conventions: instance variables are prefixed with a "v"; global
+ * constants are in all caps.
+ *
+ * Sample use:
+ * String input = ...
+ * String clean = new HTMLFilter().filter( input );
+ *
+ * The class is not thread safe. Create a new instance if in doubt.
+ *
+ * If you find bugs or have suggestions on improvement (especially regarding
+ * performance), please contact us.  The latest version of this
+ * source, and our contact details, can be found at http://xss-html-filter.sf.net
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:29
  * @Version: v1.0.0
- * @Description: HTML过滤器，用于去除XSS漏洞隐患。
  */
 public class HTMLFilter {
 

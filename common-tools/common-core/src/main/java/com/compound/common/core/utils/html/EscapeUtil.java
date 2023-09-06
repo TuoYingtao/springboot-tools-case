@@ -3,10 +3,11 @@ package com.compound.common.core.utils.html;
 import com.compound.common.core.utils.StringUtils;
 
 /**
+ * 转义和反转义工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:26
  * @Version: v1.0.0
- * @Description: 转义和反转义工具类
  */
 public class EscapeUtil {
 

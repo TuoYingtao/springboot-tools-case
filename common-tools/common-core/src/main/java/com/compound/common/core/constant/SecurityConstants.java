@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * 权限相关通用常量
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:13
  * @Version: v1.0.0
- * @Description: 权限相关通用常量
  */
 public class SecurityConstants {
 
