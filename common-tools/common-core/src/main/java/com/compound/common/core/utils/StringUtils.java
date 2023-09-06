@@ -8,10 +8,11 @@ import org.springframework.util.AntPathMatcher;
 import java.util.*;
 
 /**
+ * 字符串工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 13:35:39
  * @Version: v1.0.0
- * @Description: 字符串工具类
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**

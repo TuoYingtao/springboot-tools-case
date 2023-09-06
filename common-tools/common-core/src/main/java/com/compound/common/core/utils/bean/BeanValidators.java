@@ -6,10 +6,11 @@ import javax.validation.Validator;
 import java.util.Set;
 
 /**
+ * bean对象属性验证
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 16:00
  * @Version: v1.0.0
- * @Description: bean对象属性验证
  */
 public class BeanValidators {
 

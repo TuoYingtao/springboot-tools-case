@@ -11,10 +11,11 @@ import java.net.URLConnection;
 import java.util.Arrays;
 
 /**
+ * 图片处理工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:55
  * @Version: v1.0.0
- * @Description: 图片处理工具类
  */
 public class ImageUtils {
     private static final Logger log = LoggerFactory.getLogger(ImageUtils.class);

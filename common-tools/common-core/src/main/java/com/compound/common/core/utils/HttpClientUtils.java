@@ -35,10 +35,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Http请求客户端工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 16:06:46
  * @Version: v1.0.0
- * @Description: Http请求客户端工具类
 */
 public class HttpClientUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);

@@ -1,10 +1,11 @@
 package com.compound.common.core.exception;
 
 /**
+ * 工具类异常
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 16:18
  * @Version: v1.0.0
- * @Description: 工具类异常
  */
 public class UtilException extends BaseException {
     private static final long serialVersionUID = 8247685219171014183L;

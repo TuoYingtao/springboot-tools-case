@@ -1,10 +1,11 @@
 package com.compound.common.core.utils.uuid;
 
 /**
+ * ID生成器工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:00
  * @Version: v1.0.0
- * @Description: ID生成器工具类
  */
 public class IdUtils {
 

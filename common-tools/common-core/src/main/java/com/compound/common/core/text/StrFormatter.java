@@ -3,10 +3,11 @@ package com.compound.common.core.text;
 import com.compound.common.core.utils.StringUtils;
 
 /**
+ * 字符串格式化
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 17:38
  * @Version: v1.0.0
- * @Description: 字符串格式化
  */
 public class StrFormatter {
 

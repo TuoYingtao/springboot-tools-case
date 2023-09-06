@@ -1,10 +1,11 @@
 package com.compound.common.core.utils.sign;
 
 /**
+ * Base64工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:14
  * @Version: v1.0.0
- * @Description: Base64工具类
  */
 public class Base64 {
 

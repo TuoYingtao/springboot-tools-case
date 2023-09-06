@@ -7,10 +7,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Bean 工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:59
  * @Version: v1.0.0
- * @Description: Bean 工具类
  */
 public class BeanUtils extends org.springframework.beans.BeanUtils {
 

@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * 缓存常量信息
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:06
  * @Version: v1.0.0
- * @Description: 缓存常量信息
  */
 public class CacheConstants {
 

@@ -13,10 +13,11 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
+ * JWT 工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 16:07:23
  * @Version: v1.0.0
- * @Description: JWT 工具类
 */
 public class JwtUtils {
 

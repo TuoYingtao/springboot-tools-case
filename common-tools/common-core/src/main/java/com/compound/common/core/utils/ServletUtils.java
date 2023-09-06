@@ -30,10 +30,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 客户端工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 12:08:58
  * @Version: v1.0.0
- * @Description: 客户端工具类
  */
 public class ServletUtils {
 

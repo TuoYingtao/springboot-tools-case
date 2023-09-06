@@ -26,10 +26,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 全局异常处理器
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 16:01:17
  * @Version: v1.0.0
- * @Description: 全局异常处理器
 */
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -10,10 +10,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 线程相关工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 16:07:36
  * @Version: v1.0.0
- * @Description: 线程相关工具类
 */
 public class ThreadUtils {
     private static final Logger logger = LoggerFactory.getLogger(ThreadUtils.class);

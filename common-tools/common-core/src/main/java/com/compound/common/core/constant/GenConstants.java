@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * 代码生成通用常量
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:08
  * @Version: v1.0.0
- * @Description: 代码生成通用常量
  */
 public class GenConstants {
 

@@ -11,10 +11,11 @@ import java.lang.reflect.*;
 import java.util.Date;
 
 /**
+ * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:15
  * @Version: v1.0.0
- * @Description: 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
  */
 @SuppressWarnings("rawtypes")
 public class ReflectUtils {

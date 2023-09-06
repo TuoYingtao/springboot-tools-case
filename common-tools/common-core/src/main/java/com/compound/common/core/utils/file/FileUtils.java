@@ -15,10 +15,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 文件处理工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 15:53
  * @Version: v1.0.0
- * @Description: 文件处理工具类
  */
 public class FileUtils {
 

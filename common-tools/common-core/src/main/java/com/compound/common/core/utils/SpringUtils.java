@@ -12,10 +12,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
+ * Spring工具类 方便在非Spring管理环境中获取bean
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 14:55:52
  * @Version: v1.0.0
- * @Description: Spring工具类 方便在非Spring管理环境中获取bean
 */
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {

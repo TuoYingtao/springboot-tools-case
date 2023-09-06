@@ -1,10 +1,11 @@
 package com.compound.common.core.utils.geo;
 
 /**
+ * 经纬度计算工具
+ *
  * @Author: TuoYingtao
  * @Date: 2023-09-01 16:09
  * @Version: v1.0.0
- * @Description: 经纬度计算工具
  */
 public class GeoUtils {
 

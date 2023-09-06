@@ -1,10 +1,11 @@
 package com.compound.common.core.constant;
 
 /**
+ * 返回状态码
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 15:10:26
  * @Version: v1.0.0
- * @Description: 返回状态码
 */
 public class HttpStatus
 {

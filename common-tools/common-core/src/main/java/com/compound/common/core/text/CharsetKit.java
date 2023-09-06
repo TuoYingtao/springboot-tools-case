@@ -6,10 +6,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 字符集工具类
+ *
  * @Author: TuoYingtao
  * @Date: 2023-08-31 17:37
  * @Version: v1.0.0
- * @Description: 字符集工具类
  */
 public class CharsetKit {
 
