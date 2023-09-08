@@ -20,13 +20,17 @@
         <maven.compiler.target>8</maven.compiler.target>
         <java.version>1.8</java.version>
         <spring-boot.version>2.7.15</spring-boot.version>
+        <redis.version>2.6.4</redis.version>
+        <jedis.version>3.8.0</jedis.version>
         <lombok.version>1.18.28</lombok.version>
         <jjwt.version>0.9.1</jjwt.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-io.version>2.11.0</commons-io.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
         <javax-servlet-api.version>4.0.1</javax-servlet-api.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <httpclient.version>4.5.14</httpclient.version>
+        <fastjson2.version>2.0.37</fastjson2.version>
         <transmittable-thread-local.version>2.14.3</transmittable-thread-local.version>
         <reactor-core.version>3.5.4</reactor-core.version>
         <hutool-all.version>5.8.16</hutool-all.version>
@@ -50,11 +54,32 @@
                 <version>${spring-boot.version}</version>
             </dependency>
 
+            <!-- SpringBoot Starter Redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
+            <!-- Redis 的 jedis 客户端 默认使用的 lettuce -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
             <!-- jjwt -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
+            </dependency>
+
+            <!-- Commons IO -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
 
             <!-- Commons Lang3 -->
@@ -64,11 +89,18 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
-            <!-- Commons IO -->
+            <!-- Commons Pool2 线程池依赖包 -->
             <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <!-- Httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
             </dependency>
 
             <!-- Javax Servlet-Api -->
@@ -85,18 +117,18 @@
                 <version>${jaxb-api.version}</version>
             </dependency>
 
-            <!-- Httpclient -->
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
-
             <!-- Transmittable Thread Local -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>transmittable-thread-local</artifactId>
                 <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <!-- FastJson2 序列化依赖 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
             <!-- Reactor Core -->
