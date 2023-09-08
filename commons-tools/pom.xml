@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tuoyingtao.commons</groupId>
+    <artifactId>commons-tools</artifactId>
+    <version>1.0.0</version>
+    <name>commons-tools</name>
+    <description>通用模块</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>commons-core</module>
+        <module>commons-redis</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <spring-boot.version>2.7.15</spring-boot.version>
+        <redis.version>2.6.4</redis.version>
+        <jedis.version>3.8.0</jedis.version>
+        <lombok.version>1.18.28</lombok.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
+        <javax-servlet-api.version>4.0.1</javax-servlet-api.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <fastjson2.version>2.0.37</fastjson2.version>
+        <transmittable-thread-local.version>2.14.3</transmittable-thread-local.version>
+        <reactor-core.version>3.5.4</reactor-core.version>
+        <hutool-all.version>5.8.16</hutool-all.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringBoot Dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- SpringBoot Starter Validation -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- SpringBoot Starter Redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
+            <!-- Redis 的 jedis 客户端 默认使用的 lettuce -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- jjwt -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <!-- Commons IO -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <!-- Commons Lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- Commons Pool2 线程池依赖包 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <!-- Httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <!-- Javax Servlet-Api -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax-servlet-api.version}</version>
+            </dependency>
+
+            <!-- Jaxb-Api -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
+
+            <!-- Transmittable Thread Local -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <!-- FastJson2 序列化依赖 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+
+            <!-- Reactor Core -->
+            <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-core</artifactId>
+                <version>${reactor-core.version}</version>
+            </dependency>
+
+            <!-- Lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- Hutool All -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

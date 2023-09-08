@@ -19,20 +19,20 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.tuoyingtao.common</groupId>
-            <artifactId>common-tools</artifactId>
+            <groupId>com.tuoyingtao.commons</groupId>
+            <artifactId>commons-tools</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.tuoyingtao.common.core</groupId>
-            <artifactId>common-core</artifactId>
+            <groupId>com.tuoyingtao.commons.core</groupId>
+            <artifactId>commons-core</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.compound.common.redis</groupId>
-            <artifactId>common-redis</artifactId>
+            <groupId>com.compound.commons.redis</groupId>
+            <artifactId>commons-redis</artifactId>
             <version>1.0.0</version>
         </dependency>
 
