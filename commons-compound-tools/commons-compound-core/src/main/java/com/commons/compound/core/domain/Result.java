@@ -1,10 +1,8 @@
 package com.commons.compound.core.domain;
 
 import com.commons.compound.core.constant.Constants;
-import com.commons.compound.core.exception.UtilException;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.commons.compound.core.utils.json.JacksonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
 
@@ -17,8 +15,6 @@ import java.io.Serializable;
  */
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /** 成功 */
     public static final int SUCCESS = Constants.SUCCESS;
@@ -87,12 +83,8 @@ public class Result<T> implements Serializable {
      * 对obj进行反序列化为目标类型
      */
     public static  <T> T getConvertDate(Object obj, TypeReference<T> typeReference) {
-        try {
-            String jsonStr = OBJECT_MAPPER.writeValueAsString(obj);
-            return OBJECT_MAPPER.readValue(jsonStr, typeReference);
-        } catch (JsonProcessingException e) {
-            throw new UtilException(e.getMessage(), e);
-        }
+        String jsonStr = JacksonUtils.beanToJson(obj);
+        return JacksonUtils.jsonToList(jsonStr, typeReference);
     }
 
     public int getCode() {

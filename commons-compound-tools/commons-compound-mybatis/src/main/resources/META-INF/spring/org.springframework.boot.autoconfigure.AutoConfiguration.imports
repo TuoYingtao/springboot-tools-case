@@ -1,0 +1,2 @@
+com.commons.compound.mybatis.config.MybatisPlusConfig
+com.commons.compound.mybatis.config.MyMetaObjectHandler
