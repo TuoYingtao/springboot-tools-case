@@ -17,22 +17,15 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
-
         <dependency>
-            <groupId>com.tuoyingtao.commons</groupId>
-            <artifactId>commons-tools</artifactId>
+            <groupId>com.commons.compound.core</groupId>
+            <artifactId>commons-compound-core</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.tuoyingtao.commons.core</groupId>
-            <artifactId>commons-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.compound.commons.redis</groupId>
-            <artifactId>commons-redis</artifactId>
+            <groupId>com.commons.compound.redis</groupId>
+            <artifactId>commons-compound-redis</artifactId>
             <version>1.0.0</version>
         </dependency>
 
