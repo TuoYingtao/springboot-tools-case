@@ -57,6 +57,12 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>${pagehelper.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.commons.compound.log</groupId>
+            <artifactId>commons-compound-log</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

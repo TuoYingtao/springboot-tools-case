@@ -14,6 +14,7 @@
         <module>commons-compound-core</module>
         <module>commons-compound-redis</module>
         <module>commons-compound-mybatis</module>
+        <module>commons-compound-log</module>
     </modules>
 
     <properties>
