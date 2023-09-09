@@ -1,4 +1,0 @@
-com.compound.commons.core.config.ValidatorConfig
-com.compound.commons.core.config.CustomThreadPoolConfig
-com.compound.commons.core.utils.SpringUtils
-com.compound.commons.core.exception.GlobalExceptionHandler
