@@ -13,6 +13,7 @@
     <modules>
         <module>commons-compound-core</module>
         <module>commons-compound-redis</module>
+        <module>commons-compound-mybatis</module>
     </modules>
 
     <properties>
@@ -21,6 +22,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <java.version>1.8</java.version>
         <spring-boot.version>2.7.15</spring-boot.version>
+        <mybatis-plus.version>3.4.3.1</mybatis-plus.version>
         <redis.version>2.6.4</redis.version>
         <jedis.version>3.8.0</jedis.version>
         <lombok.version>1.18.28</lombok.version>
@@ -53,6 +55,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- MybatisPlus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <!-- SpringBoot Starter Redis -->

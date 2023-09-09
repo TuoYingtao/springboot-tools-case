@@ -3,8 +3,7 @@ package com.commons.compound.core.utils;
 import com.commons.compound.core.constant.Constants;
 import com.commons.compound.core.domain.Result;
 import com.commons.compound.core.text.Convert;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.commons.compound.core.utils.json.JacksonUtils;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -37,8 +37,6 @@ import java.util.Map;
  * @Version: v1.0.0
  */
 public class ServletUtils {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * 获取String参数
@@ -325,15 +323,10 @@ public class ServletUtils {
      * @return Mono<Void>
      */
     public static Mono<Void> webFluxResponseWriter(ServerHttpResponse response, String contentType, HttpStatus status, Object value, int code) {
-        try {
-            response.setStatusCode(status);
-            response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
-            Result<?> result = Result.fail(code, value.toString());
-            DataBuffer dataBuffer = response.bufferFactory().wrap(OBJECT_MAPPER.writeValueAsString(result).getBytes());
-            return response.writeWith(Mono.just(dataBuffer));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        response.setStatusCode(status);
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
+        Result<?> result = Result.fail(code, value.toString());
+        DataBuffer dataBuffer = response.bufferFactory().wrap(JacksonUtils.beanToJson(result).getBytes(StandardCharsets.UTF_8));
+        return response.writeWith(Mono.just(dataBuffer));
     }
 }
