@@ -1,12 +1,14 @@
 package com.tuoyingtao.testools.utils;
 
 import com.alibaba.fastjson2.JSON;
-import com.compound.commons.redis.properties.RedisClientProperties;
-import com.compound.commons.redis.utils.RedisTemplateUtils;
-import com.compound.commons.redis.utils.RedisUtils;
+import com.commons.compound.redis.properties.RedisClientProperties;
+import com.commons.compound.redis.utils.RedisTemplateUtils;
+import com.commons.compound.redis.utils.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 
@@ -26,6 +28,9 @@ public class RedisTemplateTest {
     @Resource
     private RedisUtils redisUtils;
 
+    @Resource
+    private JedisPool jedisPool;
+
     @Test
     public void defaultRedisTemplateTest() {
         System.out.println(redisTemplate);
@@ -39,5 +44,14 @@ public class RedisTemplateTest {
         System.out.println(redisUtils);
         redisUtils.set("redisUtils", new String[]{"测试1", "测试2"});
         System.out.println(redisUtils.get("redisUtils"));
+    }
+
+    @Test
+    public void jedisUtilsTest() {
+        try(Jedis resource = jedisPool.getResource()) {
+            resource.select(1);
+            resource.set("jedisPool", "AA: jedisPool");
+            System.out.println(resource.get("jedisPool"));
+        }
     }
 }
