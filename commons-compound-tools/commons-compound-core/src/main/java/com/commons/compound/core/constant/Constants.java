@@ -40,6 +40,11 @@ public class Constants {
     public static final String LOOKUP_LDAPS = "ldaps:";
 
     /**
+     * 用户操作系统
+     */
+    public static final String USER_AGENT = "User-Agent";
+
+    /**
      * http请求
      */
     public static final String HTTP = "http://";

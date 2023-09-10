@@ -1,5 +1,6 @@
 package com.tuoyingtao.service.impl;
 
+import com.commons.compound.core.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tuoyingtao.entity.UserEntity;
@@ -7,7 +8,6 @@ import com.tuoyingtao.mapper.UserMapper;
 import com.tuoyingtao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService {
     public PageInfo<UserEntity> getUserList(Map param) {
         String page = String.valueOf(param.get("page"));
         String limit = String.valueOf(param.get("limit"));
-        if (!StringUtils.hasText(page)) {
-            param.put("page", 1);
+        if (!StringUtils.isEmpty(page)) {
+            page = "1";
         }
-        if (!StringUtils.hasText(limit)) {
-            param.put("limit", 10);
+        if (!StringUtils.isEmpty(limit)) {
+            limit = "10";
         }
         PageHelper.startPage(Integer.valueOf(page), Integer.valueOf(limit));
         List<UserEntity> userEntityList = userMapper.selectUserList();

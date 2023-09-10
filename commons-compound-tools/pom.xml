@@ -34,6 +34,7 @@
         <javax-servlet-api.version>4.0.1</javax-servlet-api.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <httpclient.version>4.5.14</httpclient.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.37</fastjson2.version>
         <transmittable-thread-local.version>2.14.3</transmittable-thread-local.version>
         <reactor-core.version>3.5.4</reactor-core.version>
@@ -133,6 +134,13 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>transmittable-thread-local</artifactId>
                 <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <!-- Fastjson 序列化依赖 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
 
             <!-- FastJson2 序列化依赖 -->

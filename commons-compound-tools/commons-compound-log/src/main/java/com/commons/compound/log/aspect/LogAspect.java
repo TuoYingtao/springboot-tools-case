@@ -1,6 +1,9 @@
 package com.commons.compound.log.aspect;
 
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import com.alibaba.fastjson2.JSON;
+import com.commons.compound.core.constant.Constants;
 import com.commons.compound.core.constant.TokenConstants;
 import com.commons.compound.core.text.Convert;
 import com.commons.compound.core.utils.ExceptionUtil;
@@ -11,6 +14,7 @@ import com.commons.compound.core.utils.ip.IpUtils;
 import com.commons.compound.log.annotation.Log;
 import com.commons.compound.log.domain.SysOperateLog;
 import com.commons.compound.log.enums.BusinessStatus;
+import com.commons.compound.log.enums.OperatorType;
 import com.commons.compound.log.filter.PropertyPreExcludeFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
@@ -91,6 +95,22 @@ public class LogAspect {
             // 请求的地址
             String ip = IpUtils.getIpAddr();
             operateLog.setOperateIp(ip);
+            // 用户设备信息
+            String userAgent = ServletUtils.getHeader(ServletUtils.getRequest(), Constants.USER_AGENT);
+            if (StringUtils.isNotEmpty(userAgent)) {
+                operateLog.setUserAgent(userAgent);
+                UserAgent ua = UserAgentUtil.parse(userAgent);
+                // 浏览器信息
+                operateLog.setBrowserName(ua.getBrowser().getName());
+                operateLog.setBrowserVersion(ua.getVersion());
+                operateLog.setRenderingEngine(ua.getEngine().getName());
+                operateLog.setRenderingEngineVersion(ua.getEngineVersion());
+                // 操作系统信息
+                operateLog.setOpSysName(ua.getOs().getName());
+                operateLog.setOpSysVersion(ua.getOsVersion());
+                operateLog.setOpSysPlatform(ua.getPlatform().getName());
+            }
+            // 请求地址
             operateLog.setOperateUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
             String headerAuth = ServletUtils.getHeader(ServletUtils.getRequest(), TokenConstants.AUTHENTICATION);
             if (StringUtils.isNotEmpty(headerAuth)) {

@@ -64,6 +64,30 @@ public class SysOperateLog implements Serializable {
     /** 错误消息 */
     private String errorMsg;
 
+    /** 用户操作系信息 */
+    private String userAgent;
+
+    /** 浏览器名称 */
+    private String browserName;
+
+    /** 浏览器版本 */
+    private String browserVersion;
+
+    /** 浏览器使用的渲染引擎 */
+    private String renderingEngine;
+
+    /** 浏览器使用的渲染引擎版本 */
+    private String renderingEngineVersion;
+
+    /** 操作系统名字 */
+    private String opSysName;
+
+    /** 操作系统版本 */
+    private String opSysVersion;
+
+    /** 操作系统类型 */
+    private String opSysPlatform;
+
     /** 操作时间 */
     @JsonFormat(pattern = DateUtils.YYYY_MM_DD_HH_MM_SS)
     private Date operateTime;
@@ -214,6 +238,70 @@ public class SysOperateLog implements Serializable {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public String getBrowserName() {
+        return browserName;
+    }
+
+    public void setBrowserName(String browserName) {
+        this.browserName = browserName;
+    }
+
+    public String getBrowserVersion() {
+        return browserVersion;
+    }
+
+    public void setBrowserVersion(String browserVersion) {
+        this.browserVersion = browserVersion;
+    }
+
+    public String getRenderingEngine() {
+        return renderingEngine;
+    }
+
+    public void setRenderingEngine(String renderingEngine) {
+        this.renderingEngine = renderingEngine;
+    }
+
+    public String getRenderingEngineVersion() {
+        return renderingEngineVersion;
+    }
+
+    public void setRenderingEngineVersion(String renderingEngineVersion) {
+        this.renderingEngineVersion = renderingEngineVersion;
+    }
+
+    public String getOpSysName() {
+        return opSysName;
+    }
+
+    public void setOpSysName(String opSysName) {
+        this.opSysName = opSysName;
+    }
+
+    public String getOpSysVersion() {
+        return opSysVersion;
+    }
+
+    public void setOpSysVersion(String opSysVersion) {
+        this.opSysVersion = opSysVersion;
+    }
+
+    public String getOpSysPlatform() {
+        return opSysPlatform;
+    }
+
+    public void setOpSysPlatform(String opSysPlatform) {
+        this.opSysPlatform = opSysPlatform;
     }
 
     public Date getOperateTime() {
