@@ -15,6 +15,7 @@
         <module>commons-compound-redis</module>
         <module>commons-compound-mybatis</module>
         <module>commons-compound-log</module>
+        <module>commons-compound-swagger</module>
     </modules>
 
     <properties>
@@ -38,6 +39,7 @@
         <fastjson2.version>2.0.37</fastjson2.version>
         <transmittable-thread-local.version>2.14.3</transmittable-thread-local.version>
         <reactor-core.version>3.5.4</reactor-core.version>
+        <knife4j.version>3.0.3</knife4j.version>
         <hutool-all.version>5.8.16</hutool-all.version>
     </properties>
 
@@ -155,6 +157,20 @@
                 <groupId>io.projectreactor</groupId>
                 <artifactId>reactor-core</artifactId>
                 <version>${reactor-core.version}</version>
+            </dependency>
+
+            <!-- Swagger2 Api文档 UI -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!-- Swagger2 Api文档 Cloud 子服务 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <!-- Lombok -->

@@ -1,9 +1,6 @@
 package com.tuoyingtao.testools;
 
 import cn.hutool.http.useragent.UserAgentUtil;
-import eu.bitwalker.useragentutils.Browser;
-import eu.bitwalker.useragentutils.OperatingSystem;
-import eu.bitwalker.useragentutils.UserAgent;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,22 +11,6 @@ class TestToolsApplicationTests {
 
     @Test
     void contextLoads() {
-        UserAgent userAgent = UserAgent.parseUserAgentString(this.USER_AGENT);
-        Browser browser = userAgent.getBrowser();
-        System.out.println("浏览器对象" + browser);
-        System.out.println("浏览器版本:"+userAgent.getBrowserVersion());
-        OperatingSystem operatingSystem = userAgent.getOperatingSystem();
-
-        System.out.println("浏览器名:"+browser.getName());
-        System.out.println("浏览器类型:"+browser.getBrowserType());
-        System.out.println("浏览器家族:"+browser.getGroup());
-        System.out.println("浏览器生产厂商:"+browser.getManufacturer());
-        System.out.println("浏览器使用的渲染引擎:"+browser.getRenderingEngine());
-
-        System.out.println("操作系统名:"+operatingSystem.getName());
-        System.out.println("访问设备类型:"+operatingSystem.getDeviceType());
-        System.out.println("操作系统家族:"+operatingSystem.getGroup());
-        System.out.println("操作系统生产厂商:"+operatingSystem.getManufacturer());
 
         System.out.println("-----------------------------------");
 
