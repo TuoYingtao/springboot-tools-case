@@ -14,7 +14,6 @@ import com.commons.compound.core.utils.ip.IpUtils;
 import com.commons.compound.log.annotation.Log;
 import com.commons.compound.log.domain.SysOperateLog;
 import com.commons.compound.log.enums.BusinessStatus;
-import com.commons.compound.log.enums.OperatorType;
 import com.commons.compound.log.filter.PropertyPreExcludeFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
@@ -113,7 +112,7 @@ public class LogAspect {
             // 请求地址
             operateLog.setOperateUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
             String headerAuth = ServletUtils.getHeader(ServletUtils.getRequest(), TokenConstants.AUTHENTICATION);
-            if (StringUtils.isNotEmpty(headerAuth)) {
+            if (StringUtils.isNotEmpty(headerAuth) && JwtUtils.isVerify(headerAuth)) {
                 String username = JwtUtils.getUserName(headerAuth);
                 if (StringUtils.isNotBlank(username)) {
                     operateLog.setOperateName(username);

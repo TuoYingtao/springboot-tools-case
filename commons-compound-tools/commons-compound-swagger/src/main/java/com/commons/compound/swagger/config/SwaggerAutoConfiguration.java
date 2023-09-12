@@ -2,8 +2,11 @@ package com.commons.compound.swagger.config;
 
 
 import com.commons.compound.swagger.domain.SwaggerProperties;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,10 +33,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
+ * Swagger 配置类
  * @author tuoyingtao
  * @create 2021-10-15 11:38
  */
 @Configuration
+@EnableKnife4j
 @EnableSwagger2
 @EnableConfigurationProperties({SwaggerProperties.class})
 @ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
@@ -49,8 +54,16 @@ public class SwaggerAutoConfiguration {
 
     private final String pathMapping = "/";
 
+    private final OpenApiExtensionResolver openApiExtensionResolver;
+
+    @Autowired
+    public SwaggerAutoConfiguration(OpenApiExtensionResolver openApiExtensionResolver) {
+        this.openApiExtensionResolver = openApiExtensionResolver;
+    }
+
     /**
-     * Swagger2 整合 springfox-swagger-ui 访问地址：http://localhost:端口/swagger-ui.html
+     * Swagger2 整合 springfox-swagger-ui
+     *  访问地址：http://localhost:端口/swagger-ui.html 或 http://localhost:端口/swagger-ui/index.html
      * Swagger2 整合 knife4j 后的访问地址：http://localhost:端口/doc.html
      */
     @Bean
@@ -80,15 +93,18 @@ public class SwaggerAutoConfiguration {
                 // 扫描所有有注解的Api 用这种方式更灵活
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class));
         // 扫描所有Api
-        apiSelectorBuilder.apis(RequestHandlerSelectors.any());
+        // apiSelectorBuilder.apis(RequestHandlerSelectors.any());
         swaggerProperties.getBasePath().forEach(path -> apiSelectorBuilder.paths(PathSelectors.ant(path)));
         swaggerProperties.getExcludePath().forEach(path -> apiSelectorBuilder.paths(PathSelectors.ant(path).negate()));
         // 扫描所有Path
-        apiSelectorBuilder.paths(PathSelectors.any());
+        // apiSelectorBuilder.paths(PathSelectors.any());
+        String groupName="2.X版本";
         return apiSelectorBuilder.build()
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes(swaggerProperties))
-                .securityContexts(securityContexts(swaggerProperties));
+                .securityContexts(securityContexts(swaggerProperties))
+                .extensions(openApiExtensionResolver.buildExtensions(groupName))
+                .groupName(groupName);
     }
 
     /**

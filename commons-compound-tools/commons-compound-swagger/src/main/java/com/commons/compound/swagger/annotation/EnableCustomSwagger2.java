@@ -22,7 +22,6 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 @Import({ SwaggerAutoConfiguration.class })
-public @interface EnableCustomSwagger2
-{
+public @interface EnableCustomSwagger2 {
 
 }

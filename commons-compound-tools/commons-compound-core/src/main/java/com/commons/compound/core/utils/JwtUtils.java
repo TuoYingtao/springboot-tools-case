@@ -1,11 +1,12 @@
 package com.commons.compound.core.utils;
 
-import com.commons.compound.core.text.Convert;
 import com.commons.compound.core.constant.SecurityConstants;
 import com.commons.compound.core.constant.TokenConstants;
+import com.commons.compound.core.text.Convert;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
@@ -163,6 +164,20 @@ public class JwtUtils {
      */
     public static String getValue(Claims claims, String key) {
         return Convert.toStr(claims.get(key), "");
+    }
+
+    /**
+     * 验证令牌的有效性
+     * @param token token 令牌
+     * @return true：有效令牌  false：无效令牌
+     */
+    public static boolean isVerify(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            return false;
+        }
     }
 
     /**

@@ -7,7 +7,7 @@
     <contextName>MyLogback</contextName>
 
     <!-- 日志存放路径 -->
-    <property name="log.path" value="logs/compound-main" />
+    <property name="log.path" value="logs/commons" />
     <!-- 日志输出格式：信息跳转 %cyan(at %class.%method) : \\(%file:%line\\) -->
     <property name="log.filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName %-5level %ipd -- [%15.15thread] %-42.42logger{42} : [%method:%line] %msg%n%xThrowable" />
     <property name="log.pattern" value="%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %black(%contextName) %myHighlight(%-5level) %gray(%ipd) -- %boldMagenta([%15.15thread]) %cyan(%-42.42logger{42}) : %blue([%method:%line]) %msg%n%xThrowable" />
