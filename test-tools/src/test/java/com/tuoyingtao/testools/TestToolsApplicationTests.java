@@ -1,7 +1,9 @@
 package com.tuoyingtao.testools;
 
+import cn.hutool.core.comparator.VersionComparator;
 import cn.hutool.http.useragent.UserAgentUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -11,6 +13,8 @@ class TestToolsApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println(SpringBootVersion.getVersion());
+        System.out.println(VersionComparator.INSTANCE.compare("2.7", "2.6"));
 
         System.out.println("-----------------------------------");
 

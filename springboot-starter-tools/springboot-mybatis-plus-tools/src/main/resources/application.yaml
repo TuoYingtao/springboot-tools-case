@@ -1,0 +1,27 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: springboot-mybatis-plus-tools
+  profiles:
+    active: ${spring.application.name}
+  datasource:     # DB 配置 数据库连接信息，本地使用 mysql 服务版本为：8.0.32
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true&autoReconnect=true&useSSL=false
+    username: root
+    password: root
+# MyBatis Plus 配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto                     # 主键自动增长
+      logic-delete-field: delete        # 全局软删除字段
+      logic-delete-value: 2             # 逻辑已删除值
+      logic-not-delete-value: 0         # 逻辑未删除值
+  mapper-locations: classpath:/mapper/**/*.xml    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+swagger:
+  enable: true
+knife4j:
+  enable: true
+  setting:
+    enableDynamicParameter: true

@@ -17,6 +17,7 @@
 
     <modules>
         <module>springboot-mybatis-tools</module>
+        <module>springboot-mybatis-plus-tools</module>
     </modules>
 
     <properties>
