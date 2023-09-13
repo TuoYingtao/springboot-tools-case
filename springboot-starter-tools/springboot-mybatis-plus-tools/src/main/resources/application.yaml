@@ -25,3 +25,7 @@ knife4j:
   enable: true
   setting:
     enableDynamicParameter: true
+    enableSwaggerModels: true
+    swaggerModelName: 实体类列表
+    enableReloadCacheParameter: true
+
