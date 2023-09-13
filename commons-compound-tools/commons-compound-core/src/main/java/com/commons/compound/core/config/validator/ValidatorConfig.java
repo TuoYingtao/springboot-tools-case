@@ -1,4 +1,4 @@
-package com.commons.compound.core.config;
+package com.commons.compound.core.config.validator;
 
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.boot.context.properties.ConfigurationProperties;

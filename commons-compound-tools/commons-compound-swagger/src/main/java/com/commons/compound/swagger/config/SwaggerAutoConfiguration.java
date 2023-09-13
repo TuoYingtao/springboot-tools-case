@@ -34,9 +34,11 @@ import java.util.function.Predicate;
 
 /**
  * Swagger 配置类
- * @author tuoyingtao
- * @create 2021-10-15 11:38
- */
+ *
+ * @Author: TuoYingtao
+ * @Date: 2023-09-13 10:11:58
+ * @Version: v1.0.0
+*/
 @Configuration
 @EnableKnife4j
 @EnableSwagger2
@@ -92,13 +94,9 @@ public class SwaggerAutoConfiguration {
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 // 扫描所有有注解的Api 用这种方式更灵活
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class));
-        // 扫描所有Api
-        // apiSelectorBuilder.apis(RequestHandlerSelectors.any());
         swaggerProperties.getBasePath().forEach(path -> apiSelectorBuilder.paths(PathSelectors.ant(path)));
         swaggerProperties.getExcludePath().forEach(path -> apiSelectorBuilder.paths(PathSelectors.ant(path).negate()));
-        // 扫描所有Path
-        // apiSelectorBuilder.paths(PathSelectors.any());
-        String groupName="2.X版本";
+        String groupName = "1.X版本";
         return apiSelectorBuilder.build()
                 /* 设置安全模式，swagger可以设置访问token */
                 .securitySchemes(securitySchemes(swaggerProperties))

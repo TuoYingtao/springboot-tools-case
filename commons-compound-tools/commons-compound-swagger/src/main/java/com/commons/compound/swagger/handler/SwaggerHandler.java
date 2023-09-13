@@ -21,8 +21,10 @@ import java.util.Optional;
 /**
  * 自定义Swagger的各个配置节点
  * 在访问swagger-ui中会拉去此接口的数据
- * @author tuoyingtao
- * @create 2023-03-31 18:10
+ *
+ * @Author: TuoYingtao
+ * @Date: 2023-09-13 10:02:02
+ * @Version: v1.0.0
  */
 @ApiOperation(value = "Swagger")
 @RestController
