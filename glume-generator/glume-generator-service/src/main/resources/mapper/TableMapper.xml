@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glume.generator.service.mapper.TableMapper">
+    <resultMap id="tableMap" type="com.glume.generator.service.domain.entity.TableEntity">
+        <id property="id" column="id" jdbcType="BIGINT" />
+        <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="tableComment" column="table_comment" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="packageName" column="package_name" jdbcType="TIMESTAMP"/>
+        <result property="version" column="version" jdbcType="TIMESTAMP"/>
+        <result property="generatorType" column="generator_type" jdbcType="TINYINT"/>
+        <result property="backendPath" column="backend_path" jdbcType="TIMESTAMP"/>
+        <result property="frontendPath" column="frontend_path" jdbcType="TIMESTAMP"/>
+        <result property="moduleName" column="module_name" jdbcType="TIMESTAMP"/>
+        <result property="functionName" column="function_name" jdbcType="TIMESTAMP"/>
+        <result property="formLayout" column="form_layout" jdbcType="TINYINT"/>
+        <result property="datasourceId" column="datasource_id" jdbcType="BIGINT"/>
+        <result property="baseclassId" column="baseclass_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+</mapper>

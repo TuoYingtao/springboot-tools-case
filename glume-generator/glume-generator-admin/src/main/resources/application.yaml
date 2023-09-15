@@ -1,0 +1,19 @@
+env: dev
+server:
+  port: 8080
+spring:
+  application:
+    name: glume-generator-admin
+  profiles:
+    active: ${env}
+    include:
+      - two
+swagger:
+  basePackage: com.glume.generator.service
+knife4j:
+  enable: true
+# 日志配置
+logging:
+  level:
+    com.glume.generator.service: debug
+

@@ -4,7 +4,6 @@ package com.commons.compound.swagger.config;
 import com.commons.compound.swagger.domain.SwaggerProperties;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -91,9 +90,9 @@ public class SwaggerAutoConfiguration {
                 // 设置哪些接口暴露给Swagger展示
                 .select()
                 // 扫描指定包中的swagger注解
-                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
+                .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()));
                 // 扫描所有有注解的Api 用这种方式更灵活
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class));
+                // .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class));
         swaggerProperties.getBasePath().forEach(path -> apiSelectorBuilder.paths(PathSelectors.ant(path)));
         swaggerProperties.getExcludePath().forEach(path -> apiSelectorBuilder.paths(PathSelectors.ant(path).negate()));
         String groupName = "1.X版本";
