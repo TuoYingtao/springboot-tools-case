@@ -1,14 +1,17 @@
 package com.commons.compound.core.utils;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,8 +21,9 @@ import org.springframework.stereotype.Component;
  * @Date: 2023-09-01 14:55:52
  * @Version: v1.0.0
 */
+@Lazy(false)
 @Component
-public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
+public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringUtils.class);
 
     /** Spring 应用上下文环境 */
@@ -42,23 +46,43 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     }
 
     /**
-     * 获取对象
+     * 清除SpringUtils中的ApplicationContext与ConfigurableListableBeanFactory为Null.
+     * @throws Exception
+     */
+    @Override
+    public void destroy() throws Exception {
+        SpringUtils.clearHolder();
+    }
+
+    /**
+     * 取得存储在静态变量中的ApplicationContext.
+     * @return
+     */
+    public static ApplicationContext getApplicationContext() {
+        assertContextInjected();
+        return applicationContext;
+    }
+
+    /**
+     * 从静态变量applicationContext中取得Bean, 自动转型为所赋值对象的类型.
      * @param name
      * @return Object 一个以所给名字注册的bean的实例
      * @throws BeansException
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String name) throws BeansException {
+        assertContextInjected();
         return (T) beanFactory.getBean(name);
     }
 
     /**
-     * 获取类型为requiredType的对象
+     * 从静态变量applicationContext中取得Bean,自动将类型为requiredType的对象转型为所赋值对象的类型.
      * @param clz
      * @return
      * @throws BeansException
      */
     public static <T> T getBean(Class<T> clz) throws BeansException {
+        assertContextInjected();
         T result = (T) beanFactory.getBean(clz);
         return result;
     }
@@ -127,4 +151,21 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
         final String[] activeProfiles = getActiveProfiles();
         return StringUtils.isNotEmpty(activeProfiles) ? activeProfiles[0] : null;
     }
+
+    public static void clearHolder() {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("清除SpringUtils中的ApplicationContext：{}", applicationContext);
+            LOGGER.debug("清除SpringUtils中的ConfigurableListableBeanFactory：{}", beanFactory);
+        }
+        applicationContext = null;
+        beanFactory = null;
+    }
+
+    /**
+     * 检查ApplicationContext不为空.
+     */
+    private static void assertContextInjected() {
+        Validate.validState(applicationContext != null, "applicationContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder.");
+    }
+
 }
