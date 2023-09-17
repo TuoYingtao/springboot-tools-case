@@ -3,9 +3,9 @@ package com.glume.generator.framework.handler;
 import com.glume.generator.framework.abstracts.AbstractDBQuery;
 import com.glume.generator.framework.commons.text.StrFormatter;
 import com.glume.generator.framework.commons.utils.StringUtils;
-import com.glume.generator.framework.domain.dto.GenDataSourceDTO;
-import com.glume.generator.framework.domain.dto.TableDTO;
-import com.glume.generator.framework.domain.dto.TableFieldDTO;
+import com.glume.generator.framework.domain.bo.GenDataSourceBO;
+import com.glume.generator.framework.domain.bo.TableBO;
+import com.glume.generator.framework.domain.bo.TableFieldBO;
 import com.glume.generator.framework.enums.DBSourceType;
 import com.glume.generator.framework.exception.NotExitsTableException;
 import org.slf4j.Logger;
@@ -32,15 +32,15 @@ public class GenUtils {
      *
      * @param datasource 数据源
      */
-    public static List<TableDTO> getTableList(GenDataSourceDTO datasource) {
-        List<TableDTO> tableList = new ArrayList<>();
+    public static List<TableBO> getTableList(GenDataSourceBO datasource) {
+        List<TableBO> tableList = new ArrayList<>();
         try {
             AbstractDBQuery query = datasource.getDbQuery();
             //查询数据
             PreparedStatement preparedStatement = datasource.getConnection().prepareStatement(query.tableSql(null));
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                TableDTO table = new TableDTO();
+                TableBO table = new TableBO();
                 table.setTableName(rs.getString(query.tableName()));
                 table.setTableComment(rs.getString(query.tableComment()));
                 table.setDatasourceId(datasource.getId());
@@ -60,14 +60,14 @@ public class GenUtils {
      * @param datasource 数据源
      * @param tableName  表名
      */
-    public static TableDTO getTable(GenDataSourceDTO datasource, String tableName) {
+    public static TableBO getTable(GenDataSourceBO datasource, String tableName) {
         try {
             AbstractDBQuery query = datasource.getDbQuery();
             // 查询数据
             PreparedStatement preparedStatement = datasource.getConnection().prepareStatement(query.tableSql(tableName));
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                TableDTO table = new TableDTO();
+                TableBO table = new TableBO();
                 table.setTableName(rs.getString(query.tableName()));
                 table.setTableComment(rs.getString(query.tableComment()));
                 table.setDatasourceId(datasource.getId());
@@ -87,8 +87,8 @@ public class GenUtils {
      * @param tableId    表ID
      * @param tableName  表名
      */
-    public static List<TableFieldDTO> getTableFieldList(GenDataSourceDTO datasource, Long tableId, String tableName) {
-        List<TableFieldDTO> tableFieldList = new ArrayList<>();
+    public static List<TableFieldBO> getTableFieldList(GenDataSourceBO datasource, Long tableId, String tableName) {
+        List<TableFieldBO> tableFieldList = new ArrayList<>();
 
         try {
             AbstractDBQuery query = datasource.getDbQuery();
@@ -102,7 +102,7 @@ public class GenUtils {
             PreparedStatement preparedStatement = datasource.getConnection().prepareStatement(tableFieldsSql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                TableFieldDTO field = new TableFieldDTO();
+                TableFieldBO field = new TableFieldBO();
                 field.setTableId(tableId);
                 field.setFieldName(rs.getString(query.fieldName()));
                 String fieldType = rs.getString(query.fieldType());

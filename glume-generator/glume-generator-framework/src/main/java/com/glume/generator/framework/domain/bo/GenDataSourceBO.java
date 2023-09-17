@@ -1,4 +1,4 @@
-package com.glume.generator.framework.domain.dto;
+package com.glume.generator.framework.domain.bo;
 
 import com.glume.generator.framework.abstracts.AbstractDBQuery;
 import com.glume.generator.framework.enums.DBSourceType;
@@ -19,9 +19,9 @@ import java.sql.SQLException;
  * @Version: v1.0.0
  */
 @Data
-public class GenDataSourceDTO implements Serializable {
+public class GenDataSourceBO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenDataSourceDTO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenDataSourceBO.class);
 
     /**
      * 数据源ID
@@ -53,7 +53,7 @@ public class GenDataSourceDTO implements Serializable {
     private Connection connection;
 
 
-    public GenDataSourceDTO(GEnDataSourceBuilder GEnDataSourceBuilder) {
+    public GenDataSourceBO(GenDataSourceBuilder GEnDataSourceBuilder) {
         this.id = GEnDataSourceBuilder.id;
         this.dbSourceType = DBSourceType.getValue(GEnDataSourceBuilder.dbSourceType);
         this.connUrl = GEnDataSourceBuilder.connUrl;
@@ -67,7 +67,7 @@ public class GenDataSourceDTO implements Serializable {
         }
     }
 
-    public GenDataSourceDTO(Connection connection) throws SQLException {
+    public GenDataSourceBO(Connection connection) throws SQLException {
         this.id = 0L;
         String dbName = connection.getMetaData().getDatabaseProductName();
         this.dbSourceType = DBSourceType.getValue(dbName);
@@ -75,7 +75,18 @@ public class GenDataSourceDTO implements Serializable {
         this.connection = connection;
     }
 
-    public static final class GEnDataSourceBuilder {
+    /**
+     * 释放数据源
+     */
+    public void closeConnection() {
+        try {
+            this.connection.close();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    public static final class GenDataSourceBuilder {
         private Long id;
 
         private String dbSourceType;
@@ -86,33 +97,33 @@ public class GenDataSourceDTO implements Serializable {
 
         private String password;
 
-        public GEnDataSourceBuilder setId(Long id) {
+        public GenDataSourceBuilder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public GEnDataSourceBuilder setDbSourceType(String dbSourceType) {
+        public GenDataSourceBuilder setDbSourceType(String dbSourceType) {
             this.dbSourceType = dbSourceType;
             return this;
         }
 
-        public GEnDataSourceBuilder setConnUrl(String connUrl) {
+        public GenDataSourceBuilder setConnUrl(String connUrl) {
             this.connUrl = connUrl;
             return this;
         }
 
-        public GEnDataSourceBuilder setUsername(String username) {
+        public GenDataSourceBuilder setUsername(String username) {
             this.username = username;
             return this;
         }
 
-        public GEnDataSourceBuilder setPassword(String password) {
+        public GenDataSourceBuilder setPassword(String password) {
             this.password = password;
             return this;
         }
 
-        public GenDataSourceDTO builder() {
-            return new GenDataSourceDTO(this);
+        public GenDataSourceBO builder() {
+            return new GenDataSourceBO(this);
         }
     }
 }

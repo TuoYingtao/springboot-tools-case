@@ -1,20 +1,23 @@
-package com.glume.generator.framework.domain.dto;
+package com.glume.generator.service.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.glume.generator.service.base.entity.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
- * 数据表字段
+ * 表字段
  *
  * @Author: TuoYingtao
- * @Date: 2023-09-14 16:42:20
+ * @Date: 2023-09-17 12:02
  * @Version: v1.0.0
-*/
+ */
 @Data
-public class TableFieldDTO implements Serializable {
+@TableName("gen_table_field")
+public class TableFieldEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    @TableId
     private Long id;
     /**
      * 表ID
@@ -100,4 +103,5 @@ public class TableFieldDTO implements Serializable {
      * 查询表单类型
      */
     private String queryFormType;
+
 }

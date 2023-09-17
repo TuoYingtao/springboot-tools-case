@@ -1,10 +1,11 @@
 package com.glume.generator.service.controller;
 
 import com.glume.generator.framework.commons.Result;
-import com.glume.generator.framework.domain.dto.GenDataSourceDTO;
-import com.glume.generator.framework.domain.dto.TableDTO;
+import com.glume.generator.framework.domain.bo.GenDataSourceBO;
+import com.glume.generator.framework.domain.bo.TableBO;
 import com.glume.generator.framework.handler.DBUtils;
 import com.glume.generator.framework.handler.GenUtils;
+import com.glume.generator.service.base.controller.BaseController;
 import com.glume.generator.service.domain.entity.DataSourceEntity;
 import com.glume.generator.service.domain.vo.TableVO;
 import com.glume.generator.service.service.DataSourceService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,17 +37,20 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("generator/datasource")
-public class DataSourceController {
+public class DataSourceController extends BaseController<DataSourceEntity, DataSourceService> {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceController.class);
 
     @Autowired
     private DataSourceService datasourceService;
 
+    /**
+     * 测试DB链接
+     */
     @GetMapping("test_db/connect/{id}")
     public Result<String> test(@PathVariable("id") Long id) {
         try {
             DataSourceEntity entity = datasourceService.getById(id);
-            DBUtils.getConnection(new GenDataSourceDTO.GEnDataSourceBuilder()
+            DBUtils.getConnection(new GenDataSourceBO.GenDataSourceBuilder()
                     .setId(entity.getId())
                     .setDbSourceType(entity.getDbType())
                     .setConnUrl(entity.getConnUrl())
@@ -69,12 +74,12 @@ public class DataSourceController {
     public Result<List<TableVO>> tableList(@PathVariable("id") Long datasourceId) {
         try {
             // 获取数据源
-            GenDataSourceDTO datasource = datasourceService.getGenDataSource(datasourceId);
+            GenDataSourceBO datasource = datasourceService.getGenDataSource(datasourceId);
             // 根据数据源，获取全部数据表
-            List<TableDTO> tableList = GenUtils.getTableList(datasource);
-            List<TableVO> tableVOList = tableList.stream().map(tableDTO -> {
+            List<TableBO> tableList = GenUtils.getTableList(datasource);
+            List<TableVO> tableVOList = tableList.stream().map(tableBO -> {
                 TableVO tableVo = new TableVO();
-                BeanUtils.copyProperties(tableDTO, tableVo);
+                BeanUtils.copyProperties(tableBO, tableVo);
                 return tableVo;
             }).collect(Collectors.toList());
 
@@ -85,6 +90,7 @@ public class DataSourceController {
         }
     }
 
+    @Override
     @GetMapping("page")
     public Result<PageUtils<DataSourceEntity>> page(Map<String, Object> param) {
         PageUtils<DataSourceEntity> page = datasourceService.getPage(param);
@@ -92,6 +98,7 @@ public class DataSourceController {
         return Result.ok(page);
     }
 
+    @Override
     @GetMapping("list")
     public Result<List<DataSourceEntity>> list() {
         List<DataSourceEntity> listAll = datasourceService.getListAll();
@@ -99,6 +106,7 @@ public class DataSourceController {
         return Result.ok(listAll);
     }
 
+    @Override
     @GetMapping("{id}")
     public Result<DataSourceEntity> get(@PathVariable("id") Long id) {
         DataSourceEntity dataSourceEntity = datasourceService.getDetail(id);
@@ -106,24 +114,29 @@ public class DataSourceController {
         return Result.ok(dataSourceEntity);
     }
 
+    @Override
     @PostMapping
-    public Result<String> save(@RequestBody DataSourceEntity entity) {
-        datasourceService.saveData(entity);
+    public Result<Map<String, Long>> save(@RequestBody DataSourceEntity entity) {
+        Long entityId = datasourceService.saveData(entity);
+        Map<String, Long> data = new HashMap<>(1);
+        data.put("id", entityId);
 
-        return Result.ok();
+        return Result.ok(data);
     }
 
+    @Override
     @PutMapping
-    public Result<String> update(@RequestBody DataSourceEntity entity) {
-        datasourceService.updateDetail(entity);
+    public Result<DataSourceEntity> update(@RequestBody DataSourceEntity entity) {
+        DataSourceEntity dataSourceEntity = datasourceService.updateDetail(entity);
 
-        return Result.ok();
+        return Result.ok(dataSourceEntity);
     }
 
+    @Override
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
         datasourceService.deleteBatchByIds(ids);
 
-        return Result.ok();
+        return Result.ok("删除成功！");
     }
 }

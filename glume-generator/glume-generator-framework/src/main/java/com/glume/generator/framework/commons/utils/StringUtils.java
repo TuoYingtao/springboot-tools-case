@@ -762,4 +762,19 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return str.toString();
     }
+
+    /**
+     * 判断字符串最后结尾后缀
+     *
+     * @param str 字符串
+     * @param c 结尾后缀
+     * @return 相等：true 不等：false
+     */
+    public static boolean endWith(CharSequence str, char c) {
+        if (isEmpty(str)) {
+            return false;
+        } else {
+            return c == str.charAt(str.length() - 1);
+        }
+    }
 }

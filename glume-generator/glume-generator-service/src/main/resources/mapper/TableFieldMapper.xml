@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glume.generator.service.mapper.TableFieldMapper">
+    <resultMap id="tableFieldMap" type="com.glume.generator.service.domain.entity.TableFieldEntity">
+        <id property="id" column="id" jdbcType="BIGINT" />
+        <result property="tableId" column="id" jdbcType="BIGINT" />
+        <result property="fieldName" column="field_name" jdbcType="VARCHAR" />
+        <result property="sort" column="sort" jdbcType="INTEGER" />
+        <result property="fieldType" column="field_type" jdbcType="VARCHAR" />
+        <result property="fieldComment" column="field_comment" jdbcType="VARCHAR" />
+        <result property="attrName" column="attr_name" jdbcType="VARCHAR" />
+        <result property="attrType" column="attr_type" jdbcType="VARCHAR" />
+        <result property="packageName" column="package_name" jdbcType="VARCHAR" />
+        <result property="autoFill" column="auto_fill" jdbcType="VARCHAR" />
+        <result property="primaryPk" column="primary_pk" jdbcType="TINYINT" />
+        <result property="baseField" column="base_field" jdbcType="TINYINT" />
+        <result property="formItem" column="form_item" jdbcType="TINYINT" />
+        <result property="formRequired" column="form_required" jdbcType="TINYINT" />
+        <result property="formType" column="form_type" jdbcType="VARCHAR" />
+        <result property="formDict" column="form_dict" jdbcType="VARCHAR" />
+        <result property="formValidator" column="form_validator" jdbcType="VARCHAR" />
+        <result property="gridItem" column="grid_item" jdbcType="TINYINT" />
+        <result property="gridSort" column="grid_sort" jdbcType="TINYINT" />
+        <result property="queryItem" column="query_item" jdbcType="TINYINT" />
+        <result property="queryType" column="query_type" jdbcType="VARCHAR" />
+        <result property="queryFormType" column="query_form_type" jdbcType="VARCHAR" />
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+</mapper>

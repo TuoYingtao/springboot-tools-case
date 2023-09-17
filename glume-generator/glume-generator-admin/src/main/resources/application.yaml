@@ -16,4 +16,3 @@ knife4j:
 logging:
   level:
     com.glume.generator.service: debug
-

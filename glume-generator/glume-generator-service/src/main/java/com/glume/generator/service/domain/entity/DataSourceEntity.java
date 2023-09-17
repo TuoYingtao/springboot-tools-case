@@ -3,7 +3,7 @@ package com.glume.generator.service.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.glume.generator.service.annotaion.EncryptParameter;
-import com.glume.generator.service.base.entity.BasEntity;
+import com.glume.generator.service.base.entity.BaseEntity;
 import lombok.Data;
 
 /**
@@ -15,7 +15,7 @@ import lombok.Data;
 */
 @Data
 @TableName("gen_datasource")
-public class DataSourceEntity extends BasEntity {
+public class DataSourceEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
     /**
      * id

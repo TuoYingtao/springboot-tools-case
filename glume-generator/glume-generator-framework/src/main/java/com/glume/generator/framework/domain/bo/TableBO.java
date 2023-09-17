@@ -1,10 +1,9 @@
-package com.glume.generator.framework.domain.dto;
+package com.glume.generator.framework.domain.bo;
 
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 数据表
@@ -14,7 +13,7 @@ import java.util.List;
  * @Version: v1.0.0
 */
 @Data
-public class TableDTO implements Serializable {
+public class TableBO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -82,8 +81,4 @@ public class TableDTO implements Serializable {
      * 创建时间
      */
     private Date createTime;
-    /**
-     * 字段列表
-     */
-    private List<TableFieldDTO> fieldList;
 }

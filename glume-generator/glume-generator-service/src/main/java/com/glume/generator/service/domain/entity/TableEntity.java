@@ -1,10 +1,13 @@
 package com.glume.generator.service.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.glume.generator.service.base.entity.BasEntity;
+import com.glume.generator.service.base.entity.BaseEntity;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 数据表
@@ -15,7 +18,7 @@ import lombok.Data;
  */
 @Data
 @TableName("gen_table")
-public class TableEntity extends BasEntity {
+public class TableEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.INPUT)
@@ -81,4 +84,9 @@ public class TableEntity extends BasEntity {
      */
     private Long baseclassId;
 
+    /**
+     * 字段列表
+     */
+    @TableField(exist = false)
+    private List<TableFieldEntity> fieldList;
 }

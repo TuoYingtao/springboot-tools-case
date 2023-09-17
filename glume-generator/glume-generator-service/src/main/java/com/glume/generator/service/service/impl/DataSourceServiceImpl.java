@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.glume.generator.framework.commons.text.Convert;
-import com.glume.generator.framework.domain.dto.GenDataSourceDTO;
-import com.glume.generator.service.base.impl.BaseServiceImpl;
+import com.glume.generator.framework.domain.bo.GenDataSourceBO;
+import com.glume.generator.service.base.service.impl.BaseServiceImpl;
 import com.glume.generator.service.domain.entity.DataSourceEntity;
 import com.glume.generator.service.mapper.DataSourceMapper;
 import com.glume.generator.service.service.DataSourceService;
@@ -39,28 +39,28 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSourceMapper, Dat
 
     @Override
     public PageUtils<DataSourceEntity> getPage(Map<String, Object> param) {
-        IPage<DataSourceEntity> page = getBaseMapper().selectPage(getQueryPage(param), new QueryWrapper<>());
+        IPage<DataSourceEntity> page = baseMapper.selectPage(getQueryPage(param), new QueryWrapper<>());
         return new PageUtils(page);
     }
 
     @Override
     public List<DataSourceEntity> getDataSourceListAll() {
-        return getBaseMapper().selectList(Wrappers.emptyWrapper());
+        return baseMapper.selectList(Wrappers.emptyWrapper());
     }
 
     @Override
-    public GenDataSourceDTO getGenDataSource(Long datasourceId) {
+    public GenDataSourceBO getGenDataSource(Long datasourceId) {
         // 初始化配置信息
-        GenDataSourceDTO genDataSourceDTO = null;
+        GenDataSourceBO genDataSourceBO = null;
         if (Convert.toInt(datasourceId) == 0) {
             try {
-                genDataSourceDTO = new GenDataSourceDTO(dataSource.getConnection());
+                genDataSourceBO = new GenDataSourceBO(dataSource.getConnection());
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage(), e);
             }
         } else {
-            DataSourceEntity dataSourceEntity = getBaseMapper().selectById(datasourceId);
-            genDataSourceDTO = new GenDataSourceDTO.GEnDataSourceBuilder()
+            DataSourceEntity dataSourceEntity = baseMapper.selectById(datasourceId);
+            genDataSourceBO = new GenDataSourceBO.GenDataSourceBuilder()
                     .setId(dataSourceEntity.getId())
                     .setDbSourceType(dataSourceEntity.getDbType())
                     .setConnUrl(dataSourceEntity.getConnUrl())
@@ -68,7 +68,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSourceMapper, Dat
                     .setPassword(dataSourceEntity.getPassword())
                     .builder();
         }
-        return genDataSourceDTO;
+        return genDataSourceBO;
     }
 
 
