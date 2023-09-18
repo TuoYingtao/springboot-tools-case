@@ -3,6 +3,9 @@ package com.glume.generator.service.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.glume.generator.service.domain.entity.FieldTypeEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Set;
 
 /**
  * 字段类型管理
@@ -13,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface FieldTypeMapper extends BaseMapper<FieldTypeEntity> {
+    Set<String> getPackageListByTableId(@Param("tableId") Long tableId);
 }

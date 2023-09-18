@@ -4,6 +4,7 @@ import com.glume.generator.service.base.service.BaseIService;
 import com.glume.generator.service.domain.entity.FieldTypeEntity;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 字段类型管理
@@ -15,4 +16,5 @@ import java.util.Map;
 public interface FieldTypeService extends BaseIService<FieldTypeEntity> {
     Map<String, FieldTypeEntity> getFieldTypeMap();
 
+    Set<String> getPackageListByTableId(Long tableId);
 }

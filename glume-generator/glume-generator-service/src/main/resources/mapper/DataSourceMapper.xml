@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.glume.generator.service.mapper.DataSourceMapper">
-    <resultMap id="DataSourceMap" type="com.glume.generator.service.domain.entity.DataSourceEntity">
+    <resultMap id="dataSourceMap" type="com.glume.generator.service.domain.entity.DataSourceEntity">
         <id property="id" column="id" jdbcType="BIGINT" />
         <result property="dbType" column="db_type" jdbcType="VARCHAR"/>
         <result property="connName" column="conn_name" jdbcType="VARCHAR"/>

@@ -28,6 +28,7 @@ CREATE TABLE gen_field_type
     attr_type    varchar2(200),
     package_name varchar2(200),
     create_time  date,
+    update_time  date,
     primary key (id)
 );
 
@@ -39,6 +40,7 @@ COMMENT ON COLUMN gen_field_type.column_type IS '字段类型';
 COMMENT ON COLUMN gen_field_type.attr_type IS '属性类型';
 COMMENT ON COLUMN gen_field_type.package_name IS '属性包名';
 COMMENT ON COLUMN gen_field_type.create_time IS '创建时间';
+COMMENT ON COLUMN gen_field_type.update_time IS '更新时间';
 
 
 CREATE TABLE gen_base_class
@@ -49,6 +51,7 @@ CREATE TABLE gen_base_class
     fields       varchar2(500),
     remark       varchar2(200),
     create_time  date,
+    update_time  date,
     primary key (id)
 );
 
@@ -59,6 +62,7 @@ COMMENT ON COLUMN gen_base_class.code IS '基类编码';
 COMMENT ON COLUMN gen_base_class.fields IS '基类字段，多个用英文逗号分隔';
 COMMENT ON COLUMN gen_base_class.remark IS '备注';
 COMMENT ON COLUMN gen_base_class.create_time IS '创建时间';
+COMMENT ON COLUMN gen_base_class.update_time IS '更新时间';
 
 CREATE TABLE gen_table
 (
@@ -79,6 +83,7 @@ CREATE TABLE gen_table
     datasource_id  NUMBER(20, 0),
     baseclass_id   NUMBER(20, 0),
     create_time    date,
+    update_time    date,
     primary key (id)
 );
 CREATE UNIQUE INDEX gen_table_name on gen_table(table_name);
@@ -101,6 +106,7 @@ COMMENT ON COLUMN gen_table.form_layout IS '表单布局  1：一列   2：两�
 COMMENT ON COLUMN gen_table.datasource_id IS '数据源ID';
 COMMENT ON COLUMN gen_table.baseclass_id IS '基类ID';
 COMMENT ON COLUMN gen_table.create_time IS '创建时间';
+COMMENT ON COLUMN gen_table.update_time IS '更新时间';
 
 
 CREATE TABLE gen_table_field
@@ -127,6 +133,8 @@ CREATE TABLE gen_table_field
     query_item      NUMBER(2, 0),
     query_type      varchar2(200),
     query_form_type varchar2(200),
+    create_time    date,
+    update_time    date,
     primary key (id)
 );
 
@@ -153,6 +161,8 @@ COMMENT ON COLUMN gen_table_field.grid_sort IS '列表排序 0：否  1：是';
 COMMENT ON COLUMN gen_table_field.query_item IS '查询项 0：否  1：是';
 COMMENT ON COLUMN gen_table_field.query_type IS '查询方式';
 COMMENT ON COLUMN gen_table_field.query_form_type IS '查询表单类型';
+COMMENT ON COLUMN gen_table_field.create_time IS '创建时间';
+COMMENT ON COLUMN gen_table_field.update_time IS '更新时间';
 
 
 CREATE TABLE gen_project_modify
@@ -169,6 +179,7 @@ CREATE TABLE gen_project_modify
     modify_suffix          varchar2(200),
     modify_tmp_path        varchar2(100),
     create_time            date,
+    update_time            date,
     PRIMARY KEY (id)
 );
 
@@ -185,37 +196,7 @@ COMMENT ON COLUMN gen_project_modify.exclusions IS '排除文件';
 COMMENT ON COLUMN gen_project_modify.modify_suffix IS '变更文件';
 COMMENT ON COLUMN gen_project_modify.modify_tmp_path IS '变更临时路径';
 COMMENT ON COLUMN gen_project_modify.create_time IS '创建时间';
-
-
--- 用于测试代码生成器的表结构 --
-CREATE TABLE gen_test_student
-(
-    id          NUMBER(20, 0) NOT NULL,
-    name        varchar2(50),
-    gender      NUMBER(2, 0),
-    age         NUMBER(10, 0),
-    class_name  varchar2(50),
-    version     NUMBER(10, 0),
-    deleted     NUMBER(2, 0),
-    creator     NUMBER(20, 0),
-    create_time date,
-    updater     NUMBER(20, 0),
-    update_time date,
-    PRIMARY KEY (id)
-);
-
-COMMENT ON TABLE gen_test_student IS '测试2';
-COMMENT ON COLUMN gen_test_student.id IS '学生ID';
-COMMENT ON COLUMN gen_test_student.name IS '姓名';
-COMMENT ON COLUMN gen_test_student.gender IS '性别';
-COMMENT ON COLUMN gen_test_student.age IS '年龄';
-COMMENT ON COLUMN gen_test_student.class_name IS '班级';
-COMMENT ON COLUMN gen_test_student.version IS '版本号';
-COMMENT ON COLUMN gen_test_student.deleted IS '删除标识';
-COMMENT ON COLUMN gen_test_student.creator IS '创建者';
-COMMENT ON COLUMN gen_test_student.create_time IS '创建时间';
-COMMENT ON COLUMN gen_test_student.updater IS '更新者';
-COMMENT ON COLUMN gen_test_student.update_time IS '更新时间';
+COMMENT ON COLUMN gen_project_modify.update_time IS '更新时间';
 
 --  创建触发器，主键自增
 create sequence gen_datasource_seq start with 1 increment by 1;
@@ -267,39 +248,39 @@ begin
 end;
 /
 
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('datetime', 'Date', 'java.util.Date', CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('date', 'Date', 'java.util.Date', CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('tinyint', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('smallint', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('mediumint', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('integer', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('bigint', 'Long', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('float', 'Float', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('double', 'Double', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('decimal', 'BigDecimal', 'java.math.BigDecimal', CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('bit', 'Boolean', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('char', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('varchar', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('tinytext', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('text', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('mediumtext', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('longtext', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('timestamp', 'Date', 'java.util.Date', CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('NUMBER', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('BINARY_INTEGER', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('BINARY_FLOAT', 'Float', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('BINARY_DOUBLE', 'Double', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('VARCHAR2', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('NVARCHAR', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('NVARCHAR2', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('CLOB', 'String', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int8', 'Long', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int4', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int2', 'Integer', NULL, CURRENT_DATE);
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('numeric', 'BigDecimal', 'java.math.BigDecimal', CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('datetime', 'Date', 'java.util.Date', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('date', 'Date', 'java.util.Date', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('tinyint', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('smallint', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('mediumint', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('integer', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('bigint', 'Long', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('float', 'Float', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('double', 'Double', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('decimal', 'BigDecimal', 'java.math.BigDecimal', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('bit', 'Boolean', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('char', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('varchar', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('tinytext', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('text', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('mediumtext', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('longtext', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('timestamp', 'Date', 'java.util.Date', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('NUMBER', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('BINARY_INTEGER', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('BINARY_FLOAT', 'Float', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('BINARY_DOUBLE', 'Double', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('VARCHAR2', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('NVARCHAR', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('NVARCHAR2', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('CLOB', 'String', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int8', 'Long', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int4', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int2', 'Integer', NULL, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('numeric', 'BigDecimal', 'java.math.BigDecimal', CURRENT_DATE, CURRENT_DATE);
 
-INSERT INTO gen_base_class (package_name, code, fields, remark, create_time) VALUES ('net.maku.framework.mybatis.entity', 'BaseEntity', 'id,creator,create_time,updater,update_time,version,deleted', '使用该基类，则需要表里有这些字段', CURRENT_DATE);
+INSERT INTO gen_base_class (package_name, code, fields, remark, create_time, update_time) VALUES ('com.glume.generator.service.base.entity', 'BaseEntity', 'id,creator,create_time,updater,update_time,version,deleted', '使用该基类，则需要表里有这些字段', CURRENT_DATE, CURRENT_DATE);
 
-INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time) VALUES ('maku-boot', 'maku', 'net.maku', 'D:/makunet/maku-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', CURRENT_DATE);
-INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time) VALUES ('maku-cloud', 'maku', 'net.maku', 'D:/makunet/maku-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', CURRENT_DATE);
+INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-boot', 'glume', 'com.glume', 'D:/glume/glume-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', CURRENT_DATE, CURRENT_DATE);
+INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-cloud', 'glume', 'com.glume', 'D:/glume/glume-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', CURRENT_DATE, CURRENT_DATE);

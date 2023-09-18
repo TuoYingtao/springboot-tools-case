@@ -6,7 +6,9 @@ import com.glume.generator.service.domain.entity.TableEntity;
 import com.glume.generator.service.domain.entity.TableFieldEntity;
 import com.glume.generator.service.service.TableFieldService;
 import com.glume.generator.service.service.TableService;
+import com.glume.generator.service.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +41,8 @@ public class TableController extends BaseController<TableEntity, TableService> {
 
     /**
      * 修改表字段数据
-     * @param tableFieldEntities  字段列表
+     *
+     * @param tableFieldEntities 字段列表
      * @return
      */
     @PutMapping("field/batch/update")
@@ -51,6 +54,7 @@ public class TableController extends BaseController<TableEntity, TableService> {
 
     /**
      * 导入数据源中的表
+     *
      * @param dataSourceId  数据源ID
      * @param tableNameList 表名列表
      */
@@ -63,6 +67,7 @@ public class TableController extends BaseController<TableEntity, TableService> {
 
     /**
      * 同步表结构
+     *
      * @param tableId 表ID
      */
     @PostMapping("sync/{id}")
@@ -70,6 +75,20 @@ public class TableController extends BaseController<TableEntity, TableService> {
         tableService.syncTableInfo(tableId);
 
         return Result.ok("成功同步！");
+    }
+
+    @Override
+    @GetMapping("page")
+    public Result<PageUtils<TableEntity>> page(Map<String, Object> param) {
+        PageUtils<TableEntity> page = getPage(param);
+        return Result.ok(page);
+    }
+
+    @Override
+    @GetMapping("list")
+    public Result<List<TableEntity>> list() {
+        List<TableEntity> listAll = getListAll();
+        return Result.ok(listAll);
     }
 
     @Override
@@ -90,6 +109,20 @@ public class TableController extends BaseController<TableEntity, TableService> {
         data.put("id", entityId);
 
         return Result.ok(data);
+    }
+
+    @Override
+    @PutMapping
+    public Result<TableEntity> update(TableEntity entity) {
+        TableEntity tableEntity = updateDetail(entity);
+        return Result.ok(tableEntity);
+    }
+
+    @Override
+    @DeleteMapping
+    public Result<String> delete(Long[] ids) {
+        String message = deleteBatchByIds(ids);
+        return Result.ok(message);
     }
 
 }

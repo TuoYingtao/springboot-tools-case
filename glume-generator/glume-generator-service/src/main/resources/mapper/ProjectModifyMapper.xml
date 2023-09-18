@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glume.generator.service.mapper.ProjectModifyMapper">
+    <resultMap id="projectModifyMap" type="com.glume.generator.service.domain.entity.ProjectModifyEntity">
+        <id property="id" column="id" jdbcType="BIGINT" />
+        <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+        <result property="projectCode" column="project_code" jdbcType="VARCHAR"/>
+        <result property="projectPackage" column="project_package" jdbcType="VARCHAR"/>
+        <result property="projectPath" column="project_path" jdbcType="VARCHAR"/>
+        <result property="modifyProjectName" column="modify_project_name" jdbcType="VARCHAR"/>
+        <result property="modifyProjectCode" column="modify_project_code" jdbcType="VARCHAR"/>
+        <result property="modifyProjectPackage" column="modify_project_package" jdbcType="VARCHAR"/>
+        <result property="exclusions" column="exclusions" jdbcType="VARCHAR"/>
+        <result property="modifySuffix" column="modify_suffix" jdbcType="VARCHAR"/>
+        <result property="modifyTmpPath" column="modify_tmp_path" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+</mapper>

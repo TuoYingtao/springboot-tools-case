@@ -12,4 +12,12 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <select id="getPackageListByTableId" resultType="java.lang.String">
+        SELECT t1.package_name
+        FROM gen_field_type t1,
+             gen_table_field t2
+        WHERE t1.attr_type = t2.attr_type
+          AND t2.table_id = #{tableId}
+    </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.glume.generator.service.service.impl;
 
+import com.glume.generator.framework.commons.utils.StringUtils;
 import com.glume.generator.service.base.service.impl.BaseServiceImpl;
 import com.glume.generator.service.domain.entity.FieldTypeEntity;
 import com.glume.generator.service.mapper.FieldTypeMapper;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 字段类型管理
@@ -28,5 +31,18 @@ public class FieldTypeServiceImpl extends BaseServiceImpl<FieldTypeMapper, Field
             entityHashMap.put(fieldTypeEntity.getColumnType().toLowerCase(), fieldTypeEntity);
         }
         return entityHashMap;
+    }
+
+    /**
+     * 根据tableId，获取包列表
+     *
+     * @param tableId 表ID
+     * @return 返回包列表
+     */
+    @Override
+    public Set<String> getPackageListByTableId(Long tableId) {
+        Set<String> importList = baseMapper.getPackageListByTableId(tableId);
+
+        return importList.stream().filter(StringUtils::isNotBlank).collect(Collectors.toSet());
     }
 }

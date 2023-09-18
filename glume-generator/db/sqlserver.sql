@@ -18,6 +18,7 @@ CREATE TABLE gen_field_type
     attr_type    varchar(200),
     package_name varchar(200),
     create_time  datetime,
+    update_time  datetime,
     primary key (id)
 );
 CREATE UNIQUE INDEX gen_column_type on gen_field_type(column_type);
@@ -31,6 +32,7 @@ CREATE TABLE gen_base_class
     fields       varchar(500),
     remark       varchar(200),
     create_time  datetime,
+    update_time  datetime,
     primary key (id)
 );
 
@@ -54,6 +56,7 @@ CREATE TABLE gen_table
     datasource_id  bigint,
     baseclass_id   bigint,
     create_time    datetime,
+    update_time    datetime,
     primary key (id)
 );
 CREATE UNIQUE INDEX gen_table_name on gen_table(table_name);
@@ -83,6 +86,8 @@ CREATE TABLE gen_table_field
     query_item      int,
     query_type      varchar(200),
     query_form_type varchar(200),
+    create_time     datetime,
+    update_time     datetime,
     primary key (id)
 );
 
@@ -101,61 +106,43 @@ CREATE TABLE gen_project_modify
     modify_suffix          varchar(200),
     modify_tmp_path        varchar(100),
     create_time            datetime,
+    update_time            datetime,
     PRIMARY KEY (id)
 );
 
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('datetime', 'Date', 'java.util.Date', getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('date', 'Date', 'java.util.Date', getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('tinyint', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('smallint', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('mediumint', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('integer', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('bigint', 'Long', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('float', 'Float', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('double', 'Double', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('decimal', 'BigDecimal', 'java.math.BigDecimal', getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('bit', 'Boolean', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('char', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('varchar', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('tinytext', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('text', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('mediumtext', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('longtext', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('timestamp', 'Date', 'java.util.Date', getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('NUMBER', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('BINARY_INTEGER', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('BINARY_FLOAT', 'Float', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('BINARY_DOUBLE', 'Double', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('VARCHAR2', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('NVARCHAR', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('NVARCHAR2', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('CLOB', 'String', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int8', 'Long', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int4', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int2', 'Integer', NULL, getdate(), getdate());
+INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('numeric', 'BigDecimal', 'java.math.BigDecimal', getdate(), getdate());
 
--- 用于测试代码生成器的表结构 --
-CREATE TABLE gen_test_student
-(
-    id          bigint NOT NULL IDENTITY(1,1),
-    name        varchar(50),
-    gender      int,
-    age         int,
-    class_name  varchar(50),
-    version     int,
-    deleted     int,
-    creator     bigint,
-    create_time datetime,
-    updater     bigint,
-    update_time datetime,
-    PRIMARY KEY (id)
-);
+INSERT INTO gen_base_class (package_name, code, fields, remark, create_time, update_time) VALUES ('com.glume.generator.service.base.entity', 'BaseEntity', 'id,creator,create_time,updater,update_time,version,deleted', '使用该基类，则需要表里有这些字段', getdate(), getdate());
 
-
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('datetime', 'Date', 'java.util.Date', getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('date', 'Date', 'java.util.Date', getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('tinyint', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('smallint', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('mediumint', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('integer', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('bigint', 'Long', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('float', 'Float', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('double', 'Double', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('decimal', 'BigDecimal', 'java.math.BigDecimal', getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('bit', 'Boolean', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('char', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('varchar', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('tinytext', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('text', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('mediumtext', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('longtext', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('timestamp', 'Date', 'java.util.Date', getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('NUMBER', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('BINARY_INTEGER', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('BINARY_FLOAT', 'Float', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('BINARY_DOUBLE', 'Double', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('VARCHAR2', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('NVARCHAR', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('NVARCHAR2', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('CLOB', 'String', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int8', 'Long', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int4', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('int2', 'Integer', NULL, getdate());
-INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time) VALUES ('numeric', 'BigDecimal', 'java.math.BigDecimal', getdate());
-
-INSERT INTO gen_base_class (package_name, code, fields, remark, create_time) VALUES ('net.maku.framework.mybatis.entity', 'BaseEntity', 'id,creator,create_time,updater,update_time,version,deleted', '使用该基类，则需要表里有这些字段', getdate());
-
-INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time) VALUES ('maku-boot', 'maku', 'net.maku', 'D:/makunet/maku-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', getdate());
-INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time) VALUES ('maku-cloud', 'maku', 'net.maku', 'D:/makunet/maku-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', getdate());
+INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-boot', 'glume', 'com.glume', 'D:/glume/glume-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', getdate(), getdate());
+INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-cloud', 'glume', 'com.glume', 'D:/glume/glume-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', getdate(), getdate());

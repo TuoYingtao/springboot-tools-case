@@ -40,6 +40,7 @@
         <clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
         <lombok.version>1.18.28</lombok.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <hutool-all.version>5.8.16</hutool-all.version>
     </properties>
 
     <dependencyManagement>
@@ -66,6 +67,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
             </dependency>
             <!-- Clickhouse 驱动 -->
             <dependency>

@@ -1,5 +1,6 @@
 package com.glume.generator.service.service.impl;
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -69,6 +70,19 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSourceMapper, Dat
                     .builder();
         }
         return genDataSourceBO;
+    }
+
+    /**
+     * 获取数据库产品名，如：MySQL
+     * @param datasourceId
+     */
+    @Override
+    public String getDatabaseProductName(Long datasourceId) {
+        if (datasourceId.intValue() == 0) {
+            return DbType.MYSQL.name();
+        } else {
+            return getDetail(datasourceId).getDbType();
+        }
     }
 
 

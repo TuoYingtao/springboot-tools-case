@@ -19,4 +19,6 @@ public interface DataSourceService extends BaseIService<DataSourceEntity> {
     List<DataSourceEntity> getDataSourceListAll();
 
     GenDataSourceBO getGenDataSource(Long datasourceId);
+
+    String getDatabaseProductName(Long datasourceId);
 }

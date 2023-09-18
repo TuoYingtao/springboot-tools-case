@@ -76,52 +76,35 @@ CREATE TABLE gen_field_type
     unique key (column_type)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='字段类型管理';
 
--- CREATE TABLE gen_base_class
--- (
---     id           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
---     package_name varchar(200) COMMENT '基类包名',
---     code         varchar(200) COMMENT '基类编码',
---     fields       varchar(500) COMMENT '基类字段，多个用英文逗号分隔',
---     remark       varchar(200) COMMENT '备注',
---     create_time  datetime COMMENT '创建时间',
---     primary key (id)
--- ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='基类管理';
+CREATE TABLE gen_base_class
+(
+    id           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    package_name varchar(200) COMMENT '基类包名',
+    code         varchar(200) COMMENT '基类编码',
+    fields       varchar(500) COMMENT '基类字段，多个用英文逗号分隔',
+    remark       varchar(200) COMMENT '备注',
+    create_time  datetime COMMENT '创建时间',
+    update_time datetime COMMENT '更新时间',
+    primary key (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='基类管理';
 
--- CREATE TABLE gen_project_modify
--- (
---     id                     bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
---     project_name           varchar(100) COMMENT '项目名',
---     project_code           varchar(100) COMMENT '项目标识',
---     project_package        varchar(100) COMMENT '项目包名',
---     project_path           varchar(200) COMMENT '项目路径',
---     modify_project_name    varchar(100) COMMENT '变更项目名',
---     modify_project_code    varchar(100) COMMENT '变更标识',
---     modify_project_package varchar(100) COMMENT '变更包名',
---     exclusions             varchar(200) COMMENT '排除文件',
---     modify_suffix          varchar(200) COMMENT '变更文件',
---     modify_tmp_path        varchar(100) COMMENT '变更临时路径',
---     create_time            datetime COMMENT '创建时间',
---     PRIMARY KEY (id)
--- ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='项目名变更';
-
-
--- 用于测试代码生成器的表结构 --
--- CREATE TABLE gen_test_student
--- (
---     id          bigint NOT NULL AUTO_INCREMENT COMMENT '学生ID',
---     name        varchar(50) COMMENT '姓名',
---     gender      tinyint COMMENT '性别',
---     age         int COMMENT '年龄',
---     class_name  varchar(50) COMMENT '班级',
---     version     int COMMENT '版本号',
---     deleted     tinyint COMMENT '删除标识',
---     creator     bigint COMMENT '创建者',
---     create_time datetime COMMENT '创建时间',
---     updater     bigint COMMENT '更新者',
---     update_time datetime COMMENT '更新时间',
---     PRIMARY KEY (id)
--- ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='测试2';
-
+CREATE TABLE gen_project_modify
+(
+    id                     bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    project_name           varchar(100) COMMENT '项目名',
+    project_code           varchar(100) COMMENT '项目标识',
+    project_package        varchar(100) COMMENT '项目包名',
+    project_path           varchar(200) COMMENT '项目路径',
+    modify_project_name    varchar(100) COMMENT '变更项目名',
+    modify_project_code    varchar(100) COMMENT '变更标识',
+    modify_project_package varchar(100) COMMENT '变更包名',
+    exclusions             varchar(200) COMMENT '排除文件',
+    modify_suffix          varchar(200) COMMENT '变更文件',
+    modify_tmp_path        varchar(100) COMMENT '变更临时路径',
+    create_time            datetime COMMENT '创建时间',
+    update_time            datetime COMMENT '更新时间',
+    PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='项目名变更';
 
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('datetime', 'Date', 'java.util.Date', now(), now());
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('date', 'Date', 'java.util.Date', now(), now());
@@ -154,8 +137,8 @@ INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, u
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int4', 'Integer', NULL, now(), now());
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('int2', 'Integer', NULL, now(), now());
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('numeric', 'BigDecimal', 'java.math.BigDecimal', now(), now());
---
--- INSERT INTO gen_base_class (package_name, code, fields, remark, create_time) VALUES ('net.maku.framework.mybatis.entity', 'BaseEntity', 'id,creator,create_time,updater,update_time,version,deleted', '使用该基类，则需要表里有这些字段', now());
---
--- INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time) VALUES ('maku-boot', 'maku', 'net.maku', 'D:/makunet/maku-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', now());
--- INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time) VALUES ('maku-cloud', 'maku', 'net.maku', 'D:/makunet/maku-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', now());
+
+INSERT INTO gen_base_class (package_name, code, fields, remark, create_time, update_time) VALUES ('com.glume.generator.service.base.entity', 'BaseEntity', 'id,creator,create_time,updater,update_time,version,deleted', '使用该基类，则需要表里有这些字段', now(), now());
+
+INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-boot', 'glume', 'com.glume', 'D:/glume/glume-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', now(), now());
+INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-cloud', 'glume', 'com.glume', 'D:/glume/glume-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', now(), now());
