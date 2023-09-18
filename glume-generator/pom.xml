@@ -23,6 +23,7 @@
         <module>glume-generator-service</module>
         <module>glume-generator-boot-starter</module>
         <module>glume-generator-admin</module>
+        <module>../commons-compound-tools/commons-compound-swagger</module>
     </modules>
 
     <properties>
@@ -112,33 +113,88 @@
         </dependencies>
     </dependencyManagement>
 
-    <profiles>
-        <profile>
-            <id>阿里云公共仓库</id>
-            <repositories>
-                <repository>
-                    <id>public</id>
-                    <name>阿里云公共仓库</name>
-                    <url>https://maven.aliyun.com/repository/public/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
-            </repositories>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>public</id>
-                    <name>阿里云公共仓库</name>
-                    <url>https://maven.aliyun.com/repository/public/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </pluginRepository>
-            </pluginRepositories>
-        </profile>
-    </profiles>
+    <developers>
+        <developer>
+            <name>TuoYingtao</name>
+            <email>tuoyingtao@163.com</email>
+            <organization>Glume</organization>
+            <organizationUrl>https://github.com/TuoYingtao</organizationUrl>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <repositories>
+        <!--<repository>-->
+        <!--    <id>myLocal</id>-->
+        <!--    <name>myLocal nexus</name>-->
+        <!--    <url>file://F:/java/Maven</url>-->
+        <!--    <releases>-->
+        <!--        <enabled>true</enabled>-->
+        <!--    </releases>-->
+        <!--</repository>-->
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <!--<pluginRepository>-->
+        <!--    <id>myLocal</id>-->
+        <!--    <name>myLocal nexus</name>-->
+        <!--    <url>file://F:/java/Maven</url>-->
+        <!--    <releases>-->
+        <!--        <enabled>true</enabled>-->
+        <!--    </releases>-->
+        <!--    <snapshots>-->
+        <!--        <enabled>false</enabled>-->
+        <!--    </snapshots>-->
+        <!--</pluginRepository>-->
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>

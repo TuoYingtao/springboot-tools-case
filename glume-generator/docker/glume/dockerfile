@@ -1,0 +1,15 @@
+# 基础镜像
+FROM openjdk:8-jre
+# author
+MAINTAINER TuoYingtao
+
+# 挂载目录
+VOLUME /home/glume-generator
+# 创建目录
+RUN mkdir -p /home/glume-generator
+# 指定路径
+WORKDIR /home/glume-generator
+# 复制jar文件到路径
+COPY ./jar/glume-generator-admin.jar /home/glume-generator/glume-generator-admin.jar
+# 启动系统服务
+ENTRYPOINT ["java","-jar","ruoyi-visual-monitor.jar"]
