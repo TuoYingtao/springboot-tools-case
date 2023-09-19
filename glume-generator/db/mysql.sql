@@ -1,3 +1,19 @@
+DROP DATABASE IF EXISTS glume-generator;
+DROP USER IF EXISTS 'glume-generator'@'%';
+
+CREATE DATABASE IF NOT EXISTS glume-generator DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE glume-generator;
+
+CREATE USER 'glume-generator'@'%' IDENTIFIED BY '123456';
+GRANT ALL PRIVILEGES ON glume-generator.* TO 'glume-generator'@'%';
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'glume-generator'@'%';
+
+SET NAMES utf8mb4;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS gen_datasource;
 CREATE TABLE gen_datasource
 (
     id          bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -11,6 +27,7 @@ CREATE TABLE gen_datasource
     primary key (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='数据源管理';
 
+DROP TABLE IF EXISTS gen_table;
 CREATE TABLE gen_table
 (
     id             bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -35,6 +52,7 @@ CREATE TABLE gen_table
     unique key (table_name)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='代码生成表';
 
+DROP TABLE IF EXISTS gen_table_field;
 CREATE TABLE gen_table_field
 (
     id              bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -64,6 +82,7 @@ CREATE TABLE gen_table_field
     primary key (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='代码生成表字段';
 
+DROP TABLE IF EXISTS gen_field_type;
 CREATE TABLE gen_field_type
 (
     id           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -76,6 +95,7 @@ CREATE TABLE gen_field_type
     unique key (column_type)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='字段类型管理';
 
+DROP TABLE IF EXISTS gen_base_class;
 CREATE TABLE gen_base_class
 (
     id           bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -88,6 +108,7 @@ CREATE TABLE gen_base_class
     primary key (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='基类管理';
 
+DROP TABLE IF EXISTS gen_project_modify;
 CREATE TABLE gen_project_modify
 (
     id                     bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -105,6 +126,8 @@ CREATE TABLE gen_project_modify
     update_time            datetime COMMENT '更新时间',
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='项目名变更';
+
+INSERT INTO gen_datasource (db_type, conn_name, conn_url, username, password, create_time, update_time) VALUES ('MySQL', 'glume-generator', 'jdbc:mysql://localhost:3306/glume-generator?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true', 'glume-generator', '123456', now(), now());
 
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('datetime', 'Date', 'java.util.Date', now(), now());
 INSERT INTO gen_field_type (column_type, attr_type, package_name, create_time, update_time) VALUES ('date', 'Date', 'java.util.Date', now(), now());
@@ -142,3 +165,5 @@ INSERT INTO gen_base_class (package_name, code, fields, remark, create_time, upd
 
 INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-boot', 'glume', 'com.glume', 'D:/glume/glume-boot', 'baba-boot', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', now(), now());
 INSERT INTO gen_project_modify (project_name, project_code, project_package, project_path, modify_project_name, modify_project_code, modify_project_package, exclusions, modify_suffix, create_time, update_time) VALUES ('glume-cloud', 'glume', 'com.glume', 'D:/glume/glume-cloud', 'baba-cloud', 'baba', 'com.baba', '.git,.idea,target,logs', 'java,xml,yml,txt', now(), now());
+
+SET FOREIGN_KEY_CHECKS = 1;

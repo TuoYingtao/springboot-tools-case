@@ -1,8 +1,9 @@
 version : '3.8'
+
 services:
   glume-generator-mysql:
-    container_name: glume-generator-mysql
     image: mysql:8.0.32
+    container_name: glume-generator-mysql
     build:
       context: ./mysql
     ports:
@@ -13,9 +14,10 @@ services:
       - ./mysql/data:/var/lib/mysql
     command: [
       'mysqld',
-      '--innodb-buffer-pool-size=80M',
+      '--default-authentication-plugin=mysql_native_password',
       '--character-set-server=utf8mb4',
       '--collation-server=utf8mb4_unicode_ci',
+      '--innodb-buffer-pool-size=80M',
       '--default-time-zone=+8:00',
       '--lower-case-table-names=1'
     ]
@@ -24,8 +26,8 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_ALLOW_EMPTY_PASSWORD=no
       - TZ=Asia/Shanghai
-  glume-generator:
-    container_name: glume-generator
+  glume-generator-server:
+    container_name: glume-generator-server
     build:
       context: ./glume
       dockerfile: dockerfile

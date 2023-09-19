@@ -1,5 +1,9 @@
+# 构建时指定的参数变量
+ARG GLUME_VERSION=8-jre
+ARG GLUME_JAR_NAME=glume-generator-admin.jar
+
 # 基础镜像
-FROM openjdk:8-jre
+FROM openjdk:${GLUME_VERSION}
 # author
 MAINTAINER TuoYingtao
 
@@ -12,4 +16,4 @@ WORKDIR /home/glume-generator
 # 复制jar文件到路径
 COPY ./jar/glume-generator-admin.jar /home/glume-generator/glume-generator-admin.jar
 # 启动系统服务
-ENTRYPOINT ["java","-jar","ruoyi-visual-monitor.jar"]
+ENTRYPOINT ["java","-jar", "-Dfile.encoding=utf-8", "-Xms256m", "-Xmx1024m", "-XX:MetaspaceSize=128m", "-XX:MaxMetaspaceSize=512m", "glume-generator-admin.jar"]
