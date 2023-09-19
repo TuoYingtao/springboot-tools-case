@@ -40,3 +40,10 @@ build/
 out
 logs/
 /design-patterns-tools/
+
+### Docker 构建文件 ###
+**/docker/mysql/conf
+**/docker/mysql/data
+**/docker/mysql/logs
+**/docker/mysql/db/*.sql
+**/docker/**/jar/*.jar

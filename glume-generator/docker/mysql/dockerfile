@@ -13,11 +13,11 @@ LABEL maintainer="TuoYingtao" description="mysql 服务" version="${MYSQL_VERSIO
 ENV MYSQL_ALLOW_EMPTY_PASSWORD no
 
 # 执行sql脚本
-ADD ./db/*.sql /docker-entrypoint-initdb.d/
+ADD /mysql/db/*.sql /docker-entrypoint-initdb.d/
 
 # 将所需文件放到容器中
-COPY setup.sh ./setup.sh
-COPY ./db/mysql.sql /mysql/mysql.sql
+COPY ["/mysql/setup.sh", "./setup.sh"]
+COPY /mysql/db/mysql.sql /mysql/mysql.sql
 
 # 设置容器启动时执行的命令
 CMD ["sh", "/mysql/setup.sh"]

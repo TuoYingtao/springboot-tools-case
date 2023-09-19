@@ -49,7 +49,7 @@ server() {
 
 # 进入指定容器执行命令
 execs() {
-	docker-compose exec $1 bash 
+	docker-compose exec $1 bash
 }
 
 # 关闭所有环境/模块 或 指定环境/模块
@@ -176,7 +176,7 @@ options_computer() {
 #========================================= Shell 业务 =========================================
 
 << COMMENT
-定义短选项: 
+定义短选项:
 --每一个字符都表示一个短选项
 定义长选项
 --每一个逗号分割的字符串表示一个长选项
@@ -230,7 +230,7 @@ while true; do
       options_computer $2
     ;;
     -e | --execs)
-      execs
+      execs $2
       options_computer $2
     ;;
     "--stop")

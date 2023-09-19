@@ -1,12 +1,15 @@
-DROP DATABASE IF EXISTS glume-generator;
+DROP DATABASE IF EXISTS `glume-generator`;
+CREATE DATABASE IF NOT EXISTS `glume-generator` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE `glume-generator`;
+
 DROP USER IF EXISTS 'glume-generator'@'%';
+CREATE USER 'glume-generator'@'%' IDENTIFIED WITH 'mysql_native_password' BY '123456';
 
-CREATE DATABASE IF NOT EXISTS glume-generator DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE glume-generator;
+GRANT ALL PRIVILEGES ON `glume-generator`.* TO 'glume-generator'@'%' WITH GRANT OPTION;
 
-CREATE USER 'glume-generator'@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON glume-generator.* TO 'glume-generator'@'%';
 FLUSH PRIVILEGES;
+
 SHOW GRANTS FOR 'glume-generator'@'%';
 
 SET NAMES utf8mb4;
