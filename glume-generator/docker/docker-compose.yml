@@ -8,6 +8,9 @@ services:
     container_name: glume-generator-mysql
     ports:
       - "3306:3306"
+    networks:
+      my-network:
+        ipv4_address: 172.23.0.2
     volumes:
       - ./mysql/db:/docker-entrypoint-initdb.d/
       - ./mysql/conf:/etc/mysql/conf.d
@@ -34,7 +37,17 @@ services:
       dockerfile: ./glume/dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - my-network
     depends_on:
       - glume-generator-mysql
     links:
       - glume-generator-mysql
+networks:
+  my-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.23.0.0/24   # 网络号段
+          gateway: 172.23.0.1     # 网关地址
