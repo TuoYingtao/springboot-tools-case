@@ -4,10 +4,11 @@ services:
   glume-generator-mysql:
 #    image: mysql:8.0.32
     build:
-      dockerfile: ./mysql/dockerfile
+      context: ./mysql
+      dockerfile: dockerfile
     container_name: glume-generator-mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       my-network:
         ipv4_address: 172.23.0.2
@@ -33,10 +34,10 @@ services:
   glume-generator-server:
     container_name: glume-generator-server
     build:
-#      context: ./glume
-      dockerfile: ./glume/dockerfile
+      context: ./glume
+      dockerfile: dockerfile
     ports:
-      - "8080:8080"
+      - "8082:8082"
     networks:
       - my-network
     depends_on:

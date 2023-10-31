@@ -18,7 +18,7 @@ RUN mkdir -p /home/glume-generator
 WORKDIR /home/glume-generator
 
 # 复制jar文件到挂载目录
-COPY /glume/jar/${GLUME_JAR_NAME} /home/glume-generator/${GLUME_JAR_NAME}
+COPY /jar/${GLUME_JAR_NAME} /home/glume-generator/${GLUME_JAR_NAME}
 
 # 启动系统服务
 ENTRYPOINT ["java","-jar", "-Dfile.encoding=utf-8", "-Xms256m", "-Xmx1024m", "-XX:MetaspaceSize=128m", "-XX:MaxMetaspaceSize=512m", "glume-generator-admin.jar"]
