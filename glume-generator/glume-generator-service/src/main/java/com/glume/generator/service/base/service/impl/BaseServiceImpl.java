@@ -6,10 +6,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.generator.framework.commons.constants.Constants;
+import com.glume.generator.framework.commons.json.JacksonUtils;
 import com.glume.generator.framework.commons.text.Convert;
 import com.glume.generator.framework.commons.utils.StringUtils;
-import com.glume.generator.service.base.service.BaseIService;
 import com.glume.generator.service.base.entity.BaseEntity;
+import com.glume.generator.service.base.service.BaseIService;
 import com.glume.generator.service.domain.query.ReqParamQuery;
 import com.glume.generator.service.utils.PageUtils;
 import com.glume.generator.service.utils.QueryParams;
@@ -50,6 +51,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
         return new QueryParams<T>().getPage(param);
     }
 
+
     /**
      * 构建公共查询参数
      * @param reqParamQuery 公共查询参数实体类
@@ -57,6 +59,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
      */
     protected final QueryWrapper<T> getWrapper(ReqParamQuery reqParamQuery) {
         QueryWrapper<T> wrapper = new QueryWrapper<>();
+        wrapper.ge(StringUtils.isNotNull(reqParamQuery.getBeginTime()), "create_time", reqParamQuery.getBeginTime());
+        wrapper.le(StringUtils.isNotNull(reqParamQuery.getEndTime()), "create_time", reqParamQuery.getEndTime());
         wrapper.like(StringUtils.isNotBlank(reqParamQuery.getCode()), "code", reqParamQuery.getCode());
         wrapper.like(StringUtils.isNotBlank(reqParamQuery.getTableName()), "table_name", reqParamQuery.getTableName());
         wrapper.like(StringUtils.isNotBlank(reqParamQuery.getAttrType()), "attr_type", reqParamQuery.getAttrType());
@@ -65,6 +69,12 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
         wrapper.eq(StringUtils.isNotBlank(reqParamQuery.getDbType()), "db_type", reqParamQuery.getDbType());
         wrapper.like(StringUtils.isNotBlank(reqParamQuery.getProjectName()), "project_name", reqParamQuery.getProjectName());
         return wrapper;
+    }
+
+    // TODO 公共参数与请求参数合并
+    protected final QueryWrapper<T> getWrapper(Map<String, Object> param) {
+        ReqParamQuery reqParamQuery = JacksonUtils.jsonToBean(JacksonUtils.beanToJson(param), ReqParamQuery.class);
+        return getWrapper(reqParamQuery);
     }
 
     /**

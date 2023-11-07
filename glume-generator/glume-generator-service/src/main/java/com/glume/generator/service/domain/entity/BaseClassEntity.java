@@ -1,5 +1,6 @@
 package com.glume.generator.service.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.glume.generator.service.base.entity.BaseEntity;
@@ -19,7 +20,7 @@ public class BaseClassEntity extends BaseEntity {
     /**
      * id
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
     /**
      * 基类包名
