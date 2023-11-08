@@ -18,14 +18,14 @@ import java.util.Arrays;
  * @Version: v1.0.0
  */
 public class ImageUtils {
-    private static final Logger log = LoggerFactory.getLogger(ImageUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);
 
     public static byte[] getImage(String imagePath) {
         InputStream is = getFile(imagePath);
         try {
             return IOUtils.toByteArray(is);
         } catch (Exception e) {
-            log.error("图片加载异常 {}", e);
+            LOGGER.error("图片加载异常 {}", e);
             return null;
         } finally {
             IOUtils.closeQuietly(is);
@@ -38,7 +38,7 @@ public class ImageUtils {
             result = Arrays.copyOf(result, result.length);
             return new ByteArrayInputStream(result);
         } catch (Exception e) {
-            log.error("获取图片异常 {}", e);
+            LOGGER.error("获取图片异常 {}", e);
         }
         return null;
     }
@@ -61,7 +61,7 @@ public class ImageUtils {
             in = urlConnection.getInputStream();
             return IOUtils.toByteArray(in);
         } catch (Exception e) {
-            log.error("访问文件异常 {}", e);
+            LOGGER.error("访问文件异常 {}", e);
             return null;
         } finally {
             IOUtils.closeQuietly(in);
