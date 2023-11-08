@@ -9,6 +9,8 @@ import com.glume.generator.service.domain.entity.ProjectModifyEntity;
 import com.glume.generator.service.mapper.ProjectModifyMapper;
 import com.glume.generator.service.service.ProjectModifyService;
 import com.glume.generator.service.utils.ProjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,9 +29,10 @@ import java.util.Map;
  */
 @Service
 public class ProjectModifyServiceImpl extends BaseServiceImpl<ProjectModifyMapper, ProjectModifyEntity> implements ProjectModifyService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectModifyService.class);
 
     @Override
-    public void download(HttpServletResponse response, Long id) {
+    public String download(HttpServletResponse response, Long id) {
         try {
             ProjectModifyEntity modifyEntity = getBaseMapper().selectById(id);
 
@@ -68,8 +71,10 @@ public class ProjectModifyServiceImpl extends BaseServiceImpl<ProjectModifyMappe
             response.setContentType("application/octet-stream; charset=UTF-8");
 
             IoUtil.write(response.getOutputStream(), false, data);
+            return "";
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.error(e.getMessage(), e);
+            return e.getMessage();
         }
     }
 

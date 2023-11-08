@@ -2,6 +2,7 @@ package com.glume.generator.service.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.glume.generator.service.base.entity.BaseEntity;
 import lombok.Data;
 
@@ -65,11 +66,13 @@ public class ProjectModifyEntity extends BaseEntity {
     /**
      * 变更文件
      */
+    @JsonIgnore
     private String modifySuffix;
 
     /**
      * 变更临时路径
      */
+    @JsonIgnore
     private String modifyTmpPath;
 
 }

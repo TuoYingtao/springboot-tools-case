@@ -1,6 +1,7 @@
 package com.glume.generator.service.controller;
 
 import com.glume.generator.framework.commons.Result;
+import com.glume.generator.framework.commons.utils.StringUtils;
 import com.glume.generator.service.base.controller.BaseController;
 import com.glume.generator.service.domain.entity.ProjectModifyEntity;
 import com.glume.generator.service.service.ProjectModifyService;
@@ -77,10 +78,15 @@ public class ProjectModifyController extends BaseController<ProjectModifyEntity,
 
     /**
      * 源码下载
+     * TODO 待测试
      */
     @GetMapping("download/{id}")
-    public void download(@PathVariable("id") Long id, HttpServletResponse response) {
-        projectModifyService.download(response, id);
+    public Result<String> download(@PathVariable("id") Long id, HttpServletResponse response) {
+        String message = projectModifyService.download(response, id);
+        if (StringUtils.isEmpty(message)) {
+            return Result.fail(message);
+        }
+        return Result.ok("下载中...");
     }
 
 }

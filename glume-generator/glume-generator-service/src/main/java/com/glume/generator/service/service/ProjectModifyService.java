@@ -14,6 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ProjectModifyService extends BaseIService<ProjectModifyEntity> {
 
-    void download(HttpServletResponse response, Long id);
+    String download(HttpServletResponse response, Long id);
 
 }
