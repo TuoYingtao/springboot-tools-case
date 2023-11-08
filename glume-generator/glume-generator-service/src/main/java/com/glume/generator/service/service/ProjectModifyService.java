@@ -3,6 +3,8 @@ package com.glume.generator.service.service;
 import com.glume.generator.service.base.service.BaseIService;
 import com.glume.generator.service.domain.entity.ProjectModifyEntity;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 项目名变更
  *
@@ -11,5 +13,7 @@ import com.glume.generator.service.domain.entity.ProjectModifyEntity;
  * @Version: v1.0.0
  */
 public interface ProjectModifyService extends BaseIService<ProjectModifyEntity> {
+
+    void download(HttpServletResponse response, Long id);
 
 }

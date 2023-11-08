@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +73,14 @@ public class ProjectModifyController extends BaseController<ProjectModifyEntity,
     public Result<String> delete(@RequestBody Long[] ids) {
         String message = deleteBatchByIds(ids);
         return Result.ok(message);
+    }
+
+    /**
+     * 源码下载
+     */
+    @GetMapping("download/{id}")
+    public void download(@PathVariable("id") Long id, HttpServletResponse response) {
+        projectModifyService.download(response, id);
     }
 
 }

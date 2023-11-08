@@ -1,13 +1,21 @@
-env: dev
 server:
   port: 8082
 spring:
   application:
     name: glume-generator-admin
   profiles:
-    active: ${env}
+    active: @profile.active@
     include:
       - two
+# MyBatis Plus 配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto                     # 主键自动增长
+      logic-delete-field: delete        # 全局软删除字段
+      logic-delete-value: 2             # 逻辑已删除值
+      logic-not-delete-value: 0         # 逻辑未删除值
+  mapper-locations: classpath:/mapper/**/*.xml    # 配置mapper的扫描，找到所有的mapper.xml映射文件
 swagger:
   basePackage: com.glume.generator.service
 knife4j:
