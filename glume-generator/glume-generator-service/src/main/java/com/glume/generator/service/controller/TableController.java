@@ -113,14 +113,14 @@ public class TableController extends BaseController<TableEntity, TableService> {
 
     @Override
     @PutMapping
-    public Result<TableEntity> update(TableEntity entity) {
+    public Result<TableEntity> update(@RequestBody TableEntity entity) {
         TableEntity tableEntity = updateDetail(entity);
         return Result.ok(tableEntity);
     }
 
     @Override
     @DeleteMapping
-    public Result<String> delete(Long[] ids) {
+    public Result<String> delete(@RequestBody Long[] ids) {
         String message = deleteBatchByIds(ids);
         return Result.ok(message);
     }

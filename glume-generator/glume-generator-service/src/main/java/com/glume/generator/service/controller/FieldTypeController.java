@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class FieldTypeController extends BaseController<FieldTypeEntity, FieldTy
 
     @Override
     @GetMapping("page")
-    public Result<PageUtils<FieldTypeEntity>> page(Map<String, Object> param) {
+    public Result<PageUtils<FieldTypeEntity>> page(@RequestParam Map<String, Object> param) {
         PageUtils<FieldTypeEntity> page = getPage(param);
 
         return Result.ok(page);
