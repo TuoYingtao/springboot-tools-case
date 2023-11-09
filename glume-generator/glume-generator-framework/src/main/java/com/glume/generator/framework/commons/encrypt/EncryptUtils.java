@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 public class EncryptUtils {
 
     //加密用的Key 可以用字母和数字组成 此处使用AES-128-ECB加密模式，key需要为16位。
-    private static final String ENCRYPT_KEY = "makulowcodeyyds1";
+    private static final String ENCRYPT_KEY = "glume4tyt5f8g69o";
 
     //参数分别代表 算法名称/加密模式/数据填充方式
     private static final String ALGORITHM_STR = "AES/ECB/PKCS5Padding";
