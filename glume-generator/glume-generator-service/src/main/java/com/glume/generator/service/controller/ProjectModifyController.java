@@ -78,7 +78,6 @@ public class ProjectModifyController extends BaseController<ProjectModifyEntity,
 
     /**
      * 源码下载
-     * TODO 待测试
      */
     @GetMapping("download/{id}")
     public Result<String> download(@PathVariable("id") Long id, HttpServletResponse response) {
