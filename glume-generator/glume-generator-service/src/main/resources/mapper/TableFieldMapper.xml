@@ -30,4 +30,11 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
     </resultMap>
+    <delete id="removeBatchByTableId" parameterType="java.util.List">
+        DELETE FROM gen_table_field
+        WHERE `table_id` IN
+        <foreach collection="tableIds" item="item" index="index" open="(" separator="," close=")">
+              #{item}
+        </foreach>
+    </delete>
 </mapper>

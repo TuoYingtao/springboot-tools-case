@@ -21,7 +21,6 @@ import java.util.List;
 public class TableEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.INPUT)
     private Long id;
     /**
      * 表名

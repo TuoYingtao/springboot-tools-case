@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -98,7 +99,7 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
             // 同步表结构字段
             dataSourceFields.forEach(entity -> {
                 // 新增字段
-                if (!tableFieldMap.containsKey(entity)) {
+                if (!tableFieldMap.containsKey(entity.getFieldName())) {
                     entity.setUpdateTime(DateUtils.getNowDate());
                     tableFieldService.save(entity);
                     return;
@@ -110,7 +111,7 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
                 tableFieldEntity.setFieldType(entity.getFieldType());
                 tableFieldEntity.setAttrType(entity.getAttrType());
                 tableFieldEntity.setUpdateTime(DateUtils.getNowDate());
-                tableFieldService.save(tableFieldEntity);
+                tableFieldService.updateById(tableFieldEntity);
             });
 
             // 从数据源中获取当前表所有字段名
@@ -168,8 +169,10 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
             if (!StringUtils.isNull(tableFieldEntityList)) {
                 // 初始化表字段
                 tableFieldService.initTableFieldList(tableFieldEntityList);
+                Long tableId = tableEntity.getId();
                 // 保存表字段信息
                 tableFieldEntityList.stream().peek(tableFieldEntity -> {
+                    tableFieldEntity.setTableId(tableId);
                     tableFieldEntity.setCreateTime(DateUtils.getNowDate());
                     tableFieldEntity.setUpdateTime(DateUtils.getNowDate());
                 }).forEach(tableFieldService::save);
@@ -194,5 +197,13 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
                 .setPassword(dataSourceEntity.getPassword())
                 .builder();
         return dataSourceBO;
+    }
+
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public boolean deleteBatchByIds(Long[] ids) {
+        tableFieldService.removeBatchByTableId(Arrays.asList(ids));
+        int row = baseMapper.deleteBatchIds(Arrays.asList(ids));
+        return row != 0;
     }
 }

@@ -20,4 +20,6 @@ public interface TableFieldService extends IService<TableFieldEntity> {
     void updateBatchTableField(List<TableFieldEntity> tableFieldEntities);
 
     List<TableFieldEntity> getTableFieldByTableId(Long tableId);
+
+    int removeBatchByTableId(List<Long> tableIds);
 }

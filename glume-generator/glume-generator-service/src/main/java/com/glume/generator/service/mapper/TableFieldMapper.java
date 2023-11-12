@@ -3,6 +3,9 @@ package com.glume.generator.service.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.glume.generator.service.domain.entity.TableFieldEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 表字段
@@ -13,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TableFieldMapper extends BaseMapper<TableFieldEntity> {
+    int removeBatchByTableId(@Param("tableIds") List<Long> tableIds);
 }

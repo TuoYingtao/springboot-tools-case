@@ -14,6 +14,7 @@ import com.glume.generator.service.service.TableFieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -71,5 +72,10 @@ public class TableFieldServiceImpl extends BaseServiceImpl<TableFieldMapper, Tab
         LambdaQueryWrapper<TableFieldEntity> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(TableFieldEntity::getTableId, tableId);
         return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public int removeBatchByTableId(List<Long> tableIds) {
+        return baseMapper.removeBatchByTableId(tableIds);
     }
 }
