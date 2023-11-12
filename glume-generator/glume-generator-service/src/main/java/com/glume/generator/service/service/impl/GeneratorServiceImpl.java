@@ -106,6 +106,19 @@ public class GeneratorServiceImpl implements GeneratorService {
         }
     }
 
+    @Override
+    public Map<String, String> previewCode(Long tableId) {
+        Map<String, String> map = new HashMap<>();
+        Map<String, Object> dataModel = getDataModel(tableId);
+        GeneratorInfo generatorConfig = genConfigUtils.getGeneratorConfig();
+        for (TemplateInfo templateInfo : generatorConfig.getTemplates()) {
+            dataModel.put("templateName", templateInfo.getTemplateName());
+            String content = TemplateUtils.getContent(templateInfo.getTemplateContent(), dataModel);
+            map.put(templateInfo.getTemplateName(), content);
+        }
+        return map;
+    }
+
     /**
      * 获取渲染的数据模型
      * @param tableId 表ID

@@ -1,5 +1,6 @@
 package com.glume.generator.service.service;
 
+import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -14,4 +15,6 @@ public interface GeneratorService {
     void generatorCode(Long[] tableIds);
 
     void downloadCode(long tableId, ZipOutputStream zip);
+
+    Map<String, String> previewCode(Long tableId);
 }

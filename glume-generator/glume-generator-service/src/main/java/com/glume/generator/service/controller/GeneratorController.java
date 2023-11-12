@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -28,6 +29,16 @@ public class GeneratorController {
 
     @Autowired
     private GeneratorService generatorService;
+
+    /**
+     * 预览代码
+     */
+    @ResponseBody
+    @GetMapping("preview")
+    public Result<Map<String, String>> previewCode(Long tableId) {
+        Map<String, String> previewCodeMap = generatorService.previewCode(tableId);
+        return Result.ok(previewCodeMap);
+    }
 
     /**
      * 生成代码（自定义目录）
