@@ -2,6 +2,7 @@ package com.glume.generator.service.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.glume.generator.framework.commons.text.StrFormatter;
 import com.glume.generator.framework.commons.utils.DateUtils;
 import com.glume.generator.framework.commons.utils.StringUtils;
@@ -161,6 +162,12 @@ public class GeneratorServiceImpl implements GeneratorService {
 
         // 导入的包列表
         Set<String> importList = fieldTypeService.getPackageListByTableId(table.getId());
+        String[] str = new String[]{"INSERT","UPDATE","INSERT_UPDATE"};
+        table.getFieldList().stream().peek(tableFieldEntity -> {
+            if (Arrays.asList(str).contains(tableFieldEntity.getAutoFill())) {
+                importList.add(FieldFill.class.getPackage().getName());
+            }
+        });
         dataModel.put("importList", importList);
 
         // 表信息
