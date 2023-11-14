@@ -1,6 +1,7 @@
 package com.glume.generator.framework.handler;
 
-import com.glume.generator.framework.exception.ServiceException;
+import com.glume.generator.framework.commons.constants.Constants;
+import com.glume.generator.framework.exception.TemplateFileException;
 import freemarker.template.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +37,11 @@ public class TemplateUtils {
         try {
             // 渲染模板
             String templateName = dataModel.get("templateName").toString();
-            Template template = new Template(templateName, reader, null, "utf-8");
+            Template template = new Template(templateName, reader, null, Constants.UTF8);
             template.process(dataModel, sw);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new ServiceException("渲染模板失败，请检查模板语法");
+            throw new TemplateFileException("渲染模板失败，请检查模板语法");
         }
 
         content = sw.toString();

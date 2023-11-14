@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class BaseClassController extends BaseController<BaseClassEntity, BaseCla
 
     @Override
     @GetMapping("page")
-    public Result<PageUtils<BaseClassEntity>> page(Map<String, Object> param) {
+    public Result<PageUtils<BaseClassEntity>> page(@RequestParam Map<String, Object> param) {
         PageUtils<BaseClassEntity> page = getPage(param);
 
         return Result.ok(page);

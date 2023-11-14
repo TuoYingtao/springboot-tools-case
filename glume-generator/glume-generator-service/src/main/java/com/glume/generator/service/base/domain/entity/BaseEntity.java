@@ -1,4 +1,4 @@
-package com.glume.generator.service.base.entity;
+package com.glume.generator.service.base.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

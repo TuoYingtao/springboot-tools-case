@@ -6,7 +6,8 @@ import com.glume.generator.framework.commons.text.StrFormatter;
 import com.glume.generator.framework.commons.utils.StringUtils;
 import com.glume.generator.framework.domain.template.GeneratorInfo;
 import com.glume.generator.framework.domain.template.TemplateInfo;
-import com.glume.generator.framework.exception.ServiceException;
+import com.glume.generator.framework.exception.TemplateConfigException;
+import com.glume.generator.framework.exception.TemplateFileException;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class GenConfigUtils {
         String jsonConfigPath = Convert.str(new StringBuilder(template).append("config.json"), StandardCharsets.UTF_8);
         InputStream isConfig = this.getClass().getResourceAsStream(jsonConfigPath);
         if (isConfig == null) {
-            throw new ServiceException("模板配置文件，config.json不存在");
+            throw new TemplateConfigException("模板配置文件，config.json不存在");
         }
         try {
             // 读取模板配置文件
@@ -47,7 +48,7 @@ public class GenConfigUtils {
                 // 模板文件
                 InputStream isTemplate = this.getClass().getResourceAsStream(template + templateInfo.getTemplateName());
                 if (isTemplate == null) {
-                    throw new ServiceException(StrFormatter.format("模板文件{}不存在", templateInfo.getTemplateName()));
+                    throw new TemplateFileException(StrFormatter.format("模板文件{}不存在", templateInfo.getTemplateName()));
                 }
                 // 读取模板内容
                 String templateContent = StreamUtils.copyToString(isTemplate, StandardCharsets.UTF_8);
@@ -55,7 +56,7 @@ public class GenConfigUtils {
             }
             return generator;
         } catch (IOException e) {
-            throw new ServiceException("读取config.json配置文件失败");
+            throw new TemplateConfigException("读取config.json配置文件失败");
         }
     }
 }

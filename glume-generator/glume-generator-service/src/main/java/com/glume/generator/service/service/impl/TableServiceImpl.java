@@ -1,7 +1,6 @@
 package com.glume.generator.service.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.glume.generator.framework.commons.json.JacksonUtils;
@@ -60,7 +59,7 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
 
     @Override
     public PageUtils<TableEntity> getPage(Map<String, Object> param) {
-        IPage<TableEntity> page = baseMapper.selectPage(getQueryPage(param), new QueryWrapper<>());
+        IPage<TableEntity> page = baseMapper.selectPage(getQueryPage(param), getWrapper(param));
         return new PageUtils<>(page);
     }
 

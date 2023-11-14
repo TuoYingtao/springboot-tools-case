@@ -1,7 +1,7 @@
 package com.glume.generator.service.base.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.generator.service.base.entity.BaseEntity;
+import com.glume.generator.service.base.domain.entity.BaseEntity;
 import com.glume.generator.service.utils.PageUtils;
 
 import java.util.List;

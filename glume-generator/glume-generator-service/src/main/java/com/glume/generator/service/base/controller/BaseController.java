@@ -2,7 +2,7 @@ package com.glume.generator.service.base.controller;
 
 import com.glume.generator.framework.commons.Result;
 import com.glume.generator.framework.commons.utils.SpringContextHolder;
-import com.glume.generator.service.base.entity.BaseEntity;
+import com.glume.generator.service.base.domain.entity.BaseEntity;
 import com.glume.generator.service.base.service.BaseIService;
 import com.glume.generator.service.utils.PageUtils;
 import org.slf4j.Logger;

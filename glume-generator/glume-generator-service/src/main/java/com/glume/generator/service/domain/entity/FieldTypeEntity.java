@@ -2,7 +2,7 @@ package com.glume.generator.service.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.glume.generator.service.base.entity.BaseEntity;
+import com.glume.generator.service.base.domain.entity.BaseEntity;
 import lombok.Data;
 
 /**

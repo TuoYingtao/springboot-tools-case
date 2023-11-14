@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.glume.generator.framework.commons.constants.Constants;
 import com.glume.generator.framework.commons.json.JacksonUtils;
 import com.glume.generator.framework.commons.text.Convert;
 import com.glume.generator.framework.commons.utils.StringUtils;
-import com.glume.generator.service.base.entity.BaseEntity;
+import com.glume.generator.service.base.domain.entity.BaseEntity;
+import com.glume.generator.service.base.domain.query.BaseParamQuery;
 import com.glume.generator.service.base.service.BaseIService;
 import com.glume.generator.service.domain.query.ReqParamQuery;
 import com.glume.generator.service.utils.PageUtils;
@@ -18,6 +21,8 @@ import com.glume.generator.service.utils.QueryParams;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Service 实现基类
@@ -33,12 +38,10 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
      * @param param 请求参数
      */
     protected final void pageParamHandler(Map<String, Object> param) {
-        if (StringUtils.isEmpty(Convert.toStr(param.get(Constants.PAGE_NUM)))) {
-            param.put(Constants.PAGE_NUM, 1);
-        }
-        if (StringUtils.isEmpty(Convert.toStr(param.get(Constants.LIMIT)))) {
-            param.put(Constants.LIMIT, 10);
-        }
+        String pageNum = Optional.ofNullable(Convert.toStr(param.get(Constants.PAGE_NUM))).orElse("1");
+        String limit = Optional.ofNullable(Convert.toStr(param.get(Constants.LIMIT))).orElse("10");
+        param.put(Constants.PAGE_NUM, pageNum);
+        param.put(Constants.LIMIT, limit);
     }
 
     /**
@@ -54,28 +57,49 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
 
     /**
      * 构建公共查询参数
-     * @param reqParamQuery 公共查询参数实体类
+     * @param param 查询参数
      * @return QueryWrapper<T>
      */
-    protected final QueryWrapper<T> getWrapper(ReqParamQuery reqParamQuery) {
+    protected final QueryWrapper<T> getWrapper(Map<String, Object> param) {
         QueryWrapper<T> wrapper = new QueryWrapper<>();
-        wrapper.ge(StringUtils.isNotNull(reqParamQuery.getBeginTime()), "create_time", reqParamQuery.getBeginTime());
-        wrapper.le(StringUtils.isNotNull(reqParamQuery.getEndTime()), "create_time", reqParamQuery.getEndTime());
-        wrapper.like(StringUtils.isNotBlank(reqParamQuery.getCode()), "code", reqParamQuery.getCode());
-        wrapper.like(StringUtils.isNotBlank(reqParamQuery.getTableName()), "table_name", reqParamQuery.getTableName());
-        wrapper.like(StringUtils.isNotBlank(reqParamQuery.getAttrType()), "attr_type", reqParamQuery.getAttrType());
-        wrapper.like(StringUtils.isNotBlank(reqParamQuery.getColumnType()), "column_type", reqParamQuery.getColumnType());
-        wrapper.like(StringUtils.isNotBlank(reqParamQuery.getConnName()), "conn_name", reqParamQuery.getConnName());
-        wrapper.eq(StringUtils.isNotBlank(reqParamQuery.getDbType()), "db_type", reqParamQuery.getDbType());
-        wrapper.like(StringUtils.isNotBlank(reqParamQuery.getProjectName()), "project_name", reqParamQuery.getProjectName());
+        BaseParamQuery baseParamQuery = paramQueryHandler(param, BaseParamQuery.class);
+        wrapper.ge(StringUtils.isNotNull(baseParamQuery.getBeginTime()), "create_time", baseParamQuery.getBeginTime());
+        wrapper.le(StringUtils.isNotNull(baseParamQuery.getEndTime()), "create_time", baseParamQuery.getEndTime());
+        return queryWrapperHandler(wrapper, param);
+    }
+
+    private BaseParamQuery paramQueryHandler(Map<String, Object> param, Class<? extends BaseParamQuery> aClass) {
+        String json = JacksonUtils.beanToJson(param);
+        try {
+            AtomicReference<ObjectNode> atomicReference = new AtomicReference<>(JacksonUtils.getObjectMapper().readValue(json, ObjectNode.class));
+            Optional.of(atomicReference.get().has(Constants.PAGE_NUM))
+                    .ifPresent(value  -> atomicReference.set(atomicReference.get().without(Constants.PAGE_NUM)));
+            Optional.of(atomicReference.get().has(Constants.LIMIT))
+                    .ifPresent(value  -> atomicReference.set(atomicReference.get().without(Constants.LIMIT)));
+            return JacksonUtils.jsonToBean(atomicReference.toString(), aClass);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * QueryWrapper BaseServiceImpl 子类可重写此方法去定制自己的条件
+     */
+    protected QueryWrapper<T> queryWrapperHandler(QueryWrapper<T> wrapper, Map<String, Object> param) {
+        BaseParamQuery baseParamQuery = paramQueryHandler(param, ReqParamQuery.class);
+        if (baseParamQuery instanceof ReqParamQuery) {
+            ReqParamQuery reqParamQuery = (ReqParamQuery) baseParamQuery;
+            wrapper.like(StringUtils.isNotBlank(reqParamQuery.getCode()), "code", reqParamQuery.getCode());
+            wrapper.like(StringUtils.isNotBlank(reqParamQuery.getTableName()), "table_name", reqParamQuery.getTableName());
+            wrapper.like(StringUtils.isNotBlank(reqParamQuery.getAttrType()), "attr_type", reqParamQuery.getAttrType());
+            wrapper.like(StringUtils.isNotBlank(reqParamQuery.getColumnType()), "column_type", reqParamQuery.getColumnType());
+            wrapper.like(StringUtils.isNotBlank(reqParamQuery.getConnName()), "conn_name", reqParamQuery.getConnName());
+            wrapper.eq(StringUtils.isNotBlank(reqParamQuery.getDbType()), "db_type", reqParamQuery.getDbType());
+            wrapper.like(StringUtils.isNotBlank(reqParamQuery.getProjectName()), "project_name", reqParamQuery.getProjectName());
+        }
         return wrapper;
     }
 
-    // TODO 公共参数与请求参数合并
-    protected final QueryWrapper<T> getWrapper(Map<String, Object> param) {
-        ReqParamQuery reqParamQuery = JacksonUtils.jsonToBean(JacksonUtils.beanToJson(param), ReqParamQuery.class);
-        return getWrapper(reqParamQuery);
-    }
 
     /**
      * 分页列表
@@ -83,7 +107,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
      */
     @Override
     public PageUtils<T> getPage(Map<String, Object> param) {
-        IPage<T> page = baseMapper.selectPage(getQueryPage(param), new QueryWrapper<>());
+        IPage<T> page = baseMapper.selectPage(getQueryPage(param), getWrapper(param));
         return new PageUtils<>(page);
     }
 
@@ -130,4 +154,5 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
         int i = baseMapper.deleteBatchIds(Arrays.asList(ids));
         return i != 0;
     }
+
 }

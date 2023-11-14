@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -79,8 +80,8 @@ public class TableController extends BaseController<TableEntity, TableService> {
 
     @Override
     @GetMapping("page")
-    public Result<PageUtils<TableEntity>> page(Map<String, Object> param) {
-        PageUtils<TableEntity> page = getPage(param);
+    public Result<PageUtils<TableEntity>> page(@RequestParam Map<String, Object> param) {
+        PageUtils<TableEntity> page = tableService.getPage(param);
         return Result.ok(page);
     }
 
