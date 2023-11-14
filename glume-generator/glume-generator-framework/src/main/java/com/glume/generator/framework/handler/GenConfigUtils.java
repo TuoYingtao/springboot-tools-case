@@ -29,7 +29,10 @@ public class GenConfigUtils {
         this.template = template;
     }
 
-    public GeneratorInfo getGeneratorConfig() {
+    /**
+     * 初始化模板配置文件中的信息，并且加载模板文件内容数据
+     */
+    public GeneratorInfo initGeneratorInfo() {
         // 模板路径，如果不是以/结尾，则添加/
         if (!StringUtils.endWith(template, '/')) {
             template = Convert.str(new StringBuilder(template).append("/"), StandardCharsets.UTF_8);

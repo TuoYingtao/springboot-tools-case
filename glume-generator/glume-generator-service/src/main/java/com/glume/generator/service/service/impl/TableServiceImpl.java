@@ -147,7 +147,7 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
             // 从数据库获取表信息
             GenDataSourceBO dataSourceBO = getGenDataSourceBO(dataSourceEntity);
             BeanUtils.copyProperties(GenUtils.getTable(dataSourceBO, tableName), tableEntity);
-            GeneratorInfo generatorConfig = genConfigUtils.getGeneratorConfig();
+            GeneratorInfo generatorConfig = genConfigUtils.initGeneratorInfo();
             // 保存表信息
             tableEntity.setPackageName(generatorConfig.getProject().getPackageName());
             tableEntity.setVersion(generatorConfig.getProject().getVersion());

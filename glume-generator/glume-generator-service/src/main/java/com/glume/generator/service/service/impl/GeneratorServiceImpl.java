@@ -68,7 +68,7 @@ public class GeneratorServiceImpl implements GeneratorService {
             Map<String, Object> dataModel = getDataModel(tableId);
 
             // 代码生成器信息
-            GeneratorInfo generator = genConfigUtils.getGeneratorConfig();
+            GeneratorInfo generator = genConfigUtils.initGeneratorInfo();
 
             // 渲染模板并输出
             for (TemplateInfo template : generator.getTemplates()) {
@@ -86,7 +86,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         Map<String, Object> dataModel = getDataModel(tableId);
 
         // 代码生成器信息
-        GeneratorInfo generator = genConfigUtils.getGeneratorConfig();
+        GeneratorInfo generator = genConfigUtils.initGeneratorInfo();
 
         // 渲染模板并输出
         for (TemplateInfo template : generator.getTemplates()) {
@@ -110,7 +110,7 @@ public class GeneratorServiceImpl implements GeneratorService {
     public Map<String, String> previewCode(Long tableId) {
         Map<String, String> map = new HashMap<>();
         Map<String, Object> dataModel = getDataModel(tableId);
-        GeneratorInfo generatorConfig = genConfigUtils.getGeneratorConfig();
+        GeneratorInfo generatorConfig = genConfigUtils.initGeneratorInfo();
         for (TemplateInfo templateInfo : generatorConfig.getTemplates()) {
             dataModel.put("templateName", templateInfo.getTemplateName());
             String content = TemplateUtils.getContent(templateInfo.getTemplateContent(), dataModel);
