@@ -11,6 +11,8 @@ import ${i!};
 </#list>
 <#if baseClass??>
 import ${baseClass.packageName}.${baseClass.code};
+<#else>
+import java.io.Serializable;
 </#if>
 
 /**
@@ -20,12 +22,14 @@ import ${baseClass.packageName}.${baseClass.code};
  * @Date: ${datetime}
  * @Version: v${version}
  */
-@Data
 <#if baseClass??>@EqualsAndHashCode(callSuper=false)</#if>
+@Data
 @TableName("${tableName}")
-public class ${ClassName}Entity<#if baseClass??> extends ${baseClass.code}</#if> {
-<#if baseClass??>
+public class ${ClassName}Entity<#if baseClass??> extends ${baseClass.code}<#else> implements Serializable</#if> {
+<#if !baseClass??>
     private static final long serialVersionUID = 1L;
+
+<#else>
 
 </#if>
 <#list fieldList as field>
@@ -35,13 +39,13 @@ public class ${ClassName}Entity<#if baseClass??> extends ${baseClass.code}</#if>
      * ${field.fieldComment}
      */
     </#if>
-    <#if (field.dateFormat?? && field.dateFormat == "JSON_FORMAT")
-        || (field.dateFormat?? && field.dateFormat == "JSON_DATE_FORMAT")>
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    <#if (field.dateFill?? && field.dateFill == "JSON_FORMAT")
+        || (field.dateFill?? && field.dateFill == "JSON_DATE_FORMAT")>
+    @JsonFormat(pattern = "${field.dateFormat}", timezone = "${field.timeZone}")
     </#if>
-    <#if (field.dateFormat?? && field.dateFormat == "DATE_FORMAT")
-        || (field.dateFormat?? && field.dateFormat == "JSON_DATE_FORMAT")>
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    <#if (field.dateFill?? && field.dateFill == "DATE_FORMAT")
+        || (field.dateFill?? && field.dateFill == "JSON_DATE_FORMAT")>
+    @DateTimeFormat(pattern = "${field.dateFormat}")
     </#if>
     <#if field.autoFill == "INSERT">
     @TableField(fill = FieldFill.INSERT)

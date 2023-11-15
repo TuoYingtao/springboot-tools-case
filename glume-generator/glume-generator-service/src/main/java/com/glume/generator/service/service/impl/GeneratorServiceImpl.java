@@ -3,11 +3,15 @@ package com.glume.generator.service.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.glume.generator.framework.commons.text.StrFormatter;
 import com.glume.generator.framework.commons.utils.DateUtils;
 import com.glume.generator.framework.commons.utils.StringUtils;
 import com.glume.generator.framework.domain.template.GeneratorInfo;
 import com.glume.generator.framework.domain.template.TemplateInfo;
+import com.glume.generator.framework.enums.AutoFillEnum;
+import com.glume.generator.framework.enums.DateFillEnum;
 import com.glume.generator.framework.exception.ServiceException;
 import com.glume.generator.framework.handler.GenConfigUtils;
 import com.glume.generator.framework.handler.TemplateUtils;
@@ -21,6 +25,7 @@ import com.glume.generator.service.service.GeneratorService;
 import com.glume.generator.service.service.TableFieldService;
 import com.glume.generator.service.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -30,7 +35,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -162,12 +169,6 @@ public class GeneratorServiceImpl implements GeneratorService {
 
         // 导入的包列表
         Set<String> importList = fieldTypeService.getPackageListByTableId(table.getId());
-        String[] str = new String[]{"INSERT","UPDATE","INSERT_UPDATE"};
-        table.getFieldList().stream().peek(tableFieldEntity -> {
-            if (Arrays.asList(str).contains(tableFieldEntity.getAutoFill())) {
-                importList.add(FieldFill.class.getPackage().getName());
-            }
-        });
         dataModel.put("importList", importList);
 
         // 表信息
@@ -175,7 +176,22 @@ public class GeneratorServiceImpl implements GeneratorService {
         dataModel.put("tableComment", table.getTableComment());
         dataModel.put("className", StringUtils.lowerFirst(table.getClassName()));
         dataModel.put("ClassName", table.getClassName());
-        dataModel.put("fieldList", table.getFieldList());
+        dataModel.put("fieldList", table.getFieldList().stream()
+                .peek(tableFieldEntity -> {
+                    if (!Objects.equals(tableFieldEntity.getAutoFill(), AutoFillEnum.DEFAULT.name())) {
+                        importList.add(TableField.class.getPackage().getName() + ".TableField");
+                        importList.add(FieldFill.class.getPackage().getName() + ".FieldFill");
+                    }
+                    if (DateFillEnum.JSON_FORMAT.name().equals(tableFieldEntity.getDateFill())
+                            || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
+                        importList.add(JsonFormat.class.getPackage().getName() + ".JsonFormat");
+                    }
+                    if (DateFillEnum.DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())
+                            || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
+                        importList.add(DateTimeFormat.class.getPackage().getName() + ".DateTimeFormat");
+                    }
+                }).collect(Collectors.toList())
+        );
 
         // 生成路径
         dataModel.put("backendPath", table.getBackendPath());
@@ -190,7 +206,7 @@ public class GeneratorServiceImpl implements GeneratorService {
      * @param table     表信息
      */
     private void setBaseClass(Map<String, Object> dataModel, TableEntity table) {
-        if (table.getBaseclassId() == null) {
+        if (table.getBaseclassId() == null || table.getBaseclassId() < 0) {
             return;
         }
         // 基类

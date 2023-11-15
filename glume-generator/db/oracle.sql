@@ -121,6 +121,9 @@ CREATE TABLE gen_table_field
     package_name    varchar2(200),
     sort            NUMBER(10, 0),
     auto_fill       varchar2(20),
+    date_fill       varchar2(20),
+    date_format     varchar2(20),
+    time_zone       varchar2(20),
     primary_pk      NUMBER(2, 0),
     base_field      NUMBER(2, 0),
     form_item       NUMBER(2, 0),
@@ -149,6 +152,9 @@ COMMENT ON COLUMN gen_table_field.attr_type IS '属性类型';
 COMMENT ON COLUMN gen_table_field.package_name IS '属性包名';
 COMMENT ON COLUMN gen_table_field.sort IS '排序';
 COMMENT ON COLUMN gen_table_field.auto_fill IS '自动填充  DEFAULT、INSERT、UPDATE、INSERT_UPDATE';
+COMMENT ON COLUMN gen_table_field.date_fill IS '日期填充 DEFAULT、JSON_FORMAT、DATE_FORMAT、JSON_DATE_FORMAT';
+COMMENT ON COLUMN gen_table_field.date_format IS '日期格式 yyyy-MM-dd HH:mm:ss、yyyy-MM-dd HH:mm、yyyy-MM-dd、yyyy-MM';
+COMMENT ON COLUMN gen_table_field.time_zone IS '时区 GMT+8、GMT、UTC';
 COMMENT ON COLUMN gen_table_field.primary_pk IS '主键 0：否  1：是';
 COMMENT ON COLUMN gen_table_field.base_field IS '基类字段 0：否  1：是';
 COMMENT ON COLUMN gen_table_field.form_item IS '表单项 0：否  1：是';

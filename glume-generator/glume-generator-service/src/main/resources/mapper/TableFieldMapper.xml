@@ -15,6 +15,9 @@
         <result property="attrType" column="attr_type" jdbcType="VARCHAR" />
         <result property="packageName" column="package_name" jdbcType="VARCHAR" />
         <result property="autoFill" column="auto_fill" jdbcType="VARCHAR" />
+        <result property="dateFill" column="date_fill" jdbcType="VARCHAR" />
+        <result property="dateFormat" column="date_format" jdbcType="VARCHAR" />
+        <result property="timeZone" column="time_zone" jdbcType="VARCHAR" />
         <result property="primaryPk" column="primary_pk" jdbcType="TINYINT" />
         <result property="baseField" column="base_field" jdbcType="TINYINT" />
         <result property="formItem" column="form_item" jdbcType="TINYINT" />

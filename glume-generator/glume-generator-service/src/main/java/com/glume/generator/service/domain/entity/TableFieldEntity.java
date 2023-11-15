@@ -56,6 +56,18 @@ public class TableFieldEntity extends BaseEntity {
      */
     private String autoFill;
     /**
+     * 日期填充
+     */
+    private String dateFill;
+    /**
+     * 日期格式
+     */
+    private String dateFormat;
+    /**
+     * 时区
+     */
+    private String timeZone;
+    /**
      * 主键 0：否  1：是
      */
     private boolean primaryPk;

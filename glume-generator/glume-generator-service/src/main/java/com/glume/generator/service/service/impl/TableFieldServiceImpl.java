@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.glume.generator.framework.commons.utils.DateUtils;
 import com.glume.generator.framework.enums.AutoFillEnum;
+import com.glume.generator.framework.enums.DateFillEnum;
+import com.glume.generator.framework.enums.DateFormatEnum;
+import com.glume.generator.framework.enums.TimeZoneEnum;
 import com.glume.generator.service.base.service.impl.BaseServiceImpl;
 import com.glume.generator.service.domain.entity.FieldTypeEntity;
 import com.glume.generator.service.domain.entity.TableFieldEntity;
@@ -14,7 +17,6 @@ import com.glume.generator.service.service.TableFieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,6 +52,9 @@ public class TableFieldServiceImpl extends BaseServiceImpl<TableFieldMapper, Tab
             }
 
             field.setAutoFill(AutoFillEnum.DEFAULT.name());
+            field.setDateFill(DateFillEnum.DEFAULT.name());
+            field.setDateFormat(DateFormatEnum.YYYY_MM_DD_HH_MM_SS_1.getValue());
+            field.setTimeZone(TimeZoneEnum.GMT_8.getValue());
             field.setFormItem(true);
             field.setGridItem(true);
             field.setQueryType("=");
