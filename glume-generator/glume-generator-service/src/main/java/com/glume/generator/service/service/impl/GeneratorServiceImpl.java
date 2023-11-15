@@ -165,7 +165,10 @@ public class GeneratorServiceImpl implements GeneratorService {
         setFieldTypeList(dataModel, table);
 
         // 设置基类信息
-        setBaseClass(dataModel, table);
+        setBaseClass(dataModel, table.getFieldList(), "baseClass", table.getBaseclassId());
+        setBaseClass(dataModel, table.getFieldList(), "controllerBaseclass", table.getControllerBaseclassId());
+        setBaseClass(dataModel, table.getFieldList(), "serviceBaseclass", table.getServiceBaseclassId());
+        setBaseClass(dataModel, table.getFieldList(), "serviceImplBaseclass", table.getServiceImplBaseclassId());
 
         // 导入的包列表
         Set<String> importList = fieldTypeService.getPackageListByTableId(table.getId());
@@ -202,23 +205,23 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     /**
      * 设置基类信息
-     * @param dataModel 数据模型
-     * @param table     表信息
+     * @param dataModel      数据模型
+     * @param fieldEntities  字段列表
      */
-    private void setBaseClass(Map<String, Object> dataModel, TableEntity table) {
-        if (table.getBaseclassId() == null || table.getBaseclassId() < 0) {
+    private void setBaseClass(Map<String, Object> dataModel, List<TableFieldEntity> fieldEntities, String key, Long baseClassId) {
+        if (baseClassId == null || baseClassId < 0) {
             return;
         }
         // 基类
-        BaseClassEntity baseClass = baseClassService.getDetail(table.getBaseclassId());
+        BaseClassEntity baseClass = baseClassService.getDetail(baseClassId);
         baseClass.setPackageName(baseClass.getPackageName());
-        dataModel.put("baseClass", baseClass);
+        dataModel.put(key, baseClass);
 
         // 基类字段
         String[] fields = baseClass.getFields().split(",");
 
         // 标注为基类字段
-        for (TableFieldEntity field : table.getFieldList()) {
+        for (TableFieldEntity field : fieldEntities) {
 
             if (StringUtils.containsAny(Arrays.asList(fields), field.getFieldName())) {
                 field.setBaseField(true);

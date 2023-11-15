@@ -26,12 +26,8 @@ import java.io.Serializable;
 @Data
 @TableName("${tableName}")
 public class ${ClassName}Entity<#if baseClass??> extends ${baseClass.code}<#else> implements Serializable</#if> {
-<#if !baseClass??>
     private static final long serialVersionUID = 1L;
 
-<#else>
-
-</#if>
 <#list fieldList as field>
 <#if !field.baseField>
     <#if field.fieldComment!?length gt 0>

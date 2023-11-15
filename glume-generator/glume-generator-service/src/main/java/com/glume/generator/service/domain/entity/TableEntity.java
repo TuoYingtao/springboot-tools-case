@@ -80,6 +80,18 @@ public class TableEntity extends BaseEntity {
      * 基类ID
      */
     private Long baseclassId;
+    /**
+     * 控制层基类ID
+     */
+    private Long controllerBaseclassId;
+    /**
+     * 业务层基类ID
+     */
+    private Long serviceBaseclassId;
+    /**
+     * 业务层实现基类ID
+     */
+    private Long serviceImplBaseclassId;
 
     /**
      * 字段列表

@@ -49,8 +49,11 @@ CREATE TABLE gen_table
     form_layout    tinyint COMMENT '表单布局  1：一列   2：两列',
     datasource_id  bigint COMMENT '数据源ID',
     baseclass_id   bigint COMMENT '基类ID',
+    controller_baseclass_id     bigint COMMENT '控制层基类ID',
+    service_baseclass_id        bigint COMMENT '业务层基类ID',
+    service_impl_baseclass_id   bigint COMMENT '业务层实现基类ID',
     create_time    datetime COMMENT '创建时间',
-    update_time datetime COMMENT '更新时间',
+    update_time    datetime COMMENT '更新时间',
     primary key (id),
     unique key (table_name)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='代码生成表';
