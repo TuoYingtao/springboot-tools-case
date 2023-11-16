@@ -55,9 +55,8 @@ CREATE TABLE gen_table
     form_layout    int,
     datasource_id  bigint,
     baseclass_id   bigint,
-    controller_baseclass_id     bigint,
-    service_baseclass_id        bigint,
-    service_impl_baseclass_id   bigint,
+    enable_base_service  int,
+    common_package_path  varchar(500),
     create_time    datetime,
     update_time    datetime,
     primary key (id)

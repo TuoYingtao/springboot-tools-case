@@ -205,8 +205,8 @@ public class HTMLFilter {
         String result = s;
         result = regexReplace(P_AMP, "&amp;", result);
         result = regexReplace(P_QUOTE, "&quot;", result);
-        result = regexReplace(P_LEFT_ARROW, "&lt;", result);
-        result = regexReplace(P_RIGHT_ARROW, "&gt;", result);
+        result = regexReplace(P_LEFT_ARROW, "<", result);
+        result = regexReplace(P_RIGHT_ARROW, ">", result);
         return result;
     }
 
@@ -269,8 +269,8 @@ public class HTMLFilter {
             //
             // escape stray brackets
             //
-            s = regexReplace(P_STRAY_LEFT_ARROW, "&lt;$1", s);
-            s = regexReplace(P_STRAY_RIGHT_ARROW, "$1$2&gt;<", s);
+            s = regexReplace(P_STRAY_LEFT_ARROW, "<$1", s);
+            s = regexReplace(P_STRAY_RIGHT_ARROW, "$1$2><", s);
 
             //
             // the last regexp causes '<>' entities to appear

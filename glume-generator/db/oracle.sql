@@ -82,9 +82,8 @@ CREATE TABLE gen_table
     form_layout    NUMBER(2, 0),
     datasource_id  NUMBER(20, 0),
     baseclass_id   NUMBER(20, 0),
-    controller_baseclass_id     NUMBER(20, 0),
-    service_baseclass_id        NUMBER(20, 0),
-    service_impl_baseclass_id   NUMBER(20, 0),
+    enable_base_service  NUMBER(2, 0),
+    common_package_path  varchar2(500),
     create_time    date,
     update_time    date,
     primary key (id)
@@ -108,9 +107,8 @@ COMMENT ON COLUMN gen_table.function_name IS '功能名';
 COMMENT ON COLUMN gen_table.form_layout IS '表单布局  1：一列   2：两列';
 COMMENT ON COLUMN gen_table.datasource_id IS '数据源ID';
 COMMENT ON COLUMN gen_table.baseclass_id IS '基类ID';
-COMMENT ON COLUMN gen_table.controller_baseclass_id IS '控制层基类ID';
-COMMENT ON COLUMN gen_table.service_baseclass_id IS '业务层基类ID';
-COMMENT ON COLUMN gen_table.service_impl_baseclass_id IS '业务层实现基类ID';
+COMMENT ON COLUMN gen_table.enable_base_service IS '是否启用三层架构基类 0：启用 1：关闭';
+COMMENT ON COLUMN gen_table.common_package_path IS '工具包路径';
 COMMENT ON COLUMN gen_table.create_time IS '创建时间';
 COMMENT ON COLUMN gen_table.update_time IS '更新时间';
 

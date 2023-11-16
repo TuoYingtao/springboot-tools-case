@@ -1,6 +1,6 @@
 {
   "project": {
-    "packageName": "com.glume",
+    "packageName": "com.glume.com",
     "version": "1.0.0",
     "backendPath": "D:\\generator\\glume-boot\\glume-server",
     "frontendPath": "D:\\generator\\glume-admin"
@@ -9,7 +9,41 @@
     "author": "TuoYingtao",
     "email": "tuoyingtao@163.com"
   },
+  "baseTemplates": [
+    {
+      "templateName": "java/base/BaseEntity.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/base/domain/entity/BaseEntity.java"
+    },
+    {
+      "templateName": "java/base/BaseParamQuery.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/base/domain/query/BaseParamQuery.java"
+    },
+    {
+      "templateName": "java/base/BaseIController.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/base/controller/BaseIController.java"
+    },
+    {
+      "templateName": "java/base/BaseController.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/base/controller/BaseController.java"
+    },
+    {
+      "templateName": "java/base/BaseIService.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/base/service/BaseIService.java"
+    },
+    {
+      "templateName": "java/base/BaseServiceImpl.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/base/service/impl/BaseServiceImpl.java"
+    },
+    {
+      "templateName": "java/base/utils/SpringContextHolder.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/SpringContextHolder.java"
+    }
+  ],
   "templates": [
+    {
+      "templateName": "java/Controller.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/controller/${ClassName}Controller.java"
+    },
     {
       "templateName": "java/Controller.java.ftl",
       "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/controller/${ClassName}Controller.java"
@@ -24,11 +58,11 @@
     },
     {
       "templateName": "java/Query.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/query/${ClassName}Query.java"
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/domain/query/${ClassName}Query.java"
     },
     {
       "templateName": "java/Entity.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/entity/${ClassName}Entity.java"
+      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/domain/entity/${ClassName}Entity.java"
     },
     {
       "templateName": "java/VO.java.ftl",
@@ -61,6 +95,42 @@
     {
       "templateName": "vue/add-or-update.vue.ftl",
       "generatorPath": "${frontendPath}/src/views/${moduleName}/${functionName}/add-or-update.vue"
+    },
+    {
+      "templateName": "java/base/utils/PageUtils.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/PageUtils.java"
+    },
+    {
+      "templateName": "java/base/utils/Result.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/domain/Result.java"
+    },
+    {
+      "templateName": "java/base/utils/Constants.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/constants/Constants.java"
+    },
+    {
+      "templateName": "java/base/utils/JacksonUtils.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/json/JacksonUtils.java"
+    },
+    {
+      "templateName": "java/base/utils/QueryParams.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/QueryParams.java"
+    },
+    {
+      "templateName": "java/base/utils/SQLFilter.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/SQLFilter.java"
+    },
+    {
+      "templateName": "java/base/utils/Convert.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/text/Convert.java"
+    },
+    {
+      "templateName": "java/base/utils/StringUtils.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/StringUtils.java"
+    },
+    {
+      "templateName": "java/base/utils/StrFormatter.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/text/StrFormatter.java"
     }
   ]
 }

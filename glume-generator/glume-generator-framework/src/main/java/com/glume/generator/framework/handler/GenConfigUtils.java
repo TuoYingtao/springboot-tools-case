@@ -13,6 +13,7 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * 代码生成配置内容
@@ -47,19 +48,24 @@ public class GenConfigUtils {
             // 读取模板配置文件
             String configContent = StreamUtils.copyToString(isConfig, StandardCharsets.UTF_8);
             GeneratorInfo generator = JacksonUtils.jsonToBean(configContent, GeneratorInfo.class);
-            for (TemplateInfo templateInfo : generator.getTemplates()) {
-                // 模板文件
-                InputStream isTemplate = this.getClass().getResourceAsStream(template + templateInfo.getTemplateName());
-                if (isTemplate == null) {
-                    throw new TemplateFileException(StrFormatter.format("模板文件{}不存在", templateInfo.getTemplateName()));
-                }
-                // 读取模板内容
-                String templateContent = StreamUtils.copyToString(isTemplate, StandardCharsets.UTF_8);
-                templateInfo.setTemplateContent(templateContent);
-            }
+            templateContentHandler(generator.getTemplates());
+            templateContentHandler(generator.getBaseTemplates());
             return generator;
         } catch (IOException e) {
-            throw new TemplateConfigException("读取config.json配置文件失败");
+            throw new TemplateConfigException("读取config.json配置文件失败：");
+        }
+    }
+
+    private void templateContentHandler(List<TemplateInfo> templateInfos) throws IOException {
+        for (TemplateInfo templateInfo : templateInfos) {
+            // 模板文件
+            InputStream isTemplate = this.getClass().getResourceAsStream(template + templateInfo.getTemplateName());
+            if (isTemplate == null) {
+                throw new TemplateFileException(StrFormatter.format("模板文件{}不存在", templateInfo.getTemplateName()));
+            }
+            // 读取模板内容
+            String templateContent = StreamUtils.copyToString(isTemplate, StandardCharsets.UTF_8);
+            templateInfo.setTemplateContent(templateContent);
         }
     }
 }
