@@ -1,87 +1,101 @@
 package ${package}.${moduleName}.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import lombok.AllArgsConstructor;
-import ${package}.framework.common.utils.PageResult;
-import ${package}.framework.mybatis.service.impl.BaseServiceImpl;
-import ${package}.${moduleName}.convert.${ClassName}Convert;
-import ${package}.${moduleName}.entity.${ClassName}Entity;
-import ${package}.${moduleName}.query.${ClassName}Query;
-import ${package}.${moduleName}.vo.${ClassName}VO;
 import ${package}.${moduleName}.dao.${ClassName}Dao;
 import ${package}.${moduleName}.service.${ClassName}Service;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import ${package}.${moduleName}.domain.entity.${ClassName}Entity;
+import ${package}.${moduleName}.dao.${ClassName}Dao;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+<#if enableBaseService == 0>
+import ${package}.${moduleName}.base.service.impl.BaseServiceImpl;
+<#else>
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${commonPackage}.utils.PageUtils;
+import ${commonPackage}.utils.QueryParams;
+import ${commonPackage}.text.Convert;
+import ${commonPackage}.constant.Constants;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+</#if>
 
 /**
  * ${tableComment}
  *
- * @author ${author} ${email}
- * @since ${version} ${date}
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Version: v${version}
  */
-@Service
-@AllArgsConstructor
-public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Dao, ${ClassName}Entity> implements ${ClassName}Service {
+@Service("${className}Service")
+public class ${ClassName}ServiceImpl extends <#if enableBaseService == 0>BaseServiceImpl<#else>ServiceImpl</#if><${ClassName}Dao, ${ClassName}Entity> implements ${ClassName}Service {
 
+<#if enableBaseService != 0>
+   @Autowired
+   private ${ClassName}Dao ${className}Dao;
+
+    /**
+     * 分页列表
+     * @param param 分页参数
+     */
     @Override
-    public PageResult<${ClassName}VO> page(${ClassName}Query query) {
-        IPage<${ClassName}Entity> page = baseMapper.selectPage(getPage(query), getWrapper(query));
+    public PageResult<${ClassName}Entity> page(Map<String, Object> param) {
+        String pageNum = Optional.ofNullable(Convert.toStr(param.get(Constants.PAGE_NUM))).orElse("1");
+        String limit = Optional.ofNullable(Convert.toStr(param.get(Constants.LIMIT))).orElse("10");
+        param.put(Constants.PAGE_NUM, pageNum);
+        param.put(Constants.LIMIT, limit);
+        IPage<${ClassName}Entity> page = baseMapper.selectPage(new QueryParams<${ClassName}Entity>().getPage(param), Wrappers.lambdaQuery(${ClassName}Entity.class));
 
-        return new PageResult<>(${ClassName}Convert.INSTANCE.convertList(page.getRecords()), page.getTotal());
+        return new PageUtils(page);
     }
 
-    private LambdaQueryWrapper<${ClassName}Entity> getWrapper(${ClassName}Query query){
-        LambdaQueryWrapper<${ClassName}Entity> wrapper = Wrappers.lambdaQuery();
-        <#list queryList as field>
-            <#if field.queryFormType == 'date' || field.queryFormType == 'datetime'>
-        wrapper.between(ArrayUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, ArrayUtils.isNotEmpty(query.get${field.attrName?cap_first}()) ? query.get${field.attrName?cap_first}()[0] : null, ArrayUtils.isNotEmpty(query.get${field.attrName?cap_first}()) ? query.get${field.attrName?cap_first}()[1] : null);
-            <#elseif field.queryType == '='>
-        wrapper.eq(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == '!='>
-        wrapper.ne(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == '>'>
-        wrapper.gt(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == '>='>
-        wrapper.ge(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == '<'>
-        wrapper.lt(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == '<='>
-        wrapper.le(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == 'like'>
-        wrapper.like(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == 'left like'>
-        wrapper.likeLeft(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            <#elseif field.queryType == 'right like'>
-        wrapper.likeRight(StringUtils.isNotEmpty(query.get${field.attrName?cap_first}()), ${ClassName}Entity::get${field.attrName?cap_first}, query.get${field.attrName?cap_first}());
-            </#if>
-        </#list>
-        return wrapper;
-    }
-
+    /**
+     * 全表列表
+     */
     @Override
-    public void save(${ClassName}VO vo) {
-        ${ClassName}Entity entity = ${ClassName}Convert.INSTANCE.convert(vo);
-
-        baseMapper.insert(entity);
+    public List<${ClassName}Entity> getListAll() {
+        List<${ClassName}Entity> ${className}Entities = baseMapper.selectList(Wrappers.emptyWrapper());
+        return ${className}Entities;
     }
 
+    /**
+     * 获取详情信息
+     * @param id 详情id
+     */
     @Override
-    public void update(${ClassName}VO vo) {
-        ${ClassName}Entity entity = ${ClassName}Convert.INSTANCE.convert(vo);
-
-        updateById(entity);
+    public ${ClassName}Entity getDetail(Long id) {
+        ${ClassName}Entity ${className}Entity = baseMapper.selectById(id);
+        return ${className}Entity;
     }
 
+    /**
+     * 保存
+     */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void delete(List<Long> idList) {
-        removeByIds(idList);
+    public Long saveData(${ClassName}Entity ${className}Entity) {
+        baseMapper.insert(${className}Entity);
+        return ${className}Entity.getId();
     }
 
+    /**
+     * 更新
+     */
+    @Override
+    public ${ClassName}Entity updateDetail(${ClassName}Entity ${className}Entity) {
+        baseMapper.updateById(${className}Entity);
+        return ${className}Entity;
+    }
+
+    /**
+     * 删除
+     */
+    @Override
+    public boolean deleteBatchByIds(Long[] ids) {
+        int i = baseMapper.deleteBatchIds(Arrays.asList(ids));
+        return i != 0;
+    }
+</#if>
 }

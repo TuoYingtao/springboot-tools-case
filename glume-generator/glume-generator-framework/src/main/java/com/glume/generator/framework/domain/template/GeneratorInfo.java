@@ -28,6 +28,11 @@ public class GeneratorInfo implements Serializable {
      */
     private List<TemplateInfo> templates;
 
+    /**
+     * 基类模板信息
+     */
+    private List<TemplateInfo> baseTemplates;
+
     public ProjectInfo getProject() {
         return project;
     }
@@ -50,5 +55,13 @@ public class GeneratorInfo implements Serializable {
 
     public void setTemplates(List<TemplateInfo> templates) {
         this.templates = templates;
+    }
+
+    public List<TemplateInfo> getBaseTemplates() {
+        return baseTemplates;
+    }
+
+    public void setBaseTemplates(List<TemplateInfo> baseTemplates) {
+        this.baseTemplates = baseTemplates;
     }
 }

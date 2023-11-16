@@ -1,16 +1,16 @@
-package ${package}.${moduleName}.dao;
+package com.glume.generator.service.mapper;
 
-import ${package}.framework.mybatis.dao.BaseDao;
-import ${package}.${moduleName}.entity.${ClassName}Entity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import ${package}.${moduleName}.domain.entity.${ClassName}Entity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
-* ${tableComment}
-*
-* @author ${author} ${email}
-* @since ${version} ${date}
-*/
+ * ${tableComment}
+ *
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Version: v${version}
+ */
 @Mapper
-public interface ${ClassName}Dao extends BaseDao<${ClassName}Entity> {
-	
+public interface ${ClassName}Dao extends BaseMapper<${ClassName}Entity> {
 }

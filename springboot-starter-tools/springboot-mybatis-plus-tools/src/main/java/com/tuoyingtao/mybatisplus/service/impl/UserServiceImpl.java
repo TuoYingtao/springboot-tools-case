@@ -2,6 +2,7 @@ package com.tuoyingtao.mybatisplus.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.commons.compound.core.constant.Constants;
 import com.commons.compound.core.text.Convert;
@@ -14,8 +15,11 @@ import com.tuoyingtao.mybatisplus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 用户业务层
@@ -53,5 +57,65 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     public UserEntity getUserDetail(Long id) {
         return userMapper.getUserDetail(id);
+    }
+
+    /**
+     * 分页列表
+     * @param param 分页参数
+     */
+    @Override
+    public PageUtils<UserEntity> getPage(Map<String, Object> param) {
+        String pageNum = Optional.ofNullable(Convert.toStr(param.get(Constants.PAGE_NUM))).orElse("1");
+        String limit = Optional.ofNullable(Convert.toStr(param.get(Constants.LIMIT))).orElse("10");
+        param.put(Constants.PAGE_NUM, pageNum);
+        param.put(Constants.LIMIT, limit);
+        IPage<UserEntity> page = getBaseMapper().selectPage(new QueryParams<UserEntity>().getPage(param), new QueryWrapper<UserEntity>());
+        return new PageUtils<>(page);
+    }
+
+    /**
+     * 全表列表
+     */
+    @Override
+    public List<UserEntity> getListAll() {
+        List<UserEntity> userEntities = baseMapper.selectList(Wrappers.emptyWrapper());
+        return userEntities;
+    }
+
+    /**
+     * 获取详情信息
+     * @param id id
+     */
+    @Override
+    public UserEntity getDetail(Long id) {
+        UserEntity userEntity = baseMapper.selectById(id);
+        return userEntity;
+    }
+
+    /**
+     * 保存
+     */
+    @Override
+    public Long saveData(UserEntity userEntity) {
+        baseMapper.insert(userEntity);
+        return userEntity.getId();
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public UserEntity updateDetail(UserEntity userEntity) {
+        baseMapper.updateById(userEntity);
+        return userEntity;
+    }
+
+    /**
+     * 删除
+     */
+    @Override
+    public boolean deleteBatchByIds(Long[] ids) {
+        int i = baseMapper.deleteBatchIds(Arrays.asList(ids));
+        return i != 0;
     }
 }

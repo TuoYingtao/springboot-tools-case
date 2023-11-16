@@ -1,26 +1,58 @@
 package ${package}.${moduleName}.service;
 
-import ${package}.framework.common.utils.PageResult;
-import ${package}.framework.mybatis.service.BaseService;
-import ${package}.${moduleName}.vo.${ClassName}VO;
-import ${package}.${moduleName}.query.${ClassName}Query;
 import ${package}.${moduleName}.entity.${ClassName}Entity;
+<#if enableBaseService == 0>
+ import ${package}.base.service.BaseIService;
+</#if>
+<#if enableBaseService != 0>
+import com.baomidou.mybatisplus.extension.service.IService;
+import ${commonPackage}.utils.PageUtils;
 
 import java.util.List;
+import java.util.Map;
+</#if>
+
 
 /**
  * ${tableComment}
  *
- * @author ${author} ${email}
- * @since ${version} ${date}
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Version: v${version}
  */
-public interface ${ClassName}Service extends BaseService<${ClassName}Entity> {
+public interface ${ClassName}Service extends <#if enableBaseService == 0>BaseIService<#else>IService</#if><${ClassName}Entity> {
 
-    PageResult<${ClassName}VO> page(${ClassName}Query query);
+<#if enableBaseService != 0>
+  /**
+   * 分页列表
+   * @param param 分页参数
+   */
+   PageUtils<${ClassName}Entity> getPage(Map<String, Object> param);
 
-    void save(${ClassName}VO vo);
+   /**
+   * 全表列表
+   */
+   List<${ClassName}Entity> getListAll();
 
-    void update(${ClassName}VO vo);
+    /**
+    * 获取详情信息
+    * @param id id
+    */
+   ${ClassName}Entity getDetail(Long id);
 
-    void delete(List<Long> idList);
+    /**
+    * 保存
+    */
+   ${ClassName}Entity saveData(${ClassName}Entity ${className}Entity);
+
+    /**
+    * 更新
+    */
+   ${ClassName}Entity updateDetail(${ClassName}Entity ${className}Entity);
+
+    /**
+    * 删除
+    */
+    boolean deleteBatchByIds(Long[] ids);
+</#if>
 }

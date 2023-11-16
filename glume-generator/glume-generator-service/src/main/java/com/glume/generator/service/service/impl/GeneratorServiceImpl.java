@@ -12,6 +12,7 @@ import com.glume.generator.framework.domain.template.GeneratorInfo;
 import com.glume.generator.framework.domain.template.TemplateInfo;
 import com.glume.generator.framework.enums.AutoFillEnum;
 import com.glume.generator.framework.enums.DateFillEnum;
+import com.glume.generator.framework.enums.EnableBaseServiceEnum;
 import com.glume.generator.framework.exception.ServiceException;
 import com.glume.generator.framework.handler.GenConfigUtils;
 import com.glume.generator.framework.handler.TemplateUtils;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,17 +74,11 @@ public class GeneratorServiceImpl implements GeneratorService {
     @Override
     public void generatorCode(Long[] tableIds) {
         for (Long tableId : tableIds) {
-            // 数据模型
-            Map<String, Object> dataModel = getDataModel(tableId);
-
-            // 代码生成器信息
-            GeneratorInfo generator = genConfigUtils.initGeneratorInfo();
-
-            // 渲染模板并输出
-            for (TemplateInfo template : generator.getTemplates()) {
-                dataModel.put("templateName", template.getTemplateName());
-                String content = TemplateUtils.getContent(template.getTemplateContent(), dataModel);
-                String path = TemplateUtils.getContent(template.getGeneratorPath(), dataModel);
+            Map<String, String> map = templateDateHandler(tableId);
+            Iterator<String> iterator = map.keySet().iterator();
+            while (iterator.hasNext()) {
+                String path = iterator.next();
+                String content = map.get(path);
                 FileUtil.writeUtf8String(content, path);
             }
         }
@@ -90,18 +86,11 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Override
     public void downloadCode(long tableId, ZipOutputStream zip) {
-        // 数据模型
-        Map<String, Object> dataModel = getDataModel(tableId);
-
-        // 代码生成器信息
-        GeneratorInfo generator = genConfigUtils.initGeneratorInfo();
-
-        // 渲染模板并输出
-        for (TemplateInfo template : generator.getTemplates()) {
-            dataModel.put("templateName", template.getTemplateName());
-            String content = TemplateUtils.getContent(template.getTemplateContent(), dataModel);
-            String path = TemplateUtils.getContent(template.getGeneratorPath(), dataModel);
-
+        Map<String, String> map = templateDateHandler(tableId);
+        Iterator<String> iterator = map.keySet().iterator();
+        while (iterator.hasNext()) {
+            String path = iterator.next();
+            String content = map.get(path);
             try {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(path));
@@ -123,6 +112,39 @@ public class GeneratorServiceImpl implements GeneratorService {
             dataModel.put("templateName", templateInfo.getTemplateName());
             String content = TemplateUtils.getContent(templateInfo.getTemplateContent(), dataModel);
             map.put(templateInfo.getTemplateName(), content);
+        }
+        if (dataModel.get("enableBaseService").equals(EnableBaseServiceEnum.ENABLE.getValue())) {
+            for (TemplateInfo baseTemplate : generatorConfig.getBaseTemplates()) {
+                dataModel.put("baseTemplateName", baseTemplate.getTemplateName());
+                String content = TemplateUtils.getContent(baseTemplate.getTemplateContent(), dataModel);
+                map.put(baseTemplate.getTemplateName(), content);
+            }
+        }
+        return map;
+    }
+
+    private Map<String, String> templateDateHandler(Long tableId) {
+        Map<String, String> map = new HashMap<>();
+        // 数据模型
+        Map<String, Object> dataModel = getDataModel(tableId);
+
+        // 代码生成器信息
+        GeneratorInfo generator = genConfigUtils.initGeneratorInfo();
+
+        // 渲染模板并输出
+        for (TemplateInfo template : generator.getTemplates()) {
+            dataModel.put("templateName", template.getTemplateName());
+            String content = TemplateUtils.getContent(template.getTemplateContent(), dataModel);
+            String path = TemplateUtils.getContent(template.getGeneratorPath(), dataModel);
+            map.put(path, content);
+        }
+        if (dataModel.get("enableBaseService").equals(EnableBaseServiceEnum.ENABLE.getValue())) {
+            for (TemplateInfo baseTemplate : generator.getBaseTemplates()) {
+                dataModel.put("baseTemplateName", baseTemplate.getTemplateName());
+                String content = TemplateUtils.getContent(baseTemplate.getTemplateContent(), dataModel);
+                String path = TemplateUtils.getContent(baseTemplate.getGeneratorPath(), dataModel);
+                map.put(path, content);
+            }
         }
         return map;
     }
@@ -148,12 +170,15 @@ public class GeneratorServiceImpl implements GeneratorService {
         // 项目信息
         dataModel.put("package", table.getPackageName());
         dataModel.put("packagePath", table.getPackageName().replace(".", File.separator));
+        dataModel.put("commonPackage", table.getCommonPackagePath());
+        dataModel.put("commonPackagePath", table.getPackageName().replace(".", File.separator));
         dataModel.put("version", table.getVersion());
         dataModel.put("moduleName", table.getModuleName());
         dataModel.put("ModuleName", StringUtils.toPascalCase(table.getModuleName()));
         dataModel.put("functionName", table.getFunctionName());
         dataModel.put("FunctionName", StringUtils.toPascalCase(table.getFunctionName()));
         dataModel.put("formLayout", table.getFormLayout());
+        dataModel.put("enableBaseService", EnableBaseServiceEnum.ENABLE.getValue());
 
         // 开发者信息
         dataModel.put("author", table.getAuthor());
@@ -166,9 +191,7 @@ public class GeneratorServiceImpl implements GeneratorService {
 
         // 设置基类信息
         setBaseClass(dataModel, table.getFieldList(), "baseClass", table.getBaseclassId());
-        setBaseClass(dataModel, table.getFieldList(), "controllerBaseclass", table.getControllerBaseclassId());
-        setBaseClass(dataModel, table.getFieldList(), "serviceBaseclass", table.getServiceBaseclassId());
-        setBaseClass(dataModel, table.getFieldList(), "serviceImplBaseclass", table.getServiceImplBaseclassId());
+
 
         // 导入的包列表
         Set<String> importList = fieldTypeService.getPackageListByTableId(table.getId());

@@ -10,6 +10,7 @@ import com.glume.generator.framework.commons.utils.StringUtils;
 import com.glume.generator.framework.domain.bo.GenDataSourceBO;
 import com.glume.generator.framework.domain.bo.TableFieldBO;
 import com.glume.generator.framework.domain.template.GeneratorInfo;
+import com.glume.generator.framework.enums.EnableBaseServiceEnum;
 import com.glume.generator.framework.enums.FormLayoutEnum;
 import com.glume.generator.framework.enums.GeneratorTypeEnum;
 import com.glume.generator.framework.exception.ServiceException;
@@ -160,6 +161,8 @@ public class TableServiceImpl extends BaseServiceImpl<TableMapper, TableEntity> 
             tableEntity.setClassName(StringUtils.toPascalCase(StringUtils.toCamelCase(tableName)));
             tableEntity.setModuleName(GenUtils.getModuleName(tableEntity.getPackageName()));
             tableEntity.setFunctionName(GenUtils.getFunctionName(tableName));
+            tableEntity.setEnableBaseService(EnableBaseServiceEnum.CLOSE.getValue());
+            tableEntity.setCommonPackagePath(tableEntity.getPackageName());
             baseMapper.insert(tableEntity);
             // 从数据源获取表字段信息
             List<TableFieldBO> tableFieldBOList = GenUtils.getTableFieldList(dataSourceBO, tableEntity.getId(), tableEntity.getTableName());

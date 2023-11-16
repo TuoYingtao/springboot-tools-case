@@ -1,77 +1,98 @@
 package ${package}.${moduleName}.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
-import ${package}.framework.common.utils.PageResult;
-import ${package}.framework.common.utils.Result;
-import ${package}.${moduleName}.convert.${ClassName}Convert;
-import ${package}.${moduleName}.entity.${ClassName}Entity;
-import ${package}.${moduleName}.service.${ClassName}Service;
-import ${package}.${moduleName}.query.${ClassName}Query;
-import ${package}.${moduleName}.vo.${ClassName}VO;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import ${commonPackage}.domain.Result;
+import ${commonPackage}.utils.PageUtils;
+<#if enableBaseService == 0>
+import ${package}.base.controller.BaseController;
+</#if>
+import ${package}.domain.entity.${ClassName}Entity;
+import ${package}.service.${ClassName}Service;
 
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
+import java.util.Map;
 
 /**
-* ${tableComment}
-*
-* @author ${author} ${email}
-* @since ${version} ${date}
-*/
+ * ${tableComment}
+ *
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Version: v${version}
+ */
 @RestController
 @RequestMapping("${moduleName}/${functionName}")
-@Tag(name="${tableComment}")
-@AllArgsConstructor
-public class ${ClassName}Controller {
+public class ${ClassName}Controller<#if enableBaseService == 0> extends BaseController<${ClassName}Entity, ${ClassName}Service></#if> {
+
+    @Autowired
     private final ${ClassName}Service ${className}Service;
 
+<#if enableBaseService == 0>
+    @Override
+</#if>
     @GetMapping("page")
-    @Operation(summary = "分页")
-    @PreAuthorize("hasAuthority('${moduleName}:${functionName}:page')")
-    public Result<PageResult<${ClassName}VO>> page(@ParameterObject @Valid ${ClassName}Query query){
-        PageResult<${ClassName}VO> page = ${className}Service.page(query);
+    public Result<PageUtils<${ClassName}Entity>> page(@RequestParam Map<String, Object> param) {
+        PageUtils<${ClassName}Entity> page = <#if enableBaseService != 0></#if>getPage(param);
 
         return Result.ok(page);
     }
 
+<#if enableBaseService == 0>
+    @Override
+</#if>
+    @GetMapping("list")
+    public Result<List<${ClassName}Entity>> list() {
+        List<${ClassName}Entity> listAll = <#if enableBaseService != 0>${className}Service.</#if>getListAll();
+
+        return Result.ok(listAll);
+    }
+
+<#if enableBaseService == 0>
+    @Override
+</#if>
     @GetMapping("{id}")
-    @Operation(summary = "信息")
-    @PreAuthorize("hasAuthority('${moduleName}:${functionName}:info')")
-    public Result<${ClassName}VO> get(@PathVariable("id") Long id){
-        ${ClassName}Entity entity = ${className}Service.getById(id);
+    public Result<${ClassName}Entity> get(@PathVariable("id") Long id) {
+        ${ClassName}Entity detail = <#if enableBaseService != 0>${className}Service.</#if>getDetail(id);
 
-        return Result.ok(${ClassName}Convert.INSTANCE.convert(entity));
+        return Result.ok(detail);
     }
 
+<#if enableBaseService == 0>
+    @Override
+</#if>
     @PostMapping
-    @Operation(summary = "保存")
-    @PreAuthorize("hasAuthority('${moduleName}:${functionName}:save')")
-    public Result<String> save(@RequestBody ${ClassName}VO vo){
-        ${className}Service.save(vo);
+    public Result<Map<String, Long>> save(@RequestBody ${ClassName}Entity entity) {
+        Map<String, Long> data = <#if enableBaseService != 0>${className}Service.</#if>saveData(entity);
 
-        return Result.ok();
+        return Result.ok(data);
     }
 
+<#if enableBaseService == 0>
+    @Override
+</#if>
     @PutMapping
-    @Operation(summary = "修改")
-    @PreAuthorize("hasAuthority('${moduleName}:${functionName}:update')")
-    public Result<String> update(@RequestBody @Valid ${ClassName}VO vo){
-        ${className}Service.update(vo);
+    public Result<${ClassName}Entity> update(@RequestBody ${ClassName}Entity entity) {
+        ${ClassName}Entity ${className}Entity = <#if enableBaseService != 0>${className}Service.</#if>updateDetail(entity);
 
-        return Result.ok();
+        return Result.ok(${className}Entity);
     }
 
+<#if enableBaseService == 0>
+    @Override
+</#if>
     @DeleteMapping
-    @Operation(summary = "删除")
-    @PreAuthorize("hasAuthority('${moduleName}:${functionName}:delete')")
-    public Result<String> delete(@RequestBody List<Long> idList){
-        ${className}Service.delete(idList);
+    public Result<String> delete(@RequestBody Long[] ids) {
+        String message = <#if enableBaseService != 0>${className}Service.</#if>deleteBatchByIds(ids);
 
-        return Result.ok();
+        return Result.ok(message);
     }
 }

@@ -81,18 +81,13 @@ public class TableEntity extends BaseEntity {
      */
     private Long baseclassId;
     /**
-     * 控制层基类ID
+     * 是否启用三层架构基类 0：启用 1：关闭
      */
-    private Long controllerBaseclassId;
+    private Integer enableBaseService;
     /**
-     * 业务层基类ID
+     * 工具包路径
      */
-    private Long serviceBaseclassId;
-    /**
-     * 业务层实现基类ID
-     */
-    private Long serviceImplBaseclassId;
-
+    private String commonPackagePath;
     /**
      * 字段列表
      */

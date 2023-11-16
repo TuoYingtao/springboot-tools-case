@@ -21,9 +21,6 @@
         <result property="formLayout" column="form_layout" jdbcType="TINYINT"/>
         <result property="datasourceId" column="datasource_id" jdbcType="BIGINT"/>
         <result property="baseclassId" column="baseclass_id" jdbcType="BIGINT"/>
-        <result property="controllerBaseclassId" column="controller_baseclass_id" jdbcType="BIGINT"/>
-        <result property="serviceBaseclassId" column="service_baseclass_id" jdbcType="BIGINT"/>
-        <result property="serviceImplBaseclassId" column="service_impl_baseclass_id" jdbcType="BIGINT"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>

@@ -1,12 +1,12 @@
-package com.glume.generator.framework.commons.utils;
+package ${commonPackage}.utils;
 
 
 /**
  * SQL过滤
  *
- * @Author: TuoYingtao
- * @Date: 2023-09-06 14:15
- * @Version: v1.0.0
+ * @Author: ${author}
+ * @Date: ${datetime}
+ * @Version: v${version}
  */
 public class SQLFilter {
     /**
