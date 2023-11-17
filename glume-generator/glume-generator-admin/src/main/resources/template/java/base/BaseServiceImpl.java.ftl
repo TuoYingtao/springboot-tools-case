@@ -1,11 +1,11 @@
-package ${package}.base.service.impl;
+package ${package}.${moduleName}.base.service.impl;
 
-import ${package}.base.domain.entity.BaseEntity;
-import ${package}.base.domain.query.BaseParamQuery;
-import ${package}.base.service.BaseIService;
-import ${commonPackage}.utils.PageUtils;
+import ${package}.${moduleName}.base.domain.entity.BaseEntity;
+import ${package}.${moduleName}.base.domain.query.BaseParamQuery;
+import ${package}.${moduleName}.base.service.BaseIService;
+import ${commonPackage}.domain.PageResult;
 import ${commonPackage}.utils.QueryParams;
-import ${commonPackage}.constants.Constants;
+import ${commonPackage}.constant.Constants;
 import ${commonPackage}.json.JacksonUtils;
 import ${commonPackage}.text.Convert;
 import ${commonPackage}.utils.StringUtils;
@@ -95,9 +95,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
      * @param param 分页参数
      */
     @Override
-    public PageUtils<T> getPage(Map<String, Object> param) {
+    public PageResult<T> getPage(Map<String, Object> param) {
         IPage<T> page = baseMapper.selectPage(getQueryPage(param), getWrapper(param));
-        return new PageUtils<>(page);
+        return new PageResult<>(page);
     }
 
     /**
@@ -110,7 +110,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
 
     /**
      * 获取详情信息
-     * @param id id
+     * @param id 详情id
      */
     @Override
     public T getDetail(Long id) {

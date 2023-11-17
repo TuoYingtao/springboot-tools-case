@@ -1,12 +1,12 @@
 package ${package}.${moduleName}.controller;
 
 import ${commonPackage}.domain.Result;
-import ${commonPackage}.utils.PageUtils;
+import ${commonPackage}.domain.PageResult;
 <#if enableBaseService == 0>
-import ${package}.base.controller.BaseController;
+import ${package}.${moduleName}.base.controller.BaseController;
 </#if>
-import ${package}.domain.entity.${ClassName}Entity;
-import ${package}.service.${ClassName}Service;
+import ${package}.${moduleName}.domain.entity.${ClassName}Entity;
+import ${package}.${moduleName}.service.${ClassName}Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +35,14 @@ import java.util.Map;
 public class ${ClassName}Controller<#if enableBaseService == 0> extends BaseController<${ClassName}Entity, ${ClassName}Service></#if> {
 
     @Autowired
-    private final ${ClassName}Service ${className}Service;
+    private ${ClassName}Service ${className}Service;
 
 <#if enableBaseService == 0>
     @Override
 </#if>
     @GetMapping("page")
-    public Result<PageUtils<${ClassName}Entity>> page(@RequestParam Map<String, Object> param) {
-        PageUtils<${ClassName}Entity> page = <#if enableBaseService != 0></#if>getPage(param);
+    public Result<PageResult<${ClassName}Entity>> page(@RequestParam Map<String, Object> param) {
+        PageResult<${ClassName}Entity> page = <#if enableBaseService != 0>${className}Service.</#if>getPage(param);
 
         return Result.ok(page);
     }
@@ -71,8 +72,9 @@ public class ${ClassName}Controller<#if enableBaseService == 0> extends BaseCont
 </#if>
     @PostMapping
     public Result<Map<String, Long>> save(@RequestBody ${ClassName}Entity entity) {
-        Map<String, Long> data = <#if enableBaseService != 0>${className}Service.</#if>saveData(entity);
-
+        Long id = <#if enableBaseService != 0>${className}Service.</#if>saveData(entity);
+        Map<String, Long> data = new HashMap<>(1);
+        data.put("${className}Id", id);
         return Result.ok(data);
     }
 
@@ -91,8 +93,7 @@ public class ${ClassName}Controller<#if enableBaseService == 0> extends BaseCont
 </#if>
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
-        String message = <#if enableBaseService != 0>${className}Service.</#if>deleteBatchByIds(ids);
 
-        return Result.ok(message);
+        return <#if enableBaseService != 0>${className}Service.</#if>deleteBatchByIds(ids) ? Result.ok("删除成功！") : Result.fail("删除失败！");
     }
 }

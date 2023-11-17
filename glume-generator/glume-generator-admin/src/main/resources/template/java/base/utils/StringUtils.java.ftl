@@ -1,7 +1,7 @@
 package ${commonPackage}.utils;
 
 
-import ${commonPackage}.constants.Constants;
+import ${commonPackage}.constant.Constants;
 import ${commonPackage}.text.StrFormatter;
 import org.springframework.util.AntPathMatcher;
 

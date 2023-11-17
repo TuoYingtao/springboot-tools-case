@@ -33,12 +33,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -74,23 +77,14 @@ public class GeneratorServiceImpl implements GeneratorService {
     @Override
     public void generatorCode(Long[] tableIds) {
         for (Long tableId : tableIds) {
-            Map<String, String> map = templateDateHandler(tableId);
-            Iterator<String> iterator = map.keySet().iterator();
-            while (iterator.hasNext()) {
-                String path = iterator.next();
-                String content = map.get(path);
-                FileUtil.writeUtf8String(content, path);
-            }
+            BiConsumer<String, String> consumerCallback = (path, content) -> FileUtil.writeUtf8String(content, path);
+            templateDateHandler(consumerCallback, tableId);
         }
     }
 
     @Override
     public void downloadCode(long tableId, ZipOutputStream zip) {
-        Map<String, String> map = templateDateHandler(tableId);
-        Iterator<String> iterator = map.keySet().iterator();
-        while (iterator.hasNext()) {
-            String path = iterator.next();
-            String content = map.get(path);
+        BiConsumer<String, String> consumerCallback = (path, content) -> {
             try {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(path));
@@ -100,7 +94,8 @@ public class GeneratorServiceImpl implements GeneratorService {
             } catch (IOException e) {
                 throw new ServiceException(StrFormatter.format("模板写入失败：", path));
             }
-        }
+        };
+        templateDateHandler(consumerCallback, tableId);
     }
 
     @Override
@@ -109,13 +104,19 @@ public class GeneratorServiceImpl implements GeneratorService {
         Map<String, Object> dataModel = getDataModel(tableId);
         GeneratorInfo generatorConfig = genConfigUtils.initGeneratorInfo();
         for (TemplateInfo templateInfo : generatorConfig.getTemplates()) {
-            dataModel.put("templateName", templateInfo.getTemplateName());
+            String templateName = templateInfo.getTemplateName();
+            String name = templateName.substring(templateName.lastIndexOf("/") + 1, templateName.lastIndexOf(".ftl"));
+            if (!generatorConfig.getPreviewFileName().contains(name)) continue;
+            dataModel.put("templateName", name);
             String content = TemplateUtils.getContent(templateInfo.getTemplateContent(), dataModel);
             map.put(templateInfo.getTemplateName(), content);
         }
         if (dataModel.get("enableBaseService").equals(EnableBaseServiceEnum.ENABLE.getValue())) {
             for (TemplateInfo baseTemplate : generatorConfig.getBaseTemplates()) {
-                dataModel.put("baseTemplateName", baseTemplate.getTemplateName());
+                String templateName = baseTemplate.getTemplateName();
+                String name = templateName.substring(templateName.lastIndexOf("/") + 1, templateName.lastIndexOf(".ftl"));
+                if (!generatorConfig.getPreviewFileName().contains(name)) continue;
+                dataModel.put("baseTemplateName", name);
                 String content = TemplateUtils.getContent(baseTemplate.getTemplateContent(), dataModel);
                 map.put(baseTemplate.getTemplateName(), content);
             }
@@ -123,7 +124,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         return map;
     }
 
-    private Map<String, String> templateDateHandler(Long tableId) {
+    private void templateDateHandler(BiConsumer<String, String> biConsumer, Long tableId) {
         Map<String, String> map = new HashMap<>();
         // 数据模型
         Map<String, Object> dataModel = getDataModel(tableId);
@@ -146,7 +147,12 @@ public class GeneratorServiceImpl implements GeneratorService {
                 map.put(path, content);
             }
         }
-        return map;
+        Iterator<String> iterator = map.keySet().iterator();
+        while (iterator.hasNext()) {
+            String path = iterator.next();
+            String content = map.get(path);
+            biConsumer.accept(path, content);
+        }
     }
 
     /**
@@ -171,14 +177,14 @@ public class GeneratorServiceImpl implements GeneratorService {
         dataModel.put("package", table.getPackageName());
         dataModel.put("packagePath", table.getPackageName().replace(".", File.separator));
         dataModel.put("commonPackage", table.getCommonPackagePath());
-        dataModel.put("commonPackagePath", table.getPackageName().replace(".", File.separator));
+        dataModel.put("commonPackagePath", table.getCommonPackagePath().replace(".", File.separator));
         dataModel.put("version", table.getVersion());
         dataModel.put("moduleName", table.getModuleName());
         dataModel.put("ModuleName", StringUtils.toPascalCase(table.getModuleName()));
         dataModel.put("functionName", table.getFunctionName());
         dataModel.put("FunctionName", StringUtils.toPascalCase(table.getFunctionName()));
         dataModel.put("formLayout", table.getFormLayout());
-        dataModel.put("enableBaseService", EnableBaseServiceEnum.ENABLE.getValue());
+        dataModel.put("enableBaseService", table.getEnableBaseService());
 
         // 开发者信息
         dataModel.put("author", table.getAuthor());
@@ -216,6 +222,8 @@ public class GeneratorServiceImpl implements GeneratorService {
                             || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
                         importList.add(DateTimeFormat.class.getPackage().getName() + ".DateTimeFormat");
                     }
+                    Optional.ofNullable(dataModel.get("baseClass"))
+                            .ifPresent(value -> importList.remove(Date.class.getPackage().getName() + ".Date"));
                 }).collect(Collectors.toList())
         );
 
@@ -246,7 +254,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         // 标注为基类字段
         for (TableFieldEntity field : fieldEntities) {
 
-            if (StringUtils.containsAny(Arrays.asList(fields), field.getFieldName())) {
+            if (StringUtils.containsAny(Arrays.asList(fields), field.getFieldName()) && !Objects.equals(field.getFieldName(), "id")) {
                 field.setBaseField(true);
             }
         }

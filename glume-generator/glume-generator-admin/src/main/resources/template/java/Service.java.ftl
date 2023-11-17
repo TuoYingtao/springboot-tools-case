@@ -1,12 +1,12 @@
 package ${package}.${moduleName}.service;
 
-import ${package}.${moduleName}.entity.${ClassName}Entity;
+import ${package}.${moduleName}.domain.entity.${ClassName}Entity;
 <#if enableBaseService == 0>
- import ${package}.base.service.BaseIService;
+ import ${package}.${moduleName}.base.service.BaseIService;
 </#if>
 <#if enableBaseService != 0>
 import com.baomidou.mybatisplus.extension.service.IService;
-import ${commonPackage}.utils.PageUtils;
+import ${commonPackage}.domain.PageResult;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ public interface ${ClassName}Service extends <#if enableBaseService == 0>BaseISe
    * 分页列表
    * @param param 分页参数
    */
-   PageUtils<${ClassName}Entity> getPage(Map<String, Object> param);
+   PageResult<${ClassName}Entity> getPage(Map<String, Object> param);
 
    /**
    * 全表列表
@@ -43,7 +43,7 @@ public interface ${ClassName}Service extends <#if enableBaseService == 0>BaseISe
     /**
     * 保存
     */
-   ${ClassName}Entity saveData(${ClassName}Entity ${className}Entity);
+    Long saveData(${ClassName}Entity ${className}Entity);
 
     /**
     * 更新

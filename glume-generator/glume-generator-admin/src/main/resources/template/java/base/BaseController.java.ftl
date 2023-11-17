@@ -1,9 +1,9 @@
-package ${package}.base.controller;
+package ${package}.${moduleName}.base.controller;
 
-import ${package}.base.domain.entity.BaseEntity;
-import ${package}.base.service.BaseIService;
+import ${package}.${moduleName}.base.domain.entity.BaseEntity;
+import ${package}.${moduleName}.base.service.BaseIService;
 import ${commonPackage}.domain.Result;
-import ${commonPackage}.utils.PageUtils;
+import ${commonPackage}.domain.PageResult;
 import ${commonPackage}.utils.SpringContextHolder;
 
 import org.slf4j.Logger;
@@ -87,7 +87,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseIServic
      * @return
      */
     @Override
-    public abstract Result<PageUtils<T>> page(Map<String, Object> param);
+    public abstract Result<PageResult<T>> page(Map<String, Object> param);
 
     /**
      * 获取所有数据
@@ -128,7 +128,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseIServic
     @Override
     public abstract Result<String> delete(Long[] ids);
 
-    protected final PageUtils<T> getPage(Map<String, Object> param) {
+    protected final PageResult<T> getPage(Map<String, Object> param) {
         return baseIService.getPage(param);
     }
 
@@ -140,20 +140,18 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseIServic
         return baseIService.getDetail(id);
     }
 
-    protected final Map<String, Long> saveData(T entity) {
-        Long entityId = baseIService.saveData(entity);
-        Map<String, Long> data = new HashMap<>(1);
-        data.put("id", entityId);
-        return data;
+    protected final Long saveData(T entity) {
+        baseIService.saveData(entity);
+        return entity.getId();
     }
 
     protected final T updateDetail(T entity) {
         return baseIService.updateDetail(entity);
     }
 
-    protected final String deleteBatchByIds(Long[] ids) {
-        baseIService.deleteBatchByIds(ids);
-        return "删除成功！";
+    protected final Boolean deleteBatchByIds(Long[] ids) {
+
+        return baseIService.deleteBatchByIds(ids);
     }
 
 }

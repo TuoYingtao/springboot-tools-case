@@ -1,6 +1,6 @@
 package ${commonPackage}.utils;
 
-import ${commonPackage}.constants.Constants;
+import ${commonPackage}.constant.Constants;
 import ${commonPackage}.utils.SQLFilter;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;

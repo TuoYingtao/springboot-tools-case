@@ -1,8 +1,8 @@
-package ${package}.base.controller;
+package ${package}.${moduleName}.base.controller;
 
-import ${package}.base.domain.entity.BaseEntity;
-import ${package}.base.service.BaseIService;
-import ${commonPackage}.utils.PageUtils;
+import ${package}.${moduleName}.base.domain.entity.BaseEntity;
+import ${package}.${moduleName}.base.service.BaseIService;
+import ${commonPackage}.domain.PageResult;
 import ${commonPackage}.domain.Result;
 
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public interface BaseIController<T extends BaseEntity, S extends BaseIService<T>
      * @param param 分页参数
      * @return
      */
-    public Result<PageUtils<T>> page(Map<String, Object> param);
+    public Result<PageResult<T>> page(Map<String, Object> param);
 
     /**
      * 获取所有数据

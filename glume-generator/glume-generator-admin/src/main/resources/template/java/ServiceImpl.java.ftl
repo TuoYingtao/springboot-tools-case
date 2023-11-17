@@ -1,10 +1,9 @@
 package ${package}.${moduleName}.service.impl;
 
+import org.springframework.stereotype.Service;
 import ${package}.${moduleName}.dao.${ClassName}Dao;
 import ${package}.${moduleName}.service.${ClassName}Service;
 import ${package}.${moduleName}.domain.entity.${ClassName}Entity;
-import ${package}.${moduleName}.dao.${ClassName}Dao;
-import org.springframework.stereotype.Service;
 <#if enableBaseService == 0>
 import ${package}.${moduleName}.base.service.impl.BaseServiceImpl;
 <#else>
@@ -13,7 +12,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import ${commonPackage}.utils.PageUtils;
+import ${commonPackage}.domain.PageResult;
 import ${commonPackage}.utils.QueryParams;
 import ${commonPackage}.text.Convert;
 import ${commonPackage}.constant.Constants;
@@ -42,14 +41,14 @@ public class ${ClassName}ServiceImpl extends <#if enableBaseService == 0>BaseSer
      * @param param 分页参数
      */
     @Override
-    public PageResult<${ClassName}Entity> page(Map<String, Object> param) {
+    public PageResult<${ClassName}Entity> getPage(Map<String, Object> param) {
         String pageNum = Optional.ofNullable(Convert.toStr(param.get(Constants.PAGE_NUM))).orElse("1");
         String limit = Optional.ofNullable(Convert.toStr(param.get(Constants.LIMIT))).orElse("10");
         param.put(Constants.PAGE_NUM, pageNum);
         param.put(Constants.LIMIT, limit);
         IPage<${ClassName}Entity> page = baseMapper.selectPage(new QueryParams<${ClassName}Entity>().getPage(param), Wrappers.lambdaQuery(${ClassName}Entity.class));
 
-        return new PageUtils(page);
+        return new PageResult(page);
     }
 
     /**

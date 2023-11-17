@@ -33,6 +33,11 @@ public class GeneratorInfo implements Serializable {
      */
     private List<TemplateInfo> baseTemplates;
 
+    /**
+     * 可预览的文件
+     */
+    private List<String> previewFileName;
+
     public ProjectInfo getProject() {
         return project;
     }
@@ -63,5 +68,13 @@ public class GeneratorInfo implements Serializable {
 
     public void setBaseTemplates(List<TemplateInfo> baseTemplates) {
         this.baseTemplates = baseTemplates;
+    }
+
+    public List<String> getPreviewFileName() {
+        return previewFileName;
+    }
+
+    public void setPreviewFileName(List<String> previewFileName) {
+        this.previewFileName = previewFileName;
     }
 }

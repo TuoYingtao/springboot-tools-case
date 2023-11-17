@@ -1,7 +1,7 @@
-package ${package}.base.service;
+package ${package}.${moduleName}.base.service;
 
-import ${package}.base.domain.entity.BaseEntity;
-import ${commonPackage}.utils.PageUtils;
+import ${package}.${moduleName}.base.domain.entity.BaseEntity;
+import ${commonPackage}.domain.PageResult;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -21,7 +21,7 @@ public interface BaseIService<T extends BaseEntity> extends IService<T> {
      * 分页列表
      * @param param 分页参数
      */
-    PageUtils<T> getPage(Map<String, Object> param);
+    PageResult<T> getPage(Map<String, Object> param);
 
     /**
      * 全表列表

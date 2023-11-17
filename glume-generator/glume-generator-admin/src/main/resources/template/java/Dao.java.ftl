@@ -1,4 +1,4 @@
-package com.glume.generator.service.mapper;
+package ${package}.${moduleName}.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import ${package}.${moduleName}.domain.entity.${ClassName}Entity;

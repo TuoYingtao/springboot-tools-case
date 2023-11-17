@@ -1,4 +1,4 @@
-package ${package}.base.domain.query;
+package ${package}.${moduleName}.base.domain.query;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

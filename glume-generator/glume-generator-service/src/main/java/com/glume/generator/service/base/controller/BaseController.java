@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,20 +138,17 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseIServic
         return baseIService.getDetail(id);
     }
 
-    protected final Map<String, Long> saveData(T entity) {
-        Long entityId = baseIService.saveData(entity);
-        Map<String, Long> data = new HashMap<>(1);
-        data.put("id", entityId);
-        return data;
+    protected final Long saveData(T entity) {
+        baseIService.saveData(entity);
+        return entity.getId();
     }
 
     protected final T updateDetail(T entity) {
         return baseIService.updateDetail(entity);
     }
 
-    protected final String deleteBatchByIds(Long[] ids) {
-        baseIService.deleteBatchByIds(ids);
-        return "删除成功！";
+    protected final Boolean deleteBatchByIds(Long[] ids) {
+        return baseIService.deleteBatchByIds(ids);
     }
 
 }

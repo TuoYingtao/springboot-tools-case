@@ -122,8 +122,8 @@ public class TableController extends BaseController<TableEntity, TableService> {
     @Override
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
-        String message = deleteBatchByIds(ids);
-        return Result.ok(message);
+
+        return deleteBatchByIds(ids) ? Result.ok("删除成功！") : Result.fail("删除失败！");
     }
 
 }

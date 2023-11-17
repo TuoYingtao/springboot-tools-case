@@ -1,4 +1,4 @@
-package ${commonPackage}.constants;
+package ${commonPackage}.constant;
 
 /**
  * 通用常量信息

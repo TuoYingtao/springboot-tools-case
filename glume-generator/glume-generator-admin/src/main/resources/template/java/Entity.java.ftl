@@ -1,15 +1,14 @@
-package ${package}.${moduleName}.entity;
+package ${package}.${moduleName}.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-<#if baseClass??>
-import lombok.EqualsAndHashCode;
-</#if>
+
 <#list importList as i>
 import ${i!};
 </#list>
 <#if baseClass??>
+import lombok.EqualsAndHashCode;
 import ${baseClass.packageName}.${baseClass.code};
 <#else>
 import java.io.Serializable;

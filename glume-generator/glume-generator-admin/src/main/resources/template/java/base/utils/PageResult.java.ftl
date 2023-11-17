@@ -1,4 +1,4 @@
-package ${commonPackage}.utils;
+package ${commonPackage}.domain;
 
 import ${commonPackage}.json.JacksonUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @Date: ${datetime}
  * @Version: v${version}
  */
-public class PageUtils<T> implements Serializable {
+public class PageResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -46,7 +46,7 @@ public class PageUtils<T> implements Serializable {
      * @param pageSize   每页记录数
      * @param currPage   当前页数
      */
-    public PageUtils(List<T> list, int totalCount, int pageSize, int currPage) {
+    public PageResult(List<T> list, int totalCount, int pageSize, int currPage) {
         this.list = list;
         this.totalCount = totalCount;
         this.pageSize = pageSize;
@@ -57,7 +57,7 @@ public class PageUtils<T> implements Serializable {
     /**
      * 分页
      */
-    public PageUtils(IPage<T> page) {
+    public PageResult(IPage<T> page) {
         this.list = page.getRecords();
         this.totalCount = (int) page.getTotal();
         this.pageSize = (int) page.getSize();
@@ -68,7 +68,7 @@ public class PageUtils<T> implements Serializable {
     /**
      * 将 list 构建为自己想要的类型
      */
-    public PageUtils<T> convertBuilder(Class<T> tClass) {
+    public PageResult<T> convertBuilder(Class<T> tClass) {
         List<T> convertValue = this.list.stream()
                 .map(obj -> JacksonUtils.jsonToBean(JacksonUtils.beanToJson(obj), tClass))
                 .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package ${commonPackage}.domain;
 
-import ${commonPackage}.constants.Constants;
+import ${commonPackage}.constant.Constants;
 import ${commonPackage}.json.JacksonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 

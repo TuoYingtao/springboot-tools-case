@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,8 +57,9 @@ public class FieldTypeController extends BaseController<FieldTypeEntity, FieldTy
     @Override
     @PostMapping
     public Result<Map<String, Long>> save(@RequestBody FieldTypeEntity entity) {
-        Map<String, Long> data = saveData(entity);
-
+        Long id = saveData(entity);
+        Map<String, Long> data = new HashMap<>(1);
+        data.put("id", id);
         return Result.ok(data);
     }
 
@@ -72,8 +74,7 @@ public class FieldTypeController extends BaseController<FieldTypeEntity, FieldTy
     @Override
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
-        String message = deleteBatchByIds(ids);
 
-        return Result.ok(message);
+        return deleteBatchByIds(ids) ? Result.ok("删除成功！") : Result.fail("删除失败！");
     }
 }

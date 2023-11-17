@@ -45,10 +45,6 @@
       "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/controller/${ClassName}Controller.java"
     },
     {
-      "templateName": "java/Controller.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/controller/${ClassName}Controller.java"
-    },
-    {
       "templateName": "java/Service.java.ftl",
       "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/service/${ClassName}Service.java"
     },
@@ -57,28 +53,16 @@
       "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/service/impl/${ClassName}ServiceImpl.java"
     },
     {
-      "templateName": "java/Query.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/domain/query/${ClassName}Query.java"
-    },
-    {
       "templateName": "java/Entity.java.ftl",
       "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/domain/entity/${ClassName}Entity.java"
-    },
-    {
-      "templateName": "java/VO.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/vo/${ClassName}VO.java"
-    },
-    {
-      "templateName": "java/Convert.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/convert/${ClassName}Convert.java"
     },
     {
       "templateName": "java/Dao.java.ftl",
       "generatorPath": "${backendPath}/src/main/java/${packagePath}/${moduleName}/dao/${ClassName}Dao.java"
     },
     {
-      "templateName": "xml/Dao.xml.ftl",
-      "generatorPath": "${backendPath}/src/main/resources/mapper/${moduleName}/${ClassName}Dao.xml"
+      "templateName": "xml/Mapper.xml.ftl",
+      "generatorPath": "${backendPath}/src/main/resources/mapper/${moduleName}/${ClassName}Mapper.xml"
     },
     {
       "templateName": "sql/menu.sql.ftl",
@@ -86,19 +70,23 @@
     },
     {
       "templateName": "vue/api.ts.ftl",
-      "generatorPath": "${frontendPath}/src/api/${moduleName}/${functionName}.ts"
+      "generatorPath": "${frontendPath}/src/api/${moduleName}/${className}.ts"
     },
     {
       "templateName": "vue/index.vue.ftl",
-      "generatorPath": "${frontendPath}/src/views/${moduleName}/${functionName}/index.vue"
+      "generatorPath": "${frontendPath}/src/views/${moduleName}/${className}/index.vue"
     },
     {
-      "templateName": "vue/add-or-update.vue.ftl",
-      "generatorPath": "${frontendPath}/src/views/${moduleName}/${functionName}/add-or-update.vue"
+      "templateName": "vue/constants.ts.ftl",
+      "generatorPath": "${frontendPath}/src/views/${moduleName}/${className}/constants.ts"
     },
     {
-      "templateName": "java/base/utils/PageUtils.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/PageUtils.java"
+      "templateName": "vue/FormDialog.vue.ftl",
+      "generatorPath": "${frontendPath}/src/views/${moduleName}/${className}/component/FormDialog.vue"
+    },
+    {
+      "templateName": "java/base/utils/PageResult.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/domain/PageResult.java"
     },
     {
       "templateName": "java/base/utils/Result.java.ftl",
@@ -106,7 +94,7 @@
     },
     {
       "templateName": "java/base/utils/Constants.java.ftl",
-      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/constants/Constants.java"
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/constant/Constants.java"
     },
     {
       "templateName": "java/base/utils/JacksonUtils.java.ftl",
@@ -125,6 +113,10 @@
       "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/text/Convert.java"
     },
     {
+      "templateName": "java/base/utils/CharsetKit.java.ftl",
+      "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/text/CharsetKit.java"
+    },
+    {
       "templateName": "java/base/utils/StringUtils.java.ftl",
       "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/utils/StringUtils.java"
     },
@@ -132,5 +124,24 @@
       "templateName": "java/base/utils/StrFormatter.java.ftl",
       "generatorPath": "${backendPath}/src/main/java/${commonPackagePath}/text/StrFormatter.java"
     }
+  ],
+  "previewFileName": [
+    "BaseEntity.java",
+    "BaseParamQuery.java",
+    "BaseIController.java",
+    "BaseController.java",
+    "BaseIService.java",
+    "BaseServiceImpl.java",
+    "Controller.java",
+    "Service.java",
+    "ServiceImpl.java",
+    "Entity.java",
+    "Dao.java",
+    "Dao.xml",
+    "menu.sql",
+    "api.ts",
+    "index.vue",
+    "constants.ts",
+    "FormDialog.vue"
   ]
 }

@@ -3,9 +3,9 @@
 
 <mapper namespace="${package}.${moduleName}.dao.${ClassName}Dao">
 
-    <resultMap type="${package}.${moduleName}.domain.entity.${ClassName}Entity" id="${className}Map">
+    <resultMap id="${className}Result" type="${package}.${moduleName}.domain.entity.${ClassName}Entity">
         <#list fieldList as field>
-        <result property="${field.attrName}" column="${field.fieldName}"/>
+        <result property="${field.attrName}" column="${field.fieldName}" />
         </#list>
     </resultMap>
 
