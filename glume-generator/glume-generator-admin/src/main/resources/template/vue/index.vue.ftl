@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
+<#if queryList!?size gt 0>
     <el-form :model="queryParams" ref="QueryRef" :inline="true" v-show="showSearch" label-width="68px">
-<#if queryList!?length gt 0>
 <#list queryList as field>
       <el-form-item label="${field.fieldComment!}" style="width: 308px;">
   <#if field.queryFormType == "text" || field.queryFormType == "textarea" || field.queryFormType == "editor">
@@ -108,8 +108,8 @@
 
 <script setup lang="ts" name="${ClassName}Index">
 import { getCurrentInstance } from "vue";
-import * as CurrentConstants from "@/views/${ModuleName}/${className}/constants";
-import FormDialog from "@/views/${ModuleName}/${className}/component/FormDialog.vue";
+import * as CurrentConstants from "@/views/${moduleName}/${className}/constants";
+import FormDialog from "@/views/${moduleName}/${className}/component/FormDialog.vue";
 import { ${ClassName}ApiService } from "@/api/${className}/${ClassName}ApiService";
 import { ${ClassName}Entity } from "@/api/${className}/models/${ClassName}Entity";
 

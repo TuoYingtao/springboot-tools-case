@@ -1,5 +1,5 @@
 import { FormRules } from "element-plus";
-import { FieldTypeEntity } from "@/api/${className}/models/${ClassName}Entity";
+import { ${ClassName}Entity } from "@/api/${className}/models/${ClassName}Entity";
 
 interface IData {
   form: ${ClassName}Entity;

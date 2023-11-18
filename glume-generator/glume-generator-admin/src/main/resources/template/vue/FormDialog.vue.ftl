@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { DATA, Props } from "@/views/${ModuleName}/${className}/constants";
+import { DATA, Props } from "@/views/${moduleName}/${className}/constants";
 
 const emit = defineEmits([]);
 // 表单Ref

@@ -69,8 +69,12 @@
       "generatorPath": "${backendPath}/menu/${tableName}_menu.sql"
     },
     {
-      "templateName": "vue/api.ts.ftl",
-      "generatorPath": "${frontendPath}/src/api/${moduleName}/${className}.ts"
+      "templateName": "vue/Entity.d.ts.ftl",
+      "generatorPath": "${frontendPath}/src/api/${className}/models/${ClassName}Entity.d.ts"
+    },
+    {
+      "templateName": "vue/ApiService.ts.ftl",
+      "generatorPath": "${frontendPath}/src/api/${className}/${ClassName}ApiService.ts"
     },
     {
       "templateName": "vue/index.vue.ftl",
@@ -139,7 +143,8 @@
     "Dao.java",
     "Dao.xml",
     "menu.sql",
-    "api.ts",
+    "Entity.d.ts",
+    "ApiService.ts",
     "index.vue",
     "constants.ts",
     "FormDialog.vue"
