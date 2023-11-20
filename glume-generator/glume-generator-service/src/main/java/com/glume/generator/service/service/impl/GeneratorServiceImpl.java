@@ -164,155 +164,98 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     /**
      * 获取渲染的数据模型
+     *
      * @param tableId 表ID
      * @return
      */
     private Map<String, Object> getDataModel(Long tableId) {
         Map<String, Object> dataModel = Collections.synchronizedMap(new HashMap<>());
-        CompletableFuture<TableEntity> tableEntityFuture = CompletableFuture.supplyAsync(() -> tableService.getDetail(tableId), executor)
+        // 获取表信息
+        CompletableFuture<TableEntity> tableEntityFuture = CompletableFuture
+                .supplyAsync(() -> tableService.getDetail(tableId), executor)
                 .thenComposeAsync((tableEntity) -> {
+                    // 表字段信息
                     List<TableFieldEntity> fieldEntityList = tableFieldService.getTableFieldByTableId(tableId);
                     tableEntity.setFieldList(fieldEntityList);
                     return CompletableFuture.completedFuture(tableEntity);
-                }, executor);
+                }, executor)
+                .thenComposeAsync((tableEntity -> {
+                    // 设置字段分类
+                    setFieldTypeList(dataModel, tableEntity);
+                    return CompletableFuture.completedFuture(tableEntity);
+                }), executor)
+                .thenComposeAsync((tableEntity -> {
+                    // 设置基类信息
+                    setBaseClass(dataModel, tableEntity.getFieldList(), "baseClass", tableEntity.getBaseclassId());
+                    return CompletableFuture.completedFuture(tableEntity);
+                }), executor);
+        // 获取数据库类型
         CompletableFuture<String> dbTypeFuture = tableEntityFuture.thenComposeAsync((tableEntity) ->
-                CompletableFuture.supplyAsync(() -> dataSourceService.getDatabaseProductName(tableEntity.getDatasourceId())), executor);
-        CompletableFuture<Object> combinedFuture = tableEntityFuture.thenCombineAsync(dbTypeFuture, ((tableEntity, dbType) -> {
-            // 获取数据库类型
-            dataModel.put("dbType", dbType);
-            // 项目信息
-            dataModel.put("package", tableEntity.getPackageName());
-            dataModel.put("packagePath", tableEntity.getPackageName().replace(".", File.separator));
-            dataModel.put("commonPackage", tableEntity.getCommonPackagePath());
-            dataModel.put("commonPackagePath", tableEntity.getCommonPackagePath().replace(".", File.separator));
-            dataModel.put("version", tableEntity.getVersion());
-            dataModel.put("moduleName", tableEntity.getModuleName());
-            dataModel.put("ModuleName", StringUtils.toPascalCase(tableEntity.getModuleName()));
-            dataModel.put("functionName", tableEntity.getFunctionName());
-            dataModel.put("FunctionName", StringUtils.toPascalCase(tableEntity.getFunctionName()));
-            dataModel.put("formLayout", tableEntity.getFormLayout());
-            dataModel.put("enableBaseService", tableEntity.getEnableBaseService());
-            // 开发者信息
-            dataModel.put("author", tableEntity.getAuthor());
-            dataModel.put("email", tableEntity.getEmail());
-            dataModel.put("datetime", DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS));
-            dataModel.put("date", DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD));
-            // 表信息
-            dataModel.put("tableName", tableEntity.getTableName());
-            dataModel.put("tableComment", tableEntity.getTableComment());
-            dataModel.put("className", StringUtils.lowerFirst(tableEntity.getClassName()));
-            dataModel.put("ClassName", tableEntity.getClassName());
-            dataModel.put("fieldList", tableEntity.getFieldList());
-            // 生成路径
-            dataModel.put("backendPath", tableEntity.getBackendPath());
-            dataModel.put("frontendPath", tableEntity.getFrontendPath());
-            // 设置字段分类
-            setFieldTypeList(dataModel, tableEntity);
-            // 设置基类信息
-            setBaseClass(dataModel, tableEntity.getFieldList(), "baseClass", tableEntity.getBaseclassId());
-
-            // 导入的包列表
+                CompletableFuture.supplyAsync(() ->
+                        dataSourceService.getDatabaseProductName(tableEntity.getDatasourceId()), executor), executor);
+        // 获取包列表
+        CompletableFuture<Set<String>> importListFuture = tableEntityFuture.thenComposeAsync((tableEntity -> {
             Set<String> importList = fieldTypeService.getPackageListByTableId(tableEntity.getId());
-            dataModel.put("importList", importList);
-            tableEntity.getFieldList().stream()
-                    .peek(tableFieldEntity -> {
-                        if (!Objects.equals(tableFieldEntity.getAutoFill(), AutoFillEnum.DEFAULT.name())) {
-                            importList.add(TableField.class.getPackage().getName() + ".TableField");
-                            importList.add(FieldFill.class.getPackage().getName() + ".FieldFill");
-                        }
-                        if (DateFillEnum.JSON_FORMAT.name().equals(tableFieldEntity.getDateFill())
-                                || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
-                            importList.add(JsonFormat.class.getPackage().getName() + ".JsonFormat");
-                        }
-                        if (DateFillEnum.DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())
-                                || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
-                            importList.add(DateTimeFormat.class.getPackage().getName() + ".DateTimeFormat");
-                        }
-                        Optional.ofNullable(dataModel.get("baseClass"))
-                                .ifPresent(value -> importList.remove(Date.class.getPackage().getName() + ".Date"));
-                    }).collect(Collectors.toList());
-            return null;
+            tableEntity.getFieldList().stream().peek(tableFieldEntity -> {
+                if (!Objects.equals(tableFieldEntity.getAutoFill(), AutoFillEnum.DEFAULT.name())) {
+                    importList.add(TableField.class.getPackage().getName() + ".TableField");
+                    importList.add(FieldFill.class.getPackage().getName() + ".FieldFill");
+                }
+                if (DateFillEnum.JSON_FORMAT.name().equals(tableFieldEntity.getDateFill()) || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
+                    importList.add(JsonFormat.class.getPackage().getName() + ".JsonFormat");
+                }
+                if (DateFillEnum.DATE_FORMAT.name().equals(tableFieldEntity.getDateFill()) || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
+                    importList.add(DateTimeFormat.class.getPackage().getName() + ".DateTimeFormat");
+                }
+                Optional.ofNullable(dataModel.get("baseClass")).ifPresent(value -> importList.remove(Date.class.getPackage().getName() + ".Date"));
+            }).collect(Collectors.toList());
+            return CompletableFuture.completedFuture(importList);
         }), executor);
-        combinedFuture.join();
-        Map<String, Object> dataModel2  = combinedFuture.thenApply(ignored -> dataModel).join();
-
-        // // 表信息
-        // TableEntity table = tableService.getDetail(tableId);
-        // List<TableFieldEntity> fieldList = tableFieldService.getTableFieldByTableId(tableId);
-        // table.setFieldList(fieldList);
-        //
-        // // 数据模型
-        // Map<String, Object> dataModel = new HashMap<>();
-        //
-        // // 获取数据库类型
-        // String dbType = dataSourceService.getDatabaseProductName(table.getDatasourceId());
-        // dataModel.put("dbType", dbType);
-        //
-        // // 项目信息
-        // dataModel.put("package", table.getPackageName());
-        // dataModel.put("packagePath", table.getPackageName().replace(".", File.separator));
-        // dataModel.put("commonPackage", table.getCommonPackagePath());
-        // dataModel.put("commonPackagePath", table.getCommonPackagePath().replace(".", File.separator));
-        // dataModel.put("version", table.getVersion());
-        // dataModel.put("moduleName", table.getModuleName());
-        // dataModel.put("ModuleName", StringUtils.toPascalCase(table.getModuleName()));
-        // dataModel.put("functionName", table.getFunctionName());
-        // dataModel.put("FunctionName", StringUtils.toPascalCase(table.getFunctionName()));
-        // dataModel.put("formLayout", table.getFormLayout());
-        // dataModel.put("enableBaseService", table.getEnableBaseService());
-        //
-        // // 开发者信息
-        // dataModel.put("author", table.getAuthor());
-        // dataModel.put("email", table.getEmail());
-        // dataModel.put("datetime", DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS));
-        // dataModel.put("date", DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD));
-        //
-        // // 设置字段分类
-        // setFieldTypeList(dataModel, table);
-        //
-        // // 设置基类信息
-        // setBaseClass(dataModel, table.getFieldList(), "baseClass", table.getBaseclassId());
-        //
-        //
-        // // 导入的包列表
-        // Set<String> importList = fieldTypeService.getPackageListByTableId(table.getId());
-        // dataModel.put("importList", importList);
-        //
-        // // 表信息
-        // dataModel.put("tableName", table.getTableName());
-        // dataModel.put("tableComment", table.getTableComment());
-        // dataModel.put("className", StringUtils.lowerFirst(table.getClassName()));
-        // dataModel.put("ClassName", table.getClassName());
-        // dataModel.put("fieldList", table.getFieldList().stream()
-        //         .peek(tableFieldEntity -> {
-        //             if (!Objects.equals(tableFieldEntity.getAutoFill(), AutoFillEnum.DEFAULT.name())) {
-        //                 importList.add(TableField.class.getPackage().getName() + ".TableField");
-        //                 importList.add(FieldFill.class.getPackage().getName() + ".FieldFill");
-        //             }
-        //             if (DateFillEnum.JSON_FORMAT.name().equals(tableFieldEntity.getDateFill())
-        //                     || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
-        //                 importList.add(JsonFormat.class.getPackage().getName() + ".JsonFormat");
-        //             }
-        //             if (DateFillEnum.DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())
-        //                     || DateFillEnum.JSON_DATE_FORMAT.name().equals(tableFieldEntity.getDateFill())) {
-        //                 importList.add(DateTimeFormat.class.getPackage().getName() + ".DateTimeFormat");
-        //             }
-        //             Optional.ofNullable(dataModel.get("baseClass"))
-        //                     .ifPresent(value -> importList.remove(Date.class.getPackage().getName() + ".Date"));
-        //         }).collect(Collectors.toList())
-        // );
-        //
-        // // 生成路径
-        // dataModel.put("backendPath", table.getBackendPath());
-        // dataModel.put("frontendPath", table.getFrontendPath());
-
+        // 设置模版数据
+        tableEntityFuture.thenCombineAsync(dbTypeFuture, ((tableEntity, dbType) -> {
+                    // 获取数据库类型
+                    dataModel.put("dbType", dbType);
+                    return tableEntity;
+                }), executor)
+                .thenCombineAsync(importListFuture, ((tableEntity, importList) -> {
+                    // 设置包列表
+                    dataModel.put("importList", importList);
+                    // 项目信息
+                    dataModel.put("package", tableEntity.getPackageName());
+                    dataModel.put("packagePath", tableEntity.getPackageName().replace(".", File.separator));
+                    dataModel.put("commonPackage", tableEntity.getCommonPackagePath());
+                    dataModel.put("commonPackagePath", tableEntity.getCommonPackagePath().replace(".", File.separator));
+                    dataModel.put("version", tableEntity.getVersion());
+                    dataModel.put("moduleName", tableEntity.getModuleName());
+                    dataModel.put("ModuleName", StringUtils.toPascalCase(tableEntity.getModuleName()));
+                    dataModel.put("functionName", tableEntity.getFunctionName());
+                    dataModel.put("FunctionName", StringUtils.toPascalCase(tableEntity.getFunctionName()));
+                    dataModel.put("formLayout", tableEntity.getFormLayout());
+                    dataModel.put("enableBaseService", tableEntity.getEnableBaseService());
+                    // 开发者信息
+                    dataModel.put("author", tableEntity.getAuthor());
+                    dataModel.put("email", tableEntity.getEmail());
+                    dataModel.put("datetime", DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS));
+                    dataModel.put("date", DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD));
+                    // 表信息
+                    dataModel.put("tableName", tableEntity.getTableName());
+                    dataModel.put("tableComment", tableEntity.getTableComment());
+                    dataModel.put("className", StringUtils.lowerFirst(tableEntity.getClassName()));
+                    dataModel.put("ClassName", tableEntity.getClassName());
+                    dataModel.put("fieldList", tableEntity.getFieldList());
+                    // 生成路径
+                    dataModel.put("backendPath", tableEntity.getBackendPath());
+                    dataModel.put("frontendPath", tableEntity.getFrontendPath());
+                    return null;
+                }), executor).join();
         return dataModel;
     }
 
     /**
      * 设置基类信息
-     * @param dataModel      数据模型
-     * @param fieldEntities  字段列表
+     *
+     * @param dataModel     数据模型
+     * @param fieldEntities 字段列表
      */
     private void setBaseClass(Map<String, Object> dataModel, List<TableFieldEntity> fieldEntities, String key, Long baseClassId) {
         if (baseClassId == null || baseClassId < 0) {
@@ -325,44 +268,54 @@ public class GeneratorServiceImpl implements GeneratorService {
 
         // 基类字段
         String[] fields = baseClass.getFields().split(",");
-
+        ArrayList<CompletableFuture> list = new ArrayList<>();
         // 标注为基类字段
         for (TableFieldEntity field : fieldEntities) {
-
-            if (StringUtils.containsAny(Arrays.asList(fields), field.getFieldName()) && !Objects.equals(field.getFieldName(), "id")) {
-                field.setBaseField(true);
-            }
+            CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(() -> {
+                if (StringUtils.containsAny(Arrays.asList(fields), field.getFieldName()) && !Objects.equals(field.getFieldName(), "id")) {
+                    field.setBaseField(true);
+                }
+            }, executor);
+            list.add(completableFuture);
         }
+        CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).join();
     }
 
     /**
      * 设置字段分类信息
+     *
      * @param dataModel 数据模型
      * @param table     表信息
      */
     private void setFieldTypeList(Map<String, Object> dataModel, TableEntity table) {
         // 主键列表 (支持多主键)
-        List<TableFieldEntity> primaryList = new ArrayList<>();
+        List<TableFieldEntity> primaryList = Collections.synchronizedList(new ArrayList<>());
         // 表单列表
-        List<TableFieldEntity> formList = new ArrayList<>();
+        List<TableFieldEntity> formList = Collections.synchronizedList(new ArrayList<>());
         // 网格列表
-        List<TableFieldEntity> gridList = new ArrayList<>();
+        List<TableFieldEntity> gridList = Collections.synchronizedList(new ArrayList<>());
         // 查询列表
-        List<TableFieldEntity> queryList = new ArrayList<>();
+        List<TableFieldEntity> queryList = Collections.synchronizedList(new ArrayList<>());
+
+        ArrayList<CompletableFuture> list = new ArrayList<>();
         for (TableFieldEntity field : table.getFieldList()) {
-            if (field.isPrimaryPk()) {
-                primaryList.add(field);
-            }
-            if (field.isFormItem()) {
-                formList.add(field);
-            }
-            if (field.isGridItem()) {
-                gridList.add(field);
-            }
-            if (field.isQueryItem()) {
-                queryList.add(field);
-            }
+            CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(() -> {
+                if (field.isPrimaryPk()) {
+                    primaryList.add(field);
+                }
+                if (field.isFormItem()) {
+                    formList.add(field);
+                }
+                if (field.isGridItem()) {
+                    gridList.add(field);
+                }
+                if (field.isQueryItem()) {
+                    queryList.add(field);
+                }
+            }, executor);
+            list.add(completableFuture);
         }
+        CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).join();
         dataModel.put("primaryList", primaryList);
         dataModel.put("formList", formList);
         dataModel.put("gridList", gridList);
