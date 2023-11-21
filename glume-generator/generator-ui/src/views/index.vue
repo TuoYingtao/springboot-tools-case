@@ -72,11 +72,10 @@
           </template>
           <div class="body">
             <p>
-              <i class="el-icon-s-promotion"></i> 邮箱：tuoyingtao@163.com
+              <i class="el-icon-s-promotion">邮箱：tuoyingtao@163.com</i>
             </p>
             <p>
-              <i class="el-icon-chat-dot-round"></i> lssues：
-              <el-link href="https://github.com/TuoYingtao" target="_blank">https://github.com/TuoYingtao</el-link>
+              <i class="el-icon-chat-dot-round">lssues：<el-link href="https://github.com/TuoYingtao" target="_blank">https://github.com/TuoYingtao</el-link></i>
             </p>
           </div>
         </el-card>
