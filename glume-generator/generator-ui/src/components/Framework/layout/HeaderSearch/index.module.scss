@@ -1,0 +1,28 @@
+.headerSearch {
+  font-size: 0 !important;
+
+  .searchIcon {
+    cursor: pointer;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+
+  .headerSearchSelect {
+    font-size: 18px;
+    transition: width 0.2s;
+    width: 0;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 0;
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+
+  &.show {
+    .headerSearchSelect {
+      width: 210px;
+      margin-left: 10px;
+    }
+  }
+}
