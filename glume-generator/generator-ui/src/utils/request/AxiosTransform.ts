@@ -5,14 +5,47 @@ import type { AxiosResponseError } from "@/type/axios";
 import router from "@/router";
 import { AxiosCanceler } from "@/utils/request/AxiosCancel";
 import { HttpMethodsEnum, CacheConstants } from "@/utils/request/AxiosConstants";
-import { formatRequestDate, joinTimestamp, setObjToUrlParams } from "@/utils/request/utils";
+import {
+  formatRequestDate,
+  getPropertyNames,
+  getPropertyType,
+  joinTimestamp,
+  setObjToUrlParams
+} from "@/utils/request/utils";
 import request from "@/utils/request/index";
 import { CookiesUtils } from "@/utils/request/utils/Cookies";
 import Cache from '@/utils/request/utils/Cache';
 import { ElMessage } from "element-plus";
-import { Log } from "@/utils/request/utils/descriptor";
+import { Log } from "@/utils/request/utils/Descriptors";
 
 const axiosCanceler = new AxiosCanceler();
+
+const resultKey = {
+  codeKey: '',
+  resultKey: '',
+  messageKey: '',
+}
+
+/** 动态获取响应体属性字段名 */
+function resultKeyHandler(data: Result) {
+  if (resultKey.codeKey == '' || resultKey.resultKey == '' || resultKey.messageKey == '') {
+    // @ts-ignore
+    const propertyNames = getPropertyNames<Result>(data);
+    for (let key of propertyNames) {
+      const propertyKey = getPropertyType(data, key);
+      if (typeof propertyKey == 'number') {
+        resultKey.codeKey = key as string;
+      }
+      if (typeof propertyKey == 'string') {
+        resultKey.messageKey = key as string;
+      }
+      if (typeof propertyKey == 'object') {
+        resultKey.resultKey = key as string;
+      }
+    }
+  }
+  return resultKey;
+}
 
 /**
  * Axios 中央控制器
@@ -127,7 +160,8 @@ export class AxiosTransformImpl implements AxiosTransform {
     if (!res.data) return Promise.reject(new Error('请求接口错误'));
     const { isTransformResponse } = options;
     if (isTransformResponse) return Promise.resolve(res);
-    const { code, msg } = res.data;
+    resultKeyHandler(res.data);
+    const [code, msg] = [ res.data[resultKey.codeKey], res.data[resultKey.messageKey]];
     if (code === 401) {
       const cookieToken = CookiesUtils.getCooliesUtilsInstance();
       cookieToken.remove();
@@ -152,7 +186,8 @@ export class AxiosTransformImpl implements AxiosTransform {
     if (res.status === 204 || method === HttpMethodsEnum.PATCH) return res.data;
     if (res.data && res.request.responseType === 'blob') return res.data;
     //  这里 code为 后台统一的字段，需要在 axios.d.ts 内修改为项目自己的接口返回格式
-    const { code, msg } = res.data;
+    resultKeyHandler(res.data);
+    const [code, msg] = [ res.data[resultKey.codeKey], res.data[resultKey.messageKey]];
     // 不进行任何处理，直接返回 Response 数据 code，data，message 信息
     if (isTransformResponse) return res.data;
     // 这里逻辑可以根据项目进行修改

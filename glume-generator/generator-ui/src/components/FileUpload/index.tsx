@@ -1,7 +1,7 @@
 import { defineComponent, TransitionGroup } from "vue";
-import { getToken } from "@/utils/auth";
 import { ElButton, ElLink, ElUpload, LinkProps, UploadFile } from "element-plus";
 import "./index.scss";
+import { CookiesUtils } from "@/utils/request/utils/Cookies";
 
 export default defineComponent({
   name: 'FileUpload',
@@ -34,7 +34,7 @@ export default defineComponent({
     const number = ref(0);
     const uploadList = ref<UploadFile[]>([]);
     const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传文件服务器地址
-    const headers = ref({ Authorization: "Bearer " + getToken() });
+    const headers = ref({ Authorization: "Bearer " + CookiesUtils.get() });
     const fileList = ref<Record<string, any>[]>([]);
 
     const showTip = computed(() => props.isShowTip && (props.fileType || props.fileSize));

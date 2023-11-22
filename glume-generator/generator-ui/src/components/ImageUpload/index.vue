@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { getToken } from "@/utils/auth";
+import { CookiesUtils } from "@/utils/request/utils/Cookies";
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -80,7 +80,7 @@ const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
 const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传的图片服务器地址
-const headers = ref({ Authorization: "Bearer " + getToken() });
+const headers = ref({ Authorization: "Bearer " + CookiesUtils.get() });
 const fileList = ref([]);
 const showTip = computed(
   () => props.isShowTip && (props.fileType || props.fileSize)

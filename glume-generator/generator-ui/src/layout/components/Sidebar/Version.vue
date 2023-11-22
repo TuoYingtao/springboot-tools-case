@@ -1,22 +1,21 @@
 <template>
   <div class="sidebar-version-container" :class="{ 'collapse': collapse }" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
-    <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }}</h1>
-      </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }}</h1>
-      </router-link>
+    <transition name="sidebarversionFade">
+      <div v-if="collapse" class="sidebar-version-link">
+        <div class="sidebar-version">{{ version }}</div>
+      </div>
+      <div v-else class="sidebar-version-link flex justify-center items-center">
+        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.versionTitleColor : variables.versionLightTitleColor }">{{ title }}</h1>
+        <div class="sidebar-version">{{ version }}</div>
+      </div>
     </transition>
   </div>
 </template>
 
 <script setup>
 import variables from '@/assets/styles/variables.module.scss'
-import logo from '@/assets/logo/logo.png'
 import useSettingsStore from '@/stores/modules/settings'
+import { VERSION } from "@/config/global";
 
 defineProps({
   collapse: {
@@ -26,46 +25,46 @@ defineProps({
 })
 
 const title = import.meta.env.VITE_APP_NAME;
+const version = VERSION;
 const settingsStore = useSettingsStore();
 const sideTheme = computed(() => settingsStore.sideTheme);
 </script>
 
 <style lang="scss" scoped>
-.sidebarLogoFade-enter-active {
+.sidebarversionFade-enter-active {
   transition: opacity 1.5s;
 }
 
-.sidebarLogoFade-enter,
-.sidebarLogoFade-leave-to {
+.sidebarversionFade-enter,
+.sidebarversionFade-leave-to {
   opacity: 0;
 }
 
 .sidebar-version-container {
   position: relative;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 35px;
+  line-height: 35px;
   background: #2b2f3a;
   text-align: center;
   overflow: hidden;
+  border-top: 1px solid rgb(45, 56, 79);
 
-  & .sidebar-logo-link {
+  & .sidebar-version-link {
     height: 100%;
     width: 100%;
 
-    & .sidebar-logo {
-      width: 32px;
-      height: 32px;
-      vertical-align: middle;
-      margin-right: 12px;
+    & .sidebar-title {
+      padding-right: 4px;
     }
 
+    & .sidebar-version,
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
-      font-weight: 600;
-      line-height: 50px;
+      color: rgb(31, 39, 59);
+      font-weight: 500;
+      line-height: 35px;
       font-size: 14px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
@@ -73,7 +72,7 @@ const sideTheme = computed(() => settingsStore.sideTheme);
   }
 
   &.collapse {
-    .sidebar-logo {
+    .sidebar-version {
       margin-right: 0px;
     }
   }

@@ -1,5 +1,5 @@
 import defaultSettings from '@/settings'
-import { useDynamicTitle } from '@/utils/dynamicTitle'
+import { useDynamicTitle } from '@/utils/theme/dynamicTitle'
 
 // 默认设置信息
 const { sideTheme, theme, showSettings, topNav, tagsView, fixedHeader, sidebarLogo, dynamicTitle} = defaultSettings

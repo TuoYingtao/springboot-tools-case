@@ -1,4 +1,4 @@
-import { IServiceApi } from "@/api/abstract/IServiceApi";
+import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
 import { DictEntity, DictEntityList } from "@/api/dict/models/DictEntity";
 import request from "@/utils/request/index";
 

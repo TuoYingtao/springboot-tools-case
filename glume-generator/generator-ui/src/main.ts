@@ -14,15 +14,13 @@ import './permission'; // permission control
 import { useVueViewer } from "@/components/Framework/VueViewer";
 import elementIcons from '@/components/Framework/SvgIcon/svgIcon.js';
 
-import { download } from '@/utils/request';
-import { useDict } from '@/utils/dict';
+import { useDict } from '@/hooks/dictHooks';
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels, HTMLTitle } from '@/utils';
 
 const app = createApp(App);
 
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
-app.config.globalProperties.download = download
 app.config.globalProperties.parseTime = parseTime
 app.config.globalProperties.resetForm = resetForm
 app.config.globalProperties.handleTree = handleTree

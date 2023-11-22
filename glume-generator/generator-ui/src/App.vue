@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import useSettingsStore from '@/stores/modules/settings'
-import { handleThemeStyle } from '@/utils/theme'
+import { handleThemeStyle } from '@/utils/theme/theme'
 
 // @ts-ignore
 const { proxy } = getCurrentInstance();

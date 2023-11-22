@@ -14,12 +14,12 @@ export default [
   },
   {
     path: '/login',
-    component: () => import('@/views/login.vue'),
+    component: () => import('@/views/logins/login.vue'),
     hidden: true
   },
   {
     path: '/register',
-    component: () => import('@/views/register.vue'),
+    component: () => import('@/views/logins/register.vue'),
     hidden: true
   },
   {

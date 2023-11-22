@@ -9,8 +9,17 @@ declare global {
   /** FormData 类型 */
   type FormDataParams = Record<any, any> | Recordable;
 
+  /** 响应实体 */
+  interface Result<T extends typeof Entity = Entity> {
+    [key: string]: any;
+    code: number;
+    data: T;
+    msg: string;
+  }
+
   /** 分页 */
   interface PageInfo {
+    [key: string]: any;
     /** 总页数 */
     totalCount: number;
     /** 当前页数 */
@@ -35,13 +44,6 @@ declare global {
 
   /** 实体顶类型 */
   type Entity = BaseEntity | BaseEntityList<BaseEntity>;
-
-  /** 响应实体 */
-  interface Result<T extends typeof Entity = Entity> {
-    code: number;
-    data: T;
-    msg: string;
-  }
 
 }
 
@@ -99,6 +101,7 @@ export interface AxiosTransform {
 
   /** 请求前的拦截器错误处理 */
   requestInterceptorsCatch?: (error: AxiosError) => Promise<AxiosError>;
+
 }
 
 /**

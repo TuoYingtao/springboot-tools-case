@@ -1,4 +1,4 @@
-import { IServiceApi } from "@/api/abstract/IServiceApi";
+import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
 import { TableEntity, TableEntityList, TableField } from "@/api/generator/models/TableEntity";
 import request from "@/utils/request/index";
 

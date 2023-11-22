@@ -1,4 +1,4 @@
-import { IServiceApi } from "@/api/abstract/IServiceApi";
+import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
 import { BaseClassEntity, BaseClassEntityList } from "@/api/generator/models/BaseClassEntity";
 import request from "@/utils/request/index";
 

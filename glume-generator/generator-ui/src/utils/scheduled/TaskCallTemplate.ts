@@ -1,3 +1,6 @@
+import { TaskFun } from "@/utils/scheduled/TaskFun";
+import { TaskChannel } from "@/utils/scheduled/TaskChannel";
+
 /**
  * 定时任务工具
  *
@@ -5,98 +8,6 @@
  * @Date: 2023-10-26 15:00:05
  * @Version: v1.0.0
 */
-
-class TaskChannel {
-  private static instance: TaskChannel;
-
-  private interval: Map<string, any> = new Map<string, any>();
-
-  public static getTaskChannelInstance(): TaskChannel {
-    if (!TaskChannel.instance) {
-      TaskChannel.instance = new TaskChannel();
-    }
-    return TaskChannel.instance;
-  }
-
-  public getInterval(): Map<string, any> {
-    return this.interval;
-  }
-
-  public setTaskChannel(key: string, fun: any): void {
-    this.interval.set(key, fun);
-  }
-
-  public getIntervalValue(key: string): string | null {
-    if (key && this.interval.has(key)) {
-      return this.interval.get(key);
-    }
-    return null;
-  }
-
-  public batchGetIntervalValue(keys: string[]): string[] {
-    const values: string[] = [];
-    keys.forEach((item) => {
-      if (this.interval.has(item)) {
-        values.push(this.interval.get(item));
-      }
-    });
-    return values;
-  }
-
-  public deleteItem(key: string): boolean {
-    if (key && this.interval.has(key)) {
-      this.interval.delete(key);
-      return true;
-    }
-    return false;
-  }
-
-  public batchDeleteItem(keys: string[]) {
-    keys.forEach((item) => {
-      if (this.interval.has(item)) {
-        this.interval.delete(item);
-      }
-    });
-  }
-
-  public clearAll(): boolean {
-    const num = this.interval.size;
-    if (num === 0) return true;
-    this.interval.clear();
-    return true;
-  }
-}
-
-export class TaskFun {
-  private readonly cache: any;
-
-  constructor(cache: any) {
-    this.cache = cache;
-  }
-
-  private static instance: TaskFun;
-
-  public static getTaskFunInstance(cache: any): TaskFun {
-    if (!TaskFun.instance) {
-      TaskFun.instance = new TaskFun(cache);
-    }
-    return TaskFun.instance;
-  }
-
-  public async homeData(funcApi: Function, param?: any) {
-    try {
-      const { result } = await funcApi();
-      this.cache.botNum = result;
-    } catch (e: any) {
-      throw new Error(e.message);
-    }
-  }
-
-  public homeData2() {
-    console.log('测试2');
-  }
-}
-
 export class TaskCallTemplate {
   private static instance: TaskCallTemplate;
 
@@ -136,12 +47,12 @@ export class TaskCallTemplate {
       if (args.length === 1) {
         const INTERVAL = this.taskChannel.getIntervalValue(args[0]);
         if (INTERVAL !== null) {
-          clearInterval(INTERVAL);
+          clearInterval(Number(INTERVAL));
           this.taskChannel.deleteItem(args[0]);
         }
       } else if (args.length > 1) {
         const arr: string[] = args.filter((item) => this.taskChannel.getIntervalValue(item) !== null);
-        const values: string[] = this.taskChannel.batchGetIntervalValue(arr);
+        const values: number[] = this.taskChannel.batchGetIntervalValue(arr).map(value => Number(value));
         values.forEach((value) => clearInterval(value));
         this.taskChannel.batchDeleteItem(arr);
       }
@@ -150,7 +61,7 @@ export class TaskCallTemplate {
     }
   }
 
-  private intervalDotNum<T extends keyof TaskFun>(fun: any, method: T, time: number, ...args: Parameters<TaskFun[T]>) {
+  private intervalExecoute<T extends keyof TaskFun>(fun: any, method: T, time: number, ...args: Parameters<TaskFun[T]>) {
     const INTERVAL = setInterval(async () => {
       try {
         await (fun[method] as any).apply(fun, args);
@@ -169,7 +80,7 @@ export class TaskCallTemplate {
       this.mapKey = key;
       const interval = this.taskChannel.getInterval();
       if (!interval.has(key)) {
-        this.intervalDotNum(this.taskFun, fun, time, ...args);
+        this.intervalExecoute(this.taskFun, fun, time, ...args);
       }
     } catch (e: any) {
       console.error(e.message)

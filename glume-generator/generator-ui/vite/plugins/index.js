@@ -9,7 +9,7 @@ import createCompression from './compression'
 import createHtmlPluginFun from "./html-plugin";
 import createAutoImport from './auto-import'
 import createAutoComponents from "./auto-components";
-import createSetupExtend from './setup-extend'
+import createSetupExtend from './auto-setup-extend'
 
 export default function createVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins = [vue(), vueJsx()]

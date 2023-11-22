@@ -4,11 +4,11 @@ import './index.scss'
 import darkSvg from '@/assets/images/dark.svg'
 import lightSvg from '@/assets/images/light.svg'
 
-import { useDynamicTitle } from '@/utils/dynamicTitle'
+import { useDynamicTitle } from '@/utils/theme/dynamicTitle'
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
-import { handleThemeStyle } from '@/utils/theme'
+import { handleThemeStyle } from '@/utils/theme/theme'
 import { ElButton, ElColorPicker, ElDivider, ElDrawer, ElSwitch } from "element-plus";
 
 export default defineComponent({

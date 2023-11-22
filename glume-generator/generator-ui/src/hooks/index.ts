@@ -1,4 +1,4 @@
-export { default as RequestHooks } from "@/hooks/RequestHooks";
+export { default as RequestHooks } from "@/hooks/requestHooks";
 
 /**
  * 计数器倒计时 utils

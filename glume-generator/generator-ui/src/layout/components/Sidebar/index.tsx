@@ -2,6 +2,7 @@ import { defineComponent } from 'vue';
 import { ElScrollbar, ElMenu } from 'element-plus'
 
 import Logo from './Logo.vue'
+import Version from "./Version.vue";
 import SidebarItem from './SidebarItem'
 import variables from '@/assets/styles/variables.module.scss'
 
@@ -63,11 +64,14 @@ export default defineComponent({
     }
   },
   render() {
+    const title = import.meta.env.VITE_APP_NAME;
+    console.log(title)
     return (
         <div class={[this.showLogo && 'has-logo']}
              style={{backgroundColor: this.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground}}>
           {this.showLogo && <Logo v-model:collapse={this.isCollapse}/>}
           {this.renderScrollbar()}
+          <Version v-model:collapse={this.isCollapse} />
         </div>
     )
   }

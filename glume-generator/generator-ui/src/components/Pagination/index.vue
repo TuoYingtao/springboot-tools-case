@@ -16,7 +16,7 @@
 
 <script setup>
 import useAppStore from "@/stores/modules/app";
-import { scrollTo } from '@/utils/scroll-to'
+import { scrollTo } from '@/utils/theme/scroll-to'
 
 const small = computed(() => useAppStore().size === 'small');
 

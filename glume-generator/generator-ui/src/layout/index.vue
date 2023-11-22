@@ -8,6 +8,7 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
+      <div class="copyright flex justify-center items-center">{{COPYRIGHT_INFO}}</div>
       <Settings ref="settingRef" />
     </div>
   </div>
@@ -16,10 +17,10 @@
 <script setup>
 import { useWindowSize } from '@vueuse/core'
 import { AppMain, Navbar, Settings, TagsView, Sidebar } from './components'
-import defaultSettings from '@/settings'
 
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
+import { COPYRIGHT_INFO } from "@/config/global";
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);
@@ -106,5 +107,12 @@ function setLayout() {
 
 .mobile .fixed-header {
   width: 100%;
+}
+
+.copyright {
+  height: 35px;
+  line-height: 35px;
+  font-size: 14px;
+  color: rgb(0, 0, 0, .4);
 }
 </style>

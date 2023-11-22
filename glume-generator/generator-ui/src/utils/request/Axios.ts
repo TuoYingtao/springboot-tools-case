@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { AxiosCanceler } from './AxiosCancel';
 import { ContentTypeEnum, HttpMethodsEnum } from "@/utils/request/AxiosConstants";
 import { AxiosTransformImpl } from "@/utils/request/AxiosTransform";
-import { Log } from "@/utils/request/utils/descriptor";
+import { Log } from "@/utils/request/utils/Descriptors";
 import {
   IAxiosRequestConfig,
   AxiosResponseError,

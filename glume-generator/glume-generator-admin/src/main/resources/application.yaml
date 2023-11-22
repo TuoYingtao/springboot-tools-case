@@ -20,6 +20,10 @@ swagger:
   basePackage: com.glume.generator.service
 knife4j:
   enable: true
+  basic:
+    enable: true
+    username: generator
+    password: generator
 # 日志配置
 logging:
   level:

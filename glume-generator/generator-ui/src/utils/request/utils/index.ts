@@ -53,3 +53,15 @@ export function setObjToUrlParams(baseUrl: string, obj: object): string {
   parameters = parameters.replace(/&$/, '');
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters;
 }
+
+// 获取接口属性
+export function getPropertyNames<T>(obj: T): Array<keyof T> {
+  // @ts-ignore
+  return Object.keys(obj) as Array<keyof T>;
+}
+
+
+// 获取接口属性的类型
+export function getPropertyType<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
