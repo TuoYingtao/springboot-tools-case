@@ -45,6 +45,20 @@ vue3-system-starter-template
 * `axios.d.ts` axios 请求类型：请求响应体、请求参数、分页、实体基类等
 * `layout.d.ts` 框架布局类型：路由菜单、系统设置等
 
+### .env系统环境变量
+
+框架的系统环境变量：
+
+`.env` 默认系统环境变量：打包配置、本地端口、本地访问Host地址、系统名称等
+
+`.env.development`开发环境：配置服务端IP、系统名称（注意这里的系统名称会覆盖`.env`默认系统环境变量）
+
+`.env.production`、`.env.staging`分别是生成环境与演示环境：它们的效果都与`.env.development`一样。
+
+### config 系统配置
+
+`config`文件夹下的内容是系统配置文件，其中`global.ts`配置了框架的默认角色、是否采用登录验证身份才能访问、令牌Key等信息。
+
 ### axios请求
 
 一、在`utils.request`文件夹下封装了Axios请求工具，此工具对原有的`axios`做了方法增强、可以配置化请求。之所以要做方法增强是为了更好的处理Request的请求与响应，可配置化请求是对每一个API的定制跟灵活的请求服务端。
