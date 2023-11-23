@@ -1,5 +1,5 @@
-import { FormRules } from "element-plus";
-import { ProjectModifyEntity } from "@/api/generator/models/ProjectModifyEntity";
+import { FormRules } from 'element-plus';
+import { ProjectModifyEntity } from '@/api/generator/models/ProjectModifyEntity';
 
 interface IData {
   form: ProjectModifyEntity;
@@ -19,7 +19,7 @@ export const DEFAULT_FORM: ProjectModifyEntity = {
   exclusions: '',
   modifySuffix: '',
   modifyTmpPath: '',
-}
+};
 
 export const DATA: IData = {
   form: DEFAULT_FORM,
@@ -28,11 +28,11 @@ export const DATA: IData = {
     limit: 10,
   },
   rules: {
-    code: [{ required: true, message: "基类编码不能为空", trigger: "blur" }],
-    fields: [{ required: true, message: "字段不能为空", trigger: "blur" }],
-    packageName: [{ required: true, message: "包名不能为空", trigger: "blur" }]
-  }
-}
+    code: [{ required: true, message: '基类编码不能为空', trigger: 'blur' }],
+    fields: [{ required: true, message: '字段不能为空', trigger: 'blur' }],
+    packageName: [{ required: true, message: '包名不能为空', trigger: 'blur' }],
+  },
+};
 
 export interface Props {
   title: string;

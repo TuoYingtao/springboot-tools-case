@@ -3,22 +3,20 @@
     <el-form :model="queryParams" ref="QueryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="项目名" prop="projectName">
         <el-input
-            v-model="queryParams.projectName"
-            placeholder="请输入项目名"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
+          v-model="queryParams.projectName"
+          placeholder="请输入项目名"
+          clearable
+          style="width: 240px"
+          @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="创建时间" style="width: 308px;">
+      <el-form-item label="创建时间" style="width: 308px">
         <el-date-picker
-            v-model="dateRange"
-            value-format="YYYY-MM-DD"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-        ></el-date-picker>
+          v-model="dateRange"
+          value-format="YYYY-MM-DD"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -36,19 +34,25 @@
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()" v-hasPermi="['*:*:*']">
+        <el-button
+          type="danger"
+          plain
+          icon="Delete"
+          :disabled="multiple"
+          @click="handleDelete()"
+          v-hasPermi="['*:*:*']">
           删除
         </el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getDataList"/>
+      <right-toolbar v-model:showSearch="showSearch" @queryTable="getDataList" />
     </el-row>
     <!--  表格数据  -->
     <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="项目名" align="center" prop="projectName"/>
-      <el-table-column label="项目标识" align="center" prop="projectCode" :show-overflow-tooltip="true"/>
-      <el-table-column label="项目包名" align="center" prop="projectPackage" :show-overflow-tooltip="true"/>
-      <el-table-column label="项目路径" align="center" prop="projectPath" :show-overflow-tooltip="true"/>
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="项目名" align="center" prop="projectName" />
+      <el-table-column label="项目标识" align="center" prop="projectCode" :show-overflow-tooltip="true" />
+      <el-table-column label="项目包名" align="center" prop="projectPackage" :show-overflow-tooltip="true" />
+      <el-table-column label="项目路径" align="center" prop="projectPath" :show-overflow-tooltip="true" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -70,41 +74,39 @@
     </el-table>
     <!--  分页  -->
     <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getDataList"
-    />
+      v-show="total > 0"
+      :total="total"
+      v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize"
+      @pagination="getDataList" />
   </div>
   <!-- 添加或修改参数配置对话框 -->
   <form-dialog
-      ref="FormDialogRef"
-      :title="title"
-      :form-data="form"
-      @onAmendSubmitForm="onAmendSubmitForm"
-      @onSaveSubmitForm="onSaveSubmitForm"
-  />
+    ref="FormDialogRef"
+    :title="title"
+    :form-data="form"
+    @onAmendSubmitForm="onAmendSubmitForm"
+    @onSaveSubmitForm="onSaveSubmitForm" />
   <origin-code-dialog ref="OriginCodeDialogRef" title="源码下载" :form-data="form" @onDownload="onDownload" />
 </template>
 
 <script setup lang="ts" name="ProjectModify">
-import { getCurrentInstance } from "vue";
-import * as CurrentConstants from "@/views/generator/projectModify/constants";
-import { parseTime } from "@/utils";
-import { ProjectModifyEntity } from "@/api/generator/models/ProjectModifyEntity";
-import FormDialog from "@/views/generator/projectModify/component/FormDialog.vue";
-import { ProjectModifyApiService } from "@/api/generator/ProjectModifyApiService";
-import OriginCodeDialog from "@/views/generator/projectModify/component/OriginCodeDialog.vue";
+import { getCurrentInstance } from 'vue';
+import * as CurrentConstants from '@/views/generator/projectModify/constants';
+import { parseTime } from '@/utils';
+import { ProjectModifyEntity } from '@/api/generator/models/ProjectModifyEntity';
+import FormDialog from '@/views/generator/projectModify/component/FormDialog.vue';
+import { ProjectModifyApiService } from '@/api/generator/ProjectModifyApiService';
+import OriginCodeDialog from '@/views/generator/projectModify/component/OriginCodeDialog.vue';
 
 // 弹窗 Ref
 const FormDialogRef = ref();
 const OriginCodeDialogRef = ref();
 // @ts-ignore
-const {proxy} = getCurrentInstance();
+const { proxy } = getCurrentInstance();
 // data 数据
 const currentData = reactive(CurrentConstants.DATA);
-const {queryParams, form, rules} = toRefs(currentData);
+const { queryParams, form, rules } = toRefs(currentData);
 // 日期参数
 const dateRange = ref([]);
 // 搜索框显示
@@ -122,19 +124,19 @@ const multiple = ref(true);
 // 批量选中ID
 const ids = ref<number[]>([]);
 // 弹窗标题
-const title = ref("");
+const title = ref('');
 
 const serviceApi = new ProjectModifyApiService();
 
 onMounted(() => {
   getDataList();
-})
+});
 
 /** 查询参数列表 */
 async function getDataList() {
   loading.value = true;
   try {
-    const {data} = await serviceApi.page(proxy.addDateRange(queryParams.value, dateRange.value));
+    const { data } = await serviceApi.page(proxy.addDateRange(queryParams.value, dateRange.value));
     dataList.value = data.list;
     total.value = data.totalCount;
   } catch (e: any) {
@@ -147,30 +149,33 @@ async function getDataList() {
 /** 删除按钮操作 */
 function handleDelete(row?: ProjectModifyEntity) {
   const params = row ? [row!.id] : ids.value;
-  proxy.$modal.confirm('是否确认删除编号为"' + params + '"的数据项？').then(function () {
-    return serviceApi.delete(params);
-  }).then(() => {
-    getDataList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {
-  });
+  proxy.$modal
+    .confirm('是否确认删除编号为"' + params + '"的数据项？')
+    .then(function () {
+      return serviceApi.delete(params);
+    })
+    .then(() => {
+      getDataList();
+      proxy.$modal.msgSuccess('删除成功');
+    })
+    .catch(() => {});
 }
 
 /** 新增按钮操作 */
 function handleAdd() {
-  FormDialogRef.value.onOpen()
-  title.value = "添加项目";
+  FormDialogRef.value.onOpen();
+  title.value = '添加项目';
 }
 
 /** 修改按钮操作 */
 async function handleUpdate(row?: ProjectModifyEntity) {
   const params = row!.id || ids.value;
   try {
-    const {data} = await serviceApi.detail(params);
+    const { data } = await serviceApi.detail(params);
     if (!data) return proxy.$modal.msgWarning(`未找到[${params}]的数据`);
     form.value = data;
     FormDialogRef.value.onOpen();
-    title.value = "修改项目";
+    title.value = '修改项目';
   } catch (e: any) {
     proxy.$modal.msgError(e.message);
   }
@@ -180,14 +185,14 @@ async function handleUpdate(row?: ProjectModifyEntity) {
 const handleDownload = async (row: ProjectModifyEntity) => {
   const params = row.id || ids.value;
   try {
-    const {data} = await serviceApi.detail(params);
+    const { data } = await serviceApi.detail(params);
     if (!data) return proxy.$modal.msgWarning(`未找到[${params}]的数据`);
     form.value = data;
     OriginCodeDialogRef.value.onOpen();
   } catch (e: any) {
     proxy.$modal.msgError(e.message);
   }
-}
+};
 
 /** 修改 */
 const onAmendSubmitForm = async (formData: ProjectModifyEntity) => {
@@ -232,7 +237,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("QueryRef");
+  proxy.resetForm('QueryRef');
   handleQuery();
 }
 
@@ -244,6 +249,4 @@ function handleSelectionChange(selection: ProjectModifyEntity[]) {
 }
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

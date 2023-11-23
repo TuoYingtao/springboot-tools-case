@@ -1,5 +1,5 @@
-import { defineComponent } from "vue";
-import { ElDialog, ElRow, ElTooltip, ElTransfer, TransferDataItem, TransferKey } from "element-plus";
+import { defineComponent } from 'vue';
+import { ElDialog, ElRow, ElTooltip, ElTransfer, TransferDataItem, TransferKey } from 'element-plus';
 
 import './index.scss';
 
@@ -23,11 +23,10 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-
     // 显隐数据
     const value = ref([]);
     // 弹出层标题
-    const title = ref("显示/隐藏");
+    const title = ref('显示/隐藏');
     // 是否显示弹出层
     const open = ref(false);
 
@@ -41,13 +40,13 @@ export default defineComponent({
 
     // 搜索
     function toggleSearch() {
-      emit("update:showSearch", !props.showSearch);
+      emit('update:showSearch', !props.showSearch);
     }
 
     // 刷新
     function refresh() {
-      console.log('刷新')
-      emit("queryTable");
+      console.log('刷新');
+      emit('queryTable');
     }
 
     // 右侧列表元素变化
@@ -74,32 +73,47 @@ export default defineComponent({
       }
     }
 
-    const renderDialog = () => <ElDialog modelValue={open.value} title={title.value} appendToBody={true}>
-      <ElTransfer modelValue={value.value} titles={['显示', '隐藏']} data={props.columns as TransferDataItem[]} onChange={() => dataChange} />
-    </ElDialog>
+    const renderDialog = () => (
+      <ElDialog modelValue={open.value} title={title.value} appendToBody={true}>
+        <ElTransfer
+          modelValue={value.value}
+          titles={['显示', '隐藏']}
+          data={props.columns as TransferDataItem[]}
+          onChange={() => dataChange}
+        />
+      </ElDialog>
+    );
 
-    const renderRow = () => <ElRow>
-      { props.search && <ElTooltip class="item" effect="dark" content={props.showSearch ? '隐藏搜索' : '显示搜索'} placement="top">
-        <el-button circle={true} icon="Search" onClick={() => toggleSearch()} />
-      </ElTooltip> }
-      <ElTooltip class="item" effect="dark" content='刷新' placement="top">
-        <el-button circle={true} icon="Refresh" onClick={() => refresh()} />
-      </ElTooltip>
-      {props.columns && <ElTooltip class="item" effect="dark" content='显隐列' placement="top">
-        <el-button circle={true} icon="Menu" onClick={() => showColumn()} />
-      </ElTooltip>}
-    </ElRow>
+    const renderRow = () => (
+      <ElRow>
+        {props.search && (
+          <ElTooltip class="item" effect="dark" content={props.showSearch ? '隐藏搜索' : '显示搜索'} placement="top">
+            <el-button circle={true} icon="Search" onClick={() => toggleSearch()} />
+          </ElTooltip>
+        )}
+        <ElTooltip class="item" effect="dark" content="刷新" placement="top">
+          <el-button circle={true} icon="Refresh" onClick={() => refresh()} />
+        </ElTooltip>
+        {props.columns && (
+          <ElTooltip class="item" effect="dark" content="显隐列" placement="top">
+            <el-button circle={true} icon="Menu" onClick={() => showColumn()} />
+          </ElTooltip>
+        )}
+      </ElRow>
+    );
 
-    const renderRightToolbar = () => <div class="top-right-btn" style={style.value}>
-      {renderRow()}
-      {renderDialog()}
-    </div>
+    const renderRightToolbar = () => (
+      <div class="top-right-btn" style={style.value}>
+        {renderRow()}
+        {renderDialog()}
+      </div>
+    );
 
     return {
-      renderRightToolbar
-    }
+      renderRightToolbar,
+    };
   },
   render() {
     return this.renderRightToolbar();
   },
-})
+});

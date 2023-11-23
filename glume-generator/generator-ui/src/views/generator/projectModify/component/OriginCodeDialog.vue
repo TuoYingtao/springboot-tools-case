@@ -20,7 +20,12 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="项目包名" prop="projectPackage">
-            <el-tooltip class="box-item" effect="dark" content="项目包名如：com.glume" :show-after="700" placement="top">
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="项目包名如：com.glume"
+              :show-after="700"
+              placement="top">
               <el-input v-model="formData.projectPackage" disabled placeholder="请输入项目包名" />
             </el-tooltip>
           </el-form-item>
@@ -53,7 +58,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目包名" prop="modifyProjectPackage">
-            <el-tooltip class="box-item" effect="dark" content="项目包名如：com.glume" :show-after="700" placement="top">
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="项目包名如：com.glume"
+              :show-after="700"
+              placement="top">
               <el-input v-model="formData.modifyProjectPackage" placeholder="请输入项目包名" />
             </el-tooltip>
           </el-form-item>
@@ -62,14 +72,24 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="排除文件" prop="exclusions">
-            <el-tooltip class="box-item" effect="dark" content="排除文件如：多个文件之间用英文逗号分割" :show-after="700" placement="top">
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="排除文件如：多个文件之间用英文逗号分割"
+              :show-after="700"
+              placement="top">
               <el-input v-model="formData.exclusions" placeholder="请输入排除文件" />
             </el-tooltip>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="变更文件" prop="modifySuffix">
-            <el-tooltip class="box-item" effect="dark" content="变更文件如：多个文件之间用英文逗号分割" :show-after="700" placement="top">
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="变更文件如：多个文件之间用英文逗号分割"
+              :show-after="700"
+              placement="top">
               <el-input v-model="formData.modifySuffix" placeholder="请输入变更文件" />
             </el-tooltip>
           </el-form-item>
@@ -86,7 +106,7 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { DATA, Props } from "@/views/generator/projectModify/constants";
+import { DATA, Props } from '@/views/generator/projectModify/constants';
 
 const emit = defineEmits([]);
 // 表单Ref
@@ -108,7 +128,7 @@ const submitForm = () => {
     if (valid) {
       emit('onDownload', props.formData);
     }
-  })
+  });
 };
 
 /**
@@ -121,7 +141,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -139,9 +159,7 @@ const resetForm = () => {
   FormRef.value.clearValidate();
   props.formData.id = -1;
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

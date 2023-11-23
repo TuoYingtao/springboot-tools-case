@@ -1,5 +1,5 @@
-import defaultSettings from '@/settings'
-import useSettingsStore from '@/stores/modules/settings'
+import defaultSettings from '@/settings';
+import useSettingsStore from '@/stores/modules/settings';
 
 /**
  * 动态修改标题

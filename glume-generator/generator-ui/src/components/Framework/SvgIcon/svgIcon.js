@@ -1,4 +1,4 @@
-import * as ElementPlusIconsVue  from '@element-plus/icons-vue'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 export default {
   install: (app) => {

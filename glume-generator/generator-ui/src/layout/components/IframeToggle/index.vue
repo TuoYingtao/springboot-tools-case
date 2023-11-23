@@ -5,15 +5,14 @@
       :key="item.path"
       :iframeId="'iframe' + index"
       v-show="route.path === item.path"
-      :src="item.meta.link"
-    ></inner-link>
+      :src="item.meta.link"></inner-link>
   </transition-group>
 </template>
 
 <script setup>
-import InnerLink from "../InnerLink/index"
-import useTagsViewStore from '@/stores/modules/tagsView'
+import InnerLink from '../InnerLink/index';
+import useTagsViewStore from '@/stores/modules/tagsView';
 
 const route = useRoute();
-const tagsViewStore = useTagsViewStore()
+const tagsViewStore = useTagsViewStore();
 </script>

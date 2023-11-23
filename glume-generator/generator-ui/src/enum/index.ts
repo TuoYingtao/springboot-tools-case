@@ -1,9 +1,9 @@
 export enum FormLayoutEnum {
   ONE_ROW = 1,
-  TWO_ROW
+  TWO_ROW,
 }
 
 export enum GeneratorTypeEnum {
   ZIP,
-  CUSTOM_PATH
+  CUSTOM_PATH,
 }

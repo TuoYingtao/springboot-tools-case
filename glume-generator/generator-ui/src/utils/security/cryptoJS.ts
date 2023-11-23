@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js'
+import CryptoJS from 'crypto-js';
 
 /**
  * AES 加密
@@ -7,13 +7,12 @@ import CryptoJS from 'crypto-js'
  * pad: 客户端 Pkcs7 对应 服务端 Pkcs5
  */
 export class CryptoJSUtils {
-
   static KEY = CryptoJS.enc.Utf8.parse('glume4tyt5f8g69o');
 
   static ALGORITHM_STR = {
     mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7
-  }
+    padding: CryptoJS.pad.Pkcs7,
+  };
 
   // 加密
   static encrypt(txt: string) {
@@ -22,7 +21,6 @@ export class CryptoJSUtils {
 
   // 解密
   static decrypt(txt: string) {
-    return CryptoJS.AES.decrypt(txt, CryptoJSUtils.KEY, CryptoJSUtils.ALGORITHM_STR)
-        .toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.decrypt(txt, CryptoJSUtils.KEY, CryptoJSUtils.ALGORITHM_STR).toString(CryptoJS.enc.Utf8);
   }
 }

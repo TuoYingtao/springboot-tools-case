@@ -1,11 +1,20 @@
 <template>
-  <div class="sidebar-version-container" :class="{ 'collapse': collapse }" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div
+    class="sidebar-version-container"
+    :class="{ collapse: collapse }"
+    :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
     <transition name="sidebarversionFade">
       <div v-if="collapse" class="sidebar-version-link">
         <div class="sidebar-version">{{ version }}</div>
       </div>
       <div v-else class="sidebar-version-link flex justify-center items-center">
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.versionTitleColor : variables.versionLightTitleColor }">{{ title }}</h1>
+        <h1
+          class="sidebar-title"
+          :style="{
+            color: sideTheme === 'theme-dark' ? variables.versionTitleColor : variables.versionLightTitleColor,
+          }">
+          {{ title }}
+        </h1>
         <div class="sidebar-version">{{ version }}</div>
       </div>
     </transition>
@@ -13,16 +22,16 @@
 </template>
 
 <script setup>
-import variables from '@/assets/styles/variables.module.scss'
-import useSettingsStore from '@/stores/modules/settings'
-import { VERSION } from "@/config/global";
+import variables from '@/assets/styles/variables.module.scss';
+import useSettingsStore from '@/stores/modules/settings';
+import { VERSION } from '@/config/global';
 
 defineProps({
   collapse: {
     type: Boolean,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const title = import.meta.env.VITE_APP_NAME;
 const version = VERSION;
@@ -66,7 +75,12 @@ const sideTheme = computed(() => settingsStore.sideTheme);
       font-weight: 500;
       line-height: 35px;
       font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      font-family:
+        Avenir,
+        Helvetica Neue,
+        Arial,
+        Helvetica,
+        sans-serif;
       vertical-align: middle;
     }
   }

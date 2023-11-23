@@ -10,7 +10,11 @@
     </el-row>
     <el-row :gutter="20">
       <el-col :span="24">
-        <el-table ref="multipleTableRef" :data="tableList" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table
+          ref="multipleTableRef"
+          :data="tableList"
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" />
           <el-table-column label="表名" align="center" prop="tableName" />
           <el-table-column label="表说明" align="center" prop="tableComment" show-overflow-tooltip />
@@ -27,9 +31,9 @@
 </template>
 
 <script setup lang="ts" name="ImportDialog">
-import { ImportProps } from "@/views/generator/table/constants";
-import { DatasourceApiService } from "@/api/generator/DatasourceApiService";
-import { DBTableEntity } from "@/api/generator/models/DatasourceEntity";
+import { ImportProps } from '@/views/generator/table/constants';
+import { DatasourceApiService } from '@/api/generator/DatasourceApiService';
+import { DBTableEntity } from '@/api/generator/models/DatasourceEntity';
 
 // @ts-ignore
 const { proxy } = getCurrentInstance();
@@ -47,11 +51,14 @@ const selectDatasourceId = ref<number | undefined>();
 const tableList = ref<DBTableEntity[]>([]);
 const tableNames = ref<string[]>([]);
 
-watch(() => selectDatasourceId.value, (newVal) => {
-  if (selectDatasourceId.value !== undefined) {
-    getDBTableList();
-  }
-});
+watch(
+  () => selectDatasourceId.value,
+  (newVal) => {
+    if (selectDatasourceId.value !== undefined) {
+      getDBTableList();
+    }
+  },
+);
 
 /**
  * 查询数据库所以表信息
@@ -86,7 +93,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -104,7 +111,7 @@ const resetForm = () => {
   tableList.value = [];
   tableNames.value = [];
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
 <style scoped lang="scss">

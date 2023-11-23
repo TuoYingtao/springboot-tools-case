@@ -1,12 +1,12 @@
-import merge from "lodash/merge";
-import router from '@/router'
-import { RouteLocationNormalizedLoaded, RouteLocationRaw } from "vue-router";
-import useTagsViewStore from '@/stores/modules/tagsView'
+import merge from 'lodash/merge';
+import router from '@/router';
+import { RouteLocationNormalizedLoaded, RouteLocationRaw } from 'vue-router';
+import useTagsViewStore from '@/stores/modules/tagsView';
 
 export default {
   // 刷新当前tab页签
   refreshPage(obj: RouteLocationNormalizedLoaded) {
-    console.log(obj)
+    console.log(obj);
     const { path, query, matched } = router.currentRoute.value;
     if (obj === undefined) {
       matched.forEach((m) => {
@@ -17,13 +17,15 @@ export default {
         }
       });
     }
-    return useTagsViewStore().delCachedView(obj).then(() => {
-      const { path, query } = obj
-      router.replace({
-        path: '/redirect' + path,
-        query: query
-      })
-    })
+    return useTagsViewStore()
+      .delCachedView(obj)
+      .then(() => {
+        const { path, query } = obj;
+        router.replace({
+          path: '/redirect' + path,
+          query: query,
+        });
+      });
   },
   // 关闭当前tab页签，打开新页签
   closeOpenPage(obj: RouteLocationRaw) {
@@ -35,13 +37,15 @@ export default {
   // 关闭指定tab页签
   closePage(obj: RouteLocationNormalizedLoaded) {
     if (obj === undefined) {
-      return useTagsViewStore().delView(router.currentRoute.value).then(({visitedViews}) => {
-        const latestView = visitedViews.slice(-1)[0]
-        if (latestView) {
-            return router.push(latestView.fullPath)
-        }
-        return router.push('/');
-      });
+      return useTagsViewStore()
+        .delView(router.currentRoute.value)
+        .then(({ visitedViews }) => {
+          const latestView = visitedViews.slice(-1)[0];
+          if (latestView) {
+            return router.push(latestView.fullPath);
+          }
+          return router.push('/');
+        });
     }
     return useTagsViewStore().delView(obj);
   },
@@ -68,5 +72,5 @@ export default {
   // 修改tab页签
   updatePage(obj: RouteLocationNormalizedLoaded) {
     return useTagsViewStore().updateVisitedView(obj);
-  }
-}
+  },
+};

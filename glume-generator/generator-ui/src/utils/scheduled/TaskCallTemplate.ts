@@ -1,5 +1,5 @@
-import { TaskFun } from "@/utils/scheduled/TaskFun";
-import { TaskChannel } from "@/utils/scheduled/TaskChannel";
+import { TaskFun } from '@/utils/scheduled/TaskFun';
+import { TaskChannel } from '@/utils/scheduled/TaskChannel';
 
 /**
  * 定时任务工具
@@ -7,7 +7,7 @@ import { TaskChannel } from "@/utils/scheduled/TaskChannel";
  * @Author: TuoYingtao
  * @Date: 2023-10-26 15:00:05
  * @Version: v1.0.0
-*/
+ */
 export class TaskCallTemplate {
   private static instance: TaskCallTemplate;
 
@@ -52,16 +52,21 @@ export class TaskCallTemplate {
         }
       } else if (args.length > 1) {
         const arr: string[] = args.filter((item) => this.taskChannel.getIntervalValue(item) !== null);
-        const values: number[] = this.taskChannel.batchGetIntervalValue(arr).map(value => Number(value));
+        const values: number[] = this.taskChannel.batchGetIntervalValue(arr).map((value) => Number(value));
         values.forEach((value) => clearInterval(value));
         this.taskChannel.batchDeleteItem(arr);
       }
     } catch (e: any) {
-      console.error(e.message)
+      console.error(e.message);
     }
   }
 
-  private intervalExecoute<T extends keyof TaskFun>(fun: any, method: T, time: number, ...args: Parameters<TaskFun[T]>) {
+  private intervalExecoute<T extends keyof TaskFun>(
+    fun: any,
+    method: T,
+    time: number,
+    ...args: Parameters<TaskFun[T]>
+  ) {
     const INTERVAL = setInterval(async () => {
       try {
         await (fun[method] as any).apply(fun, args);
@@ -83,7 +88,7 @@ export class TaskCallTemplate {
         this.intervalExecoute(this.taskFun, fun, time, ...args);
       }
     } catch (e: any) {
-      console.error(e.message)
+      console.error(e.message);
     }
   }
 }

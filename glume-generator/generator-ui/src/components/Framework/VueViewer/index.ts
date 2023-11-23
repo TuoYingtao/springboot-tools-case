@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import { App } from 'vue';
 import VueViewer from 'v-viewer';
 
 const IMAGE_PREVIEW_OPTIONS = {
@@ -17,10 +17,10 @@ const IMAGE_PREVIEW_OPTIONS = {
   fullscreen: false, // 播放时启用请求全屏。
   keyboard: true, // 启用键盘支持。
   url: 'src', // 默认值:“src”。定义从何处获取原始图像URL以供查看。
-}
+};
 
 export function useVueViewer(app: App<Element>) {
   app.use(VueViewer, {
-    defaultOptions: IMAGE_PREVIEW_OPTIONS
-  })
+    defaultOptions: IMAGE_PREVIEW_OPTIONS,
+  });
 }

@@ -10,4 +10,4 @@ export interface ProjectModifyEntity extends BaseEntity {
   exclusions: string;
 }
 
-export type ProjectModifyEntityList<T extends typeof BaseEntity = ProjectModifyEntity > = BaseEntityList<T>;
+export type ProjectModifyEntityList<T extends typeof BaseEntity = ProjectModifyEntity> = BaseEntityList<T>;

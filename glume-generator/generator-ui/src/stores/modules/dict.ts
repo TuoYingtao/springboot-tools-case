@@ -1,11 +1,12 @@
 const useDictStore = defineStore('dict', {
-  state: () => ({
-    dict: new Array()
-  } as Dict),
+  state: () =>
+    ({
+      dict: new Array(),
+    }) as Dict,
   actions: {
     // 获取字典
     getDict(_key: string) {
-      if (_key == null && _key == "") {
+      if (_key == null && _key == '') {
         return null;
       }
       try {
@@ -20,10 +21,10 @@ const useDictStore = defineStore('dict', {
     },
     // 设置字典
     setDict(_key: string, value: DictInfo[]) {
-      if (_key !== null && _key !== "") {
+      if (_key !== null && _key !== '') {
         this.dict.push({
           key: _key,
-          value: value
+          value: value,
         } as DictMap);
       }
     },
@@ -47,9 +48,8 @@ const useDictStore = defineStore('dict', {
       this.dict = new Array();
     },
     // 初始字典
-    initDict() {
-    }
-  }
-})
+    initDict() {},
+  },
+});
 
-export default useDictStore
+export default useDictStore;

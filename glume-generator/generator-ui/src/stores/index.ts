@@ -1,4 +1,4 @@
-import piniaPersist from 'pinia-plugin-persist'
+import piniaPersist from 'pinia-plugin-persist';
 const store = createPinia();
 store.use(piniaPersist);
 
@@ -10,4 +10,4 @@ export * from './modules/tagsView';
 export * from './modules/user';
 
 export { store };
-export default store
+export default store;

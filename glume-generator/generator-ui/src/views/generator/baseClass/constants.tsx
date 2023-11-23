@@ -1,5 +1,5 @@
-import { FormRules } from "element-plus";
-import { BaseClassEntity } from "@/api/generator/models/BaseClassEntity";
+import { FormRules } from 'element-plus';
+import { BaseClassEntity } from '@/api/generator/models/BaseClassEntity';
 
 interface IData {
   form: BaseClassEntity;
@@ -13,7 +13,7 @@ export const DEFAULT_FORM: BaseClassEntity = {
   code: '',
   fields: '',
   remark: '',
-}
+};
 
 export const DATA: IData = {
   form: DEFAULT_FORM,
@@ -22,10 +22,10 @@ export const DATA: IData = {
     limit: 10,
   },
   rules: {
-    code: [{ required: true, message: "基类编码不能为空", trigger: "blur" }],
-    packageName: [{ required: true, message: "包名不能为空", trigger: "blur" }]
-  }
-}
+    code: [{ required: true, message: '基类编码不能为空', trigger: 'blur' }],
+    packageName: [{ required: true, message: '包名不能为空', trigger: 'blur' }],
+  },
+};
 
 export interface Props {
   title: string;

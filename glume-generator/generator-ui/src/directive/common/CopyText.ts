@@ -1,13 +1,13 @@
 /**
  * v-copyText 复制文本内容
  */
-import {App, DirectiveBinding} from 'vue';
+import { App, DirectiveBinding } from 'vue';
 export default {
   install(app: App<Element>) {
     app.directive('copyText', {
-      mounted(el: any, binding: DirectiveBinding){
+      mounted(el: any, binding: DirectiveBinding) {
         const eventType = Object.keys(binding.modifiers)[0] || 'click';
-        if (binding.arg === "callback") {
+        if (binding.arg === 'callback') {
           el.$copyCallback = binding.value;
         } else {
           el.$copyValue = binding.value;
@@ -29,10 +29,10 @@ export default {
           }
         };
         el.$destroyCopy = () => el.removeEventListener(eventType, handler);
-      }
-    })
+      },
+    });
   },
-}
+};
 
 function copyTextToClipboard(input: any, { target = document.body } = {}) {
   const element = document.createElement('textarea');
@@ -58,7 +58,7 @@ function copyTextToClipboard(input: any, { target = document.body } = {}) {
   let isSuccess = false;
   try {
     isSuccess = document.execCommand('copy');
-  } catch { }
+  } catch {}
 
   element.remove();
 

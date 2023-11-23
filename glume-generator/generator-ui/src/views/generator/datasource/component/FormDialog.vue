@@ -4,7 +4,9 @@
       <el-form-item prop="connName">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="连接名如：generator" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">连接名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              连接名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.connName" placeholder="请输入连接名" />
@@ -12,7 +14,9 @@
       <el-form-item prop="dbType">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="数据库类型如：MySQL" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">数据库类型<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              数据库类型<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-select v-model="formData.dbType" style="width: 100%" placeholder="请输入数据库类型">
@@ -22,7 +26,9 @@
       <el-form-item prop="connUrl">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="数据库URL" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">数据库URL<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              数据库URL<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.connUrl" placeholder="请输入数据库URL" />
@@ -30,7 +36,9 @@
       <el-form-item prop="username">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="用户名" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">用户名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              用户名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.username" placeholder="请输入用户名" />
@@ -38,7 +46,9 @@
       <el-form-item prop="password">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="密码" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">密码<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              密码<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.password" placeholder="请输入密码" />
@@ -54,8 +64,8 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { DATA, dbTypeOptions, Props } from "@/views/generator/datasource/constants";
-import { CryptoJSUtils } from "@/utils/security/cryptoJS";
+import { DATA, dbTypeOptions, Props } from '@/views/generator/datasource/constants';
+import { CryptoJSUtils } from '@/utils/security/cryptoJS';
 
 const emit = defineEmits([]);
 // 表单Ref
@@ -83,7 +93,7 @@ const submitForm = () => {
       props.formData.password = CryptoJSUtils.encrypt(props.formData.password);
       emit(key as never, props.formData);
     }
-  })
+  });
 };
 
 /**
@@ -96,7 +106,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -114,9 +124,7 @@ const resetForm = () => {
   FormRef.value.clearValidate();
   props.formData.id = -1;
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

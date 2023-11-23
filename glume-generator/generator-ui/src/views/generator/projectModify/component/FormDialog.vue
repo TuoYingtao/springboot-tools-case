@@ -4,7 +4,9 @@
       <el-form-item prop="projectName">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="项目名如：glume-boot" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">项目名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              项目名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.projectName" placeholder="请输入项目名" />
@@ -12,7 +14,9 @@
       <el-form-item prop="projectCode">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="项目标识如：glume" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">项目名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              项目名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.projectCode" placeholder="请输入项目标识" />
@@ -20,7 +24,9 @@
       <el-form-item prop="projectPackage">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="项目包名如：com.glume" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">项目包名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              项目包名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.projectPackage" placeholder="请输入项目包名" />
@@ -28,7 +34,9 @@
       <el-form-item prop="projectPath">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="项目路径" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">项目路径<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              项目路径<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.projectPath" type="textarea" placeholder="请输入项目路径" />
@@ -44,7 +52,7 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { DATA, Props } from "@/views/generator/projectModify/constants";
+import { DATA, Props } from '@/views/generator/projectModify/constants';
 
 const emit = defineEmits([]);
 // 表单Ref
@@ -71,7 +79,7 @@ const submitForm = () => {
       }
       emit(key as never, props.formData);
     }
-  })
+  });
 };
 
 /**
@@ -84,7 +92,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -102,9 +110,7 @@ const resetForm = () => {
   FormRef.value.clearValidate();
   props.formData.id = -1;
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

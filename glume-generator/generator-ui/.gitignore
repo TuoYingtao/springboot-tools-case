@@ -32,7 +32,3 @@ node_modules/
 package-lock.json
 yarn.lock
 .eslintrc-auto-import.json
-/src/type/auto-imports.d.ts
-/src/type/components.d.ts
-!/src/type/auto-imports.d.ts
-!/src/type/components.d.ts

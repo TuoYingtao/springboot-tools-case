@@ -1,11 +1,11 @@
-import {App} from 'vue';
+import { App } from 'vue';
 import HasPermission from '@/directive/permission/HasPermission';
 import HasPermi from '@/directive/permission/HasPermi';
 import HasRole from '@/directive/permission/HasRole';
 import Debounce from '@/directive/common/Debounce';
 import Throttle from '@/directive/common/Throttle';
 import Hide from '@/directive/common/Hide';
-import copyText from "@/directive/common/CopyText";
+import copyText from '@/directive/common/CopyText';
 
 export default {
   /**

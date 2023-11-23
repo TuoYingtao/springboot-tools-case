@@ -10,7 +10,7 @@
 }
 
 .el-upload {
-  input[type="file"] {
+  input[type='file'] {
     display: none !important;
   }
 }
@@ -73,7 +73,7 @@
 // dropdown
 .el-dropdown-menu {
   a {
-    display: block
+    display: block;
   }
 }
 
@@ -87,20 +87,15 @@
   box-sizing: content-box;
 }
 
-.el-menu--collapse
-  > div
-  > .el-submenu
-  > .el-submenu__title
-  .el-submenu__icon-arrow {
+.el-menu--collapse > div > .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
   display: none;
 }
 
-.el-dropdown .el-dropdown-link{
+.el-dropdown .el-dropdown-link {
   color: var(--el-color-primary) !important;
 }
 
 .renderElSelect {
-
   .el-input el-input--suffix,
   .el-input el-input--suffix.is-focus,
   .el-input el-input--suffix:hover,

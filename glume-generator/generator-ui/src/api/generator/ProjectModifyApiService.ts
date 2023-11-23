@@ -1,9 +1,8 @@
-import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
-import { ProjectModifyEntity, ProjectModifyEntityList } from "@/api/generator/models/ProjectModifyEntity";
-import request from "@/utils/request/index";
+import { IServiceApi } from '@/utils/request/abstract/IServiceApi';
+import { ProjectModifyEntity, ProjectModifyEntityList } from '@/api/generator/models/ProjectModifyEntity';
+import request from '@/utils/request/index';
 
 export class ProjectModifyApiService extends IServiceApi<ProjectModifyEntity, ProjectModifyEntityList> {
-
   page(param: Params): Promise<Result<ProjectModifyEntityList>> {
     return request.get<Result<ProjectModifyEntityList>>({
       url: '/project/page',

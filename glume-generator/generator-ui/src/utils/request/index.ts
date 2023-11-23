@@ -1,14 +1,14 @@
 import merge from 'lodash/merge';
 import { AxiosOptionsConfigImpl, VAxios } from './Axios';
-import { IAxiosRequestConfig } from "@/type/axios";
-import { AxiosTransformImpl } from "@/utils/request/AxiosTransform";
-import * as AxiosConstants from "@/utils/request/AxiosConstants";
+import { IAxiosRequestConfig } from '@/type/axios';
+import { AxiosTransformImpl } from '@/utils/request/AxiosTransform';
+import * as AxiosConstants from '@/utils/request/AxiosConstants';
 
 const VITE = import.meta.env;
 // 如果是mock模式 或 没启用直连代理 就不配置host 会走本地Mock拦截 或 Vite 代理
 const host = VITE.VITE_REQUEST_PROXY !== 'true' ? '' : VITE.VITE_APP_BASE_API;
 
-export const config: IAxiosRequestConfig = merge(<AxiosOptionsConfigImpl> new AxiosOptionsConfigImpl(), {
+export const config: IAxiosRequestConfig = merge(<AxiosOptionsConfigImpl>new AxiosOptionsConfigImpl(), {
   authenticationScheme: AxiosConstants.AuthScheme,
   timeout: 10 * 1000,
   withCredentials: false,
@@ -33,11 +33,11 @@ export const config: IAxiosRequestConfig = merge(<AxiosOptionsConfigImpl> new Ax
     },
     isDebugger: true,
   },
-} as IAxiosRequestConfig)
+} as IAxiosRequestConfig);
 
 function createAxios(opt?: Partial<IAxiosRequestConfig>) {
-  const vAxios = new VAxios(merge(<IAxiosRequestConfig> config, opt || {}));
-  return new VAxios(merge(<IAxiosRequestConfig> config, opt || {}));
+  const vAxios = new VAxios(merge(<IAxiosRequestConfig>config, opt || {}));
+  return new VAxios(merge(<IAxiosRequestConfig>config, opt || {}));
 }
 
 const request = createAxios();

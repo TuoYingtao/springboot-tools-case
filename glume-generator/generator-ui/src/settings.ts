@@ -8,5 +8,5 @@ export default {
   fixedHeader: false,
   sidebarLogo: true,
   dynamicTitle: '',
-  errorLog: 'production'
-} as Settings
+  errorLog: 'production',
+} as Settings;

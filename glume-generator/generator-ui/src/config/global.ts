@@ -1,4 +1,4 @@
-import packages from "../../package.json"
+import packages from '../../package.json';
 
 // 项目名称
 export const VITE_APP_NAME = import.meta.env.VITE_APP_NAME;
@@ -13,7 +13,7 @@ export const PREFIX_FIELD = 'generator-ui';
 export const TOKEN_NAME = `${PREFIX_FIELD}-token`;
 
 // 系统默认角色
-export const ROLE_DEFAULT = 'ROLE_DEFAULT'
+export const ROLE_DEFAULT = 'ROLE_DEFAULT';
 
 // 需要登录吗 true-需要登录 false-不需要登录
-export const IS_TOKEN_AUTH = false
+export const IS_TOKEN_AUTH = false;

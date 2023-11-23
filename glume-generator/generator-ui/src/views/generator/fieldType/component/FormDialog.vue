@@ -4,7 +4,9 @@
       <el-form-item prop="columnType">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="字段类型" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">字段类型<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              字段类型<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.columnType" placeholder="请输入字段类型" />
@@ -12,7 +14,9 @@
       <el-form-item prop="attrType">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="属性类型如：Integer" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">属性类型<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              属性类型<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.attrType" placeholder="请输入属性类型" />
@@ -20,7 +24,9 @@
       <el-form-item prop="packageName">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="基类所在的包名路径" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">属性包名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              属性包名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.packageName" placeholder="请输入属性包名" />
@@ -36,7 +42,7 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { DATA, Props } from "@/views/generator/fieldType/constants";
+import { DATA, Props } from '@/views/generator/fieldType/constants';
 
 const emit = defineEmits([]);
 // 表单Ref
@@ -63,7 +69,7 @@ const submitForm = () => {
       }
       emit(key as never, props.formData);
     }
-  })
+  });
 };
 
 /**
@@ -76,7 +82,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -93,9 +99,7 @@ const resetForm = () => {
   FormRef.value.resetFields();
   props.formData.id = -1;
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

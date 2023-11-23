@@ -20,16 +20,16 @@ declare module '*.svg' {
 declare module '*.js' {
   import { createVitePlugins } from '../vite/plugins/index.js';
 
-  const VITE_PLUGINS: createVitePlugins
+  const VITE_PLUGINS: createVitePlugins;
   export default VITE_PLUGINS;
 }
 
-declare module "*.scss" {
+declare module '*.scss' {
   const classes: { readonly [key: string]: string };
   export default classes;
 }
 
-declare module "*.less" {
+declare module '*.less' {
   const classes: { readonly [key: string]: string };
   export default classes;
 }

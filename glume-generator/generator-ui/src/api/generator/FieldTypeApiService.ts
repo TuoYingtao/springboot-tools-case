@@ -1,10 +1,8 @@
-import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
-import { FieldTypeEntity, FieldTypeEntityList } from "@/api/generator/models/FieldTypeEntity";
-import request from "@/utils/request/index";
+import { IServiceApi } from '@/utils/request/abstract/IServiceApi';
+import { FieldTypeEntity, FieldTypeEntityList } from '@/api/generator/models/FieldTypeEntity';
+import request from '@/utils/request/index';
 
 export class FieldTypeApiService extends IServiceApi<FieldTypeEntity, FieldTypeEntityList> {
-
-
   list(param?: Params): Promise<Result<FieldTypeEntity[]>> {
     return request.get<Result<FieldTypeEntity[]>>({
       url: '/field_type/list',
@@ -45,5 +43,4 @@ export class FieldTypeApiService extends IServiceApi<FieldTypeEntity, FieldTypeE
       params: entity,
     });
   }
-
 }

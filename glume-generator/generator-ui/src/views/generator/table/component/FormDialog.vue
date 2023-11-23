@@ -16,46 +16,52 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="字段名" prop="fieldName"/>
+          <el-table-column align="center" label="字段名" prop="fieldName" />
           <el-table-column align="center" prop="fieldComment" :show-overflow-tooltip="true">
             <template #header>
               <el-tooltip effect="dark" content="可编辑内容" :show-after="700" placement="top">
-                <div class="flex justify-center items-center"><el-icon><Edit /></el-icon>说明</div>
+                <div class="flex justify-center items-center">
+                  <el-icon><Edit /></el-icon>说明
+                </div>
               </el-tooltip>
             </template>
             <template #default="{ row, column, $index }">
-              <div style="min-height: 10px;" @click="selectAmendItem(column, $index)">
+              <div style="min-height: 10px" @click="selectAmendItem(column, $index)">
                 <span v-show="selectItemKey !== `${column.property}-${$index}`">{{ row.fieldComment }}</span>
-                <el-input v-show="selectItemKey === `${column.property}-${$index}`"
-                          v-model="row.fieldComment"
-                          placeholder="请输入说明"
-                          autofocus
-                          @blur="selectItemKey = ''" />
+                <el-input
+                  v-show="selectItemKey === `${column.property}-${$index}`"
+                  v-model="row.fieldComment"
+                  placeholder="请输入说明"
+                  autofocus
+                  @blur="selectItemKey = ''" />
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="字段类型" prop="fieldType"/>
+          <el-table-column align="center" label="字段类型" prop="fieldType" />
           <el-table-column align="center" label="属性名" prop="attrName">
             <template #header>
               <el-tooltip effect="dark" content="可编辑内容" :show-after="700" placement="top">
-                <div class="flex justify-center items-center"><el-icon><Edit /></el-icon>属性名</div>
+                <div class="flex justify-center items-center">
+                  <el-icon><Edit /></el-icon>属性名
+                </div>
               </el-tooltip>
             </template>
             <template #default="{ row, column, $index }">
-              <div style="min-height: 10px;" @click="selectAmendItem(column, $index)">
+              <div style="min-height: 10px" @click="selectAmendItem(column, $index)">
                 <span v-show="selectItemKey !== `${column.property}-${$index}`">{{ row.attrName }}</span>
-                <el-input v-show="selectItemKey === `${column.property}-${$index}`"
-                          v-model="row.attrName"
-                          placeholder="请输入属性名"
-                          autofocus
-                          @blur="selectItemKey = ''" />
+                <el-input
+                  v-show="selectItemKey === `${column.property}-${$index}`"
+                  v-model="row.attrName"
+                  placeholder="请输入属性名"
+                  autofocus
+                  @blur="selectItemKey = ''" />
               </div>
             </template>
           </el-table-column>
           <el-table-column align="center" label="属性类型" prop="attrType">
             <template #default="{ row }">
               <el-select v-model="row.attrType" placeholder="选择属性类型">
-                <el-option v-for="item in typeList" :key="item" :label="item" :value="item"/>
+                <el-option v-for="item in typeList" :key="item" :label="item" :value="item" />
               </el-select>
             </template>
           </el-table-column>
@@ -68,32 +74,32 @@
       </el-tab-pane>
       <el-tab-pane label="属性功能" name="fun">
         <el-table :data="attrTableData" style="width: 100%">
-          <el-table-column align="center" label="属性名" prop="attrName"/>
+          <el-table-column align="center" label="属性名" prop="attrName" />
           <el-table-column align="center" label="自动填充" prop="autoFill">
             <template #default="{ row }">
               <el-select v-model="row.autoFill" placeholder="选择自动填充">
-                <el-option v-for="item in fill" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in fill" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column align="center" label="日期填充" prop="dateFormat">
             <template #default="{ row }">
               <el-select v-model="row.dateFill" placeholder="选择日期格式">
-                <el-option v-for="item in dateFills" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in dateFills" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column align="center" label="日期格式" prop="dateFormat">
             <template #default="{ row }">
               <el-select v-model="row.dateFormat" placeholder="选择日期格式">
-                <el-option v-for="item in dateFormats" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in dateFormats" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column align="center" label="时区" prop="dateFormat">
             <template #default="{ row }">
               <el-select v-model="row.timeZone" placeholder="选择时区">
-                <el-option v-for="item in timeZones" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in timeZones" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
@@ -101,8 +107,8 @@
       </el-tab-pane>
       <el-tab-pane label="表单配置" name="form">
         <el-table :data="attrTableData" style="width: 100%">
-          <el-table-column align="center" label="属性名" prop="attrName"/>
-          <el-table-column align="center" label="说明" prop="fieldComment" :show-overflow-tooltip="true"/>
+          <el-table-column align="center" label="属性名" prop="attrName" />
+          <el-table-column align="center" label="说明" prop="fieldComment" :show-overflow-tooltip="true" />
           <el-table-column align="center" label="表单显示" prop="formItem">
             <template #default="{ row }">
               <el-checkbox v-model="row.formItem" />
@@ -116,41 +122,47 @@
           <el-table-column align="center" prop="fieldComment">
             <template #header>
               <el-tooltip effect="dark" content="可编辑内容" :show-after="700" placement="top">
-                <div class="flex justify-center items-center"><el-icon><Edit /></el-icon>表单效验</div>
+                <div class="flex justify-center items-center">
+                  <el-icon><Edit /></el-icon>表单效验
+                </div>
               </el-tooltip>
             </template>
             <template #default="{ row, column, $index }">
-              <div style="min-height: 10px;" @click="selectAmendItem(column, $index)">
+              <div style="min-height: 10px" @click="selectAmendItem(column, $index)">
                 <span v-show="selectItemKey !== `${column.property}-${$index}`">{{ row.formValidator }}</span>
-                <el-input v-show="selectItemKey === `${column.property}-${$index}`"
-                          v-model="row.formValidator"
-                          placeholder="请输入表单效验"
-                          autofocus
-                          @blur="selectItemKey = ''" />
+                <el-input
+                  v-show="selectItemKey === `${column.property}-${$index}`"
+                  v-model="row.formValidator"
+                  placeholder="请输入表单效验"
+                  autofocus
+                  @blur="selectItemKey = ''" />
               </div>
             </template>
           </el-table-column>
           <el-table-column align="center" label="表单类型" prop="formType">
             <template #default="{ row }">
               <el-select v-model="row.formType" placeholder="选择表单类型">
-                <el-option v-for="item in formType" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in formType" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column align="center" prop="attrName">
             <template #header>
               <el-tooltip effect="dark" content="可编辑内容" :show-after="700" placement="top">
-                <div class="flex justify-center items-center"><el-icon><Edit /></el-icon>表单字典类型</div>
+                <div class="flex justify-center items-center">
+                  <el-icon><Edit /></el-icon>表单字典类型
+                </div>
               </el-tooltip>
             </template>
             <template #default="{ row, column, $index }">
-              <div style="min-height: 10px;" @click="selectAmendItem(column, $index)">
+              <div style="min-height: 10px" @click="selectAmendItem(column, $index)">
                 <span v-show="selectItemKey !== `${column.property}-${$index}`">{{ row.formDict }}</span>
-                <el-input v-show="selectItemKey === `${column.property}-${$index}`"
-                          v-model="row.formDict"
-                          placeholder="请输入表单字典类型"
-                          autofocus
-                          @blur="selectItemKey = ''" />
+                <el-input
+                  v-show="selectItemKey === `${column.property}-${$index}`"
+                  v-model="row.formDict"
+                  placeholder="请输入表单字典类型"
+                  autofocus
+                  @blur="selectItemKey = ''" />
               </div>
             </template>
           </el-table-column>
@@ -158,8 +170,8 @@
       </el-tab-pane>
       <el-tab-pane label="列表配置" name="grid">
         <el-table :data="attrTableData" style="width: 100%">
-          <el-table-column align="center" label="属性名" prop="attrName"/>
-          <el-table-column align="center" label="说明" prop="fieldComment" :show-overflow-tooltip="true"/>
+          <el-table-column align="center" label="属性名" prop="attrName" />
+          <el-table-column align="center" label="说明" prop="fieldComment" :show-overflow-tooltip="true" />
           <el-table-column align="center" label="列表显示" prop="gridItem">
             <template #default="{ row }">
               <el-checkbox v-model="row.gridItem" />
@@ -174,8 +186,8 @@
       </el-tab-pane>
       <el-tab-pane label="查询配置" name="query">
         <el-table :data="attrTableData" style="width: 100%">
-          <el-table-column align="center" label="属性名" prop="attrName"/>
-          <el-table-column align="center" label="说明" prop="fieldComment" :show-overflow-tooltip="true"/>
+          <el-table-column align="center" label="属性名" prop="attrName" />
+          <el-table-column align="center" label="说明" prop="fieldComment" :show-overflow-tooltip="true" />
           <el-table-column align="center" label="查询显示" prop="queryItem">
             <template #default="{ row }">
               <el-checkbox v-model="row.queryItem" />
@@ -184,14 +196,14 @@
           <el-table-column align="center" label="查询方式" prop="queryType">
             <template #default="{ row }">
               <el-select v-model="row.queryType" placeholder="选择查询方式">
-                <el-option v-for="item in query" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in query" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
           <el-table-column align="center" label="查询表单类型" prop="queryFormType">
             <template #default="{ row }">
               <el-select v-model="row.queryFormType" placeholder="选择查询表单类型">
-                <el-option v-for="item in formType" :key="item.value" :label="item.label" :value="item.value"/>
+                <el-option v-for="item in formType" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </template>
           </el-table-column>
@@ -208,10 +220,10 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { TabsPaneContext } from "element-plus";
-import Sortable from "sortablejs";
-import { DATA, Props } from "@/views/generator/table/constants";
-import { TableEntity, TableField } from "@/api/generator/models/TableEntity";
+import { TabsPaneContext } from 'element-plus';
+import Sortable from 'sortablejs';
+import { DATA, Props } from '@/views/generator/table/constants';
+import { TableEntity, TableField } from '@/api/generator/models/TableEntity';
 
 const emit = defineEmits([]);
 // 常量
@@ -232,35 +244,41 @@ const attrTableData = ref<TableField[]>([]);
 // 可编辑框选中
 const selectItemKey = ref<string>('');
 
-watch(() => props.formData, (newVal: TableEntity) => {
-  initSortable();
-  if (newVal.fieldList) {
-    attrTableData.value = newVal.fieldList;
-  }
-});
-watch(() => activeName.value, (newVal) => {
-  console.log(newVal);
-});
+watch(
+  () => props.formData,
+  (newVal: TableEntity) => {
+    initSortable();
+    if (newVal.fieldList) {
+      attrTableData.value = newVal.fieldList;
+    }
+  },
+);
+watch(
+  () => activeName.value,
+  (newVal) => {
+    console.log(newVal);
+  },
+);
 
 const initSortable = () => {
   nextTick(() => {
-    const el: any = window.document.querySelector('.tabPane tbody')
+    const el: any = window.document.querySelector('.tabPane tbody');
     sortable.value = Sortable.create(el, {
       handle: '.drag-btn',
       onEnd: (e: any) => {
-        const { newIndex, oldIndex } = e
-        const currRow = attrTableData.value.splice(oldIndex, 1)[0]
-        attrTableData.value.splice(newIndex, 0, currRow)
-      }
-    })
-  })
+        const { newIndex, oldIndex } = e;
+        const currRow = attrTableData.value.splice(oldIndex, 1)[0];
+        attrTableData.value.splice(newIndex, 0, currRow);
+      },
+    });
+  });
 };
 
 /**
  * tabs 切换事件
  */
 const handleTabsClick = (tab: TabsPaneContext) => {
-  console.log(tab)
+  console.log(tab);
 };
 
 /**
@@ -268,7 +286,7 @@ const handleTabsClick = (tab: TabsPaneContext) => {
  */
 const selectAmendItem = (column: Record<string, any>, index: number) => {
   selectItemKey.value = `${column.property}-${index}`;
-}
+};
 
 /**
  * 提交
@@ -287,7 +305,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -307,7 +325,7 @@ const resetForm = () => {
   props.formData = DATA.form;
   props.typeList = [];
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
 <style scoped lang="scss">

@@ -14,7 +14,7 @@
  *  <input v-throttle:3000.click="handleInput" v-model="obj.hello" />
  * </template>
  */
-import {App, DirectiveBinding} from 'vue';
+import { App, DirectiveBinding } from 'vue';
 
 export default (app: App<Element>) => {
   app.directive('throttle', {

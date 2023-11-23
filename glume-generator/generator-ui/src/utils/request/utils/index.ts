@@ -60,7 +60,6 @@ export function getPropertyNames<T>(obj: T): Array<keyof T> {
   return Object.keys(obj) as Array<keyof T>;
 }
 
-
 // 获取接口属性的类型
 export function getPropertyType<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key];

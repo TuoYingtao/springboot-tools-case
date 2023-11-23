@@ -11,13 +11,13 @@ export default [
       {
         path: '/401',
         component: () => import('@/views/common/error/401.vue'),
-        hidden: true
+        hidden: true,
       },
       {
         path: '/404',
         component: () => import('@/views/common/error/404.vue'),
-        hidden: true
+        hidden: true,
       },
-    ]
+    ],
   },
-] as LayoutRoutes[]
+] as LayoutRoutes[];

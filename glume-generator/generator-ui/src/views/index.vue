@@ -59,7 +59,7 @@
             </el-row>
           </div>
         </blockquote>
-        <hr/>
+        <hr />
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -75,7 +75,11 @@
               <i class="el-icon-s-promotion">邮箱：tuoyingtao@163.com</i>
             </p>
             <p>
-              <i class="el-icon-chat-dot-round">lssues：<el-link href="https://github.com/TuoYingtao" target="_blank">https://github.com/TuoYingtao</el-link></i>
+              <i class="el-icon-chat-dot-round"
+                >lssues：<el-link href="https://github.com/TuoYingtao" target="_blank"
+                  >https://github.com/TuoYingtao</el-link
+                ></i
+              >
             </p>
           </div>
         </el-card>
@@ -110,14 +114,14 @@
 </template>
 
 <script setup name="Index">
-import { VERSION } from "@/config/global";
+import { VERSION } from '@/config/global';
 
-const version = ref(VERSION)
+const version = ref(VERSION);
 
-const checkboxList = ref()
+const checkboxList = ref();
 
 function goTarget(url) {
-  window.open(url, '__blank')
+  window.open(url, '__blank');
 }
 </script>
 
@@ -146,7 +150,7 @@ function goTarget(url) {
     margin: 0;
   }
 
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'open sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;
@@ -186,4 +190,3 @@ function goTarget(url) {
   }
 }
 </style>
-

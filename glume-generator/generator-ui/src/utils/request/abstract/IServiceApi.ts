@@ -9,7 +9,6 @@
 const RESULT = { msg: '', code: '', data: [] } as unknown;
 
 export abstract class IServiceApi<T extends BaseEntity, L extends BaseEntityList<T>> {
-
   /**
    * 列表
    * @param param
@@ -66,5 +65,4 @@ export abstract class IServiceApi<T extends BaseEntity, L extends BaseEntityList
   sort(id: Params, param: Params): Promise<Result> {
     return Promise.resolve<Result>(RESULT as Result);
   }
-
 }

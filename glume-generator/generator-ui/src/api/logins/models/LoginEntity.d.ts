@@ -1,7 +1,3 @@
-export interface LoginEntity extends BaseEntity {
+export interface LoginEntity extends BaseEntity {}
 
-}
-
-export interface LoginInfoEntity extends BaseEntity {
-
-}
+export interface LoginInfoEntity extends BaseEntity {}

@@ -13,7 +13,9 @@ export class AxiosCanceler {
   addPending(config: AxiosRequestConfig) {
     this.removePending(config);
     const url = getPendingUrl(config);
-    config.cancelToken = config.cancelToken || new axios.CancelToken((cancel) => {
+    config.cancelToken =
+      config.cancelToken ||
+      new axios.CancelToken((cancel) => {
         if (!pendingMap.has(url)) {
           // 如果当前没有相同请求就添加
           pendingMap.set(url, cancel);

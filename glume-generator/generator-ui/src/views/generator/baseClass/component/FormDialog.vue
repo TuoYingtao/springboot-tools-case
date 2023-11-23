@@ -4,7 +4,9 @@
       <el-form-item prop="code">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="基类" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">基类<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              基类<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.code" placeholder="请输入基类" />
@@ -12,15 +14,24 @@
       <el-form-item prop="packageName">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="基类所在的包名路径" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">包名<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              包名<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.packageName" placeholder="请输入包名" />
       </el-form-item>
       <el-form-item prop="fields">
         <template #label>
-          <el-tooltip class="box-item" effect="dark" content="基类的成员属性,属性与属性之间用英文逗号分隔（,）" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">字段<el-icon><QuestionFilled /></el-icon></div>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="基类的成员属性,属性与属性之间用英文逗号分隔（,）"
+            :show-after="700"
+            placement="top">
+            <div class="flex justify-center items-center">
+              字段<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.fields" placeholder="请输入字段" />
@@ -28,7 +39,9 @@
       <el-form-item prop="remark">
         <template #label>
           <el-tooltip class="box-item" effect="dark" content="备注" :show-after="700" placement="top">
-            <div class="flex justify-center items-center">备注<el-icon><QuestionFilled /></el-icon></div>
+            <div class="flex justify-center items-center">
+              备注<el-icon><QuestionFilled /></el-icon>
+            </div>
           </el-tooltip>
         </template>
         <el-input v-model="formData.remark" type="textarea" placeholder="请输入备注" />
@@ -44,7 +57,7 @@
 </template>
 
 <script setup lang="ts" name="FormDialog">
-import { DATA, Props } from "@/views/generator/baseClass/constants";
+import { DATA, Props } from '@/views/generator/baseClass/constants';
 
 const emit = defineEmits([]);
 // 表单Ref
@@ -71,7 +84,7 @@ const submitForm = () => {
       }
       emit(key as never, props.formData);
     }
-  })
+  });
 };
 
 /**
@@ -84,7 +97,7 @@ const cancel = () => {
 /**
  * 打开弹窗
  */
-const onOpen = () => open.value = true;
+const onOpen = () => (open.value = true);
 
 /**
  * 关闭弹窗
@@ -102,9 +115,7 @@ const resetForm = () => {
   FormRef.value.clearValidate();
   props.formData.id = -1;
 };
-defineExpose({ onOpen, onClose, resetForm })
+defineExpose({ onOpen, onClose, resetForm });
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

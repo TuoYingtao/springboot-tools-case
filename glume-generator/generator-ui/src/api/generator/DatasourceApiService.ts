@@ -1,9 +1,8 @@
-import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
-import { DatasourceEntity, DatasourceEntityList, DBTableEntity } from "@/api/generator/models/DatasourceEntity";
-import request from "@/utils/request/index";
+import { IServiceApi } from '@/utils/request/abstract/IServiceApi';
+import { DatasourceEntity, DatasourceEntityList, DBTableEntity } from '@/api/generator/models/DatasourceEntity';
+import request from '@/utils/request/index';
 
 export class DatasourceApiService extends IServiceApi<DatasourceEntity, DatasourceEntityList> {
-
   list(param?: Params): Promise<Result<DatasourceEntity[]>> {
     return request.get<Result<DatasourceEntity[]>>({
       url: '/datasource/list',

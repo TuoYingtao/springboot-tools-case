@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue';
-import { RouteLocationNormalizedLoaded } from "vue-router";
+import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { ElScrollbar } from 'element-plus';
 
 import './index.scss';
@@ -9,16 +9,16 @@ export default defineComponent({
   name: 'ScrollPane',
   props: {},
   mounted() {
-    this.scrollWrapper.addEventListener('scroll', this.emitScroll, true)
+    this.scrollWrapper.addEventListener('scroll', this.emitScroll, true);
   },
   beforeUnmount() {
-    this.scrollWrapper.removeEventListener('scroll', this.emitScroll)
+    this.scrollWrapper.removeEventListener('scroll', this.emitScroll);
   },
   setup(props, { expose, emit }) {
     // @ts-ignore
     const { proxy, slots } = getCurrentInstance();
-    const tagsViewStore = useTagsViewStore()
-    const emitScroll = () => emit('scroll')
+    const tagsViewStore = useTagsViewStore();
+    const emitScroll = () => emit('scroll');
     const tagAndTagSpacing = ref(4);
 
     const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrapRef);
@@ -26,34 +26,34 @@ export default defineComponent({
 
     function handleScroll(e: WheelEvent) {
       // @ts-ignore
-      const eventDelta = e.wheelDelta || -e.deltaY * 40
+      const eventDelta = e.wheelDelta || -e.deltaY * 40;
       const $scrollWrapper = scrollWrapper.value;
-      $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+      $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4;
     }
 
     function moveToTarget(currentTag: RouteLocationNormalizedLoaded) {
-      const $container = proxy.$refs.scrollContainer.$el
-      const $containerWidth = $container.offsetWidth
+      const $container = proxy.$refs.scrollContainer.$el;
+      const $containerWidth = $container.offsetWidth;
       const $scrollWrapper = scrollWrapper.value;
 
-      let firstTag = null
-      let lastTag = null
+      let firstTag = null;
+      let lastTag = null;
 
       // find first tag and last tag
       if (visitedViews.value.length > 0) {
-        firstTag = visitedViews.value[0]
-        lastTag = visitedViews.value[visitedViews.value.length - 1]
+        firstTag = visitedViews.value[0];
+        lastTag = visitedViews.value[visitedViews.value.length - 1];
       }
 
       if (firstTag === currentTag) {
-        $scrollWrapper.scrollLeft = 0
+        $scrollWrapper.scrollLeft = 0;
       } else if (lastTag === currentTag) {
-        $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
+        $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth;
       } else {
         const tagListDom = document.getElementsByClassName('tags-view-item') as HTMLCollectionOf<HTMLElement>;
-        const currentIndex = visitedViews.value.findIndex(item => item === currentTag)
-        let prevTag = null
-        let nextTag = null
+        const currentIndex = visitedViews.value.findIndex((item) => item === currentTag);
+        let prevTag = null;
+        let nextTag = null;
         for (const k in tagListDom) {
           if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {
             if (tagListDom[k].dataset.path === visitedViews.value[currentIndex - 1].path) {
@@ -66,36 +66,41 @@ export default defineComponent({
         }
 
         // the tag's offsetLeft after of nextTag
-        const afterNextTagOffsetLeft = nextTag!.offsetLeft + nextTag!.offsetWidth + tagAndTagSpacing.value
+        const afterNextTagOffsetLeft = nextTag!.offsetLeft + nextTag!.offsetWidth + tagAndTagSpacing.value;
 
         // the tag's offsetLeft before of prevTag
-        const beforePrevTagOffsetLeft = prevTag!.offsetLeft - tagAndTagSpacing.value
+        const beforePrevTagOffsetLeft = prevTag!.offsetLeft - tagAndTagSpacing.value;
         if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
-          $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
+          $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth;
         } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
-          $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
+          $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft;
         }
       }
     }
 
     expose({
-      moveToTarget
-    })
+      moveToTarget,
+    });
 
     // @ts-ignore
-    const renderScrollbar = () => <ElScrollbar class="scroll-container" ref="scrollContainer" vertical={false}
-                                               on={{wheel: (event: WheelEvent) => event.preventDefault()}}
-                                               onWheel={handleScroll}>
-      {slots.default()}
-    </ElScrollbar>
+    const renderScrollbar = () => (
+      <ElScrollbar
+        class="scroll-container"
+        ref="scrollContainer"
+        vertical={false}
+        on={{ wheel: (event: WheelEvent) => event.preventDefault() }}
+        onWheel={handleScroll}>
+        {slots.default()}
+      </ElScrollbar>
+    );
 
     return {
       scrollWrapper,
       emitScroll,
       renderScrollbar,
-    }
+    };
   },
   render() {
-    return this.renderScrollbar()
-  }
-})
+    return this.renderScrollbar();
+  },
+});

@@ -35,7 +35,51 @@ vue3-system-starter-template
 └── vite.config.ts -- vite 配置文件
 ```
 
+
+
 ## 如何使用
+
+下载所需依赖
+
+```sh
+npm install
+```
+
+### 启动开发环境
+
+```sh
+npm run dev
+```
+
+### 构建生产
+
+```sh
+npm run build
+```
+
+### 启动演示模式
+
+```sh
+npm run preview
+```
+
+
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run preview
+```
+
+
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+
+
+## 开发须知文档
 
 ### 强类型
 
@@ -161,31 +205,3 @@ interface PageInfo {
 并且在`type`文件夹下生成两个文件，这两个文件的内容则是我们配置不需要手动`import`的工具。
 
 *注意：并非所有的东西都是自动导入，若需配置自己的导入文件，请查看`vite`文件夹下的`auto-components.js`、`auto-import.js`、`auto-setup-extend.js`配置*
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```

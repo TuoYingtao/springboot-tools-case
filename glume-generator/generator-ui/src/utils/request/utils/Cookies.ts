@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import * as AxiosConstants from "@/utils/request/AxiosConstants";
+import * as AxiosConstants from '@/utils/request/AxiosConstants';
 
 /**
  * Cookies 工具类
@@ -7,7 +7,7 @@ import * as AxiosConstants from "@/utils/request/AxiosConstants";
  * @Author: TuoYingtao
  * @Date: 2023-10-23 10:16:21
  * @Version: v1.0.0
-*/
+ */
 export class CookiesUtils {
   private static instance: CookiesUtils;
 

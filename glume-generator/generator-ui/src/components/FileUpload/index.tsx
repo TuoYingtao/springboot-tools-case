@@ -1,28 +1,32 @@
-import { defineComponent, TransitionGroup } from "vue";
-import { ElButton, ElLink, ElUpload, LinkProps, UploadFile } from "element-plus";
-import "./index.scss";
-import { CookiesUtils } from "@/utils/request/utils/Cookies";
+import { defineComponent, TransitionGroup } from 'vue';
+import { ElButton, ElLink, ElUpload, LinkProps, UploadFile } from 'element-plus';
+import './index.scss';
+import { CookiesUtils } from '@/utils/request/utils/Cookies';
 
 export default defineComponent({
   name: 'FileUpload',
   props: {
     modelValue: [String, Object, Array],
-    limit: {            // 数量限制
+    limit: {
+      // 数量限制
       type: Number,
       default: 5,
     },
-    fileSize: {         // 大小限制(MB)
+    fileSize: {
+      // 大小限制(MB)
       type: Number,
       default: 5,
     },
-    fileType: {         // 文件类型, 例如['png', 'jpg', 'jpeg']
+    fileType: {
+      // 文件类型, 例如['png', 'jpg', 'jpeg']
       type: Array,
-      default: () => ["doc", "xls", "ppt", "txt", "pdf"],
+      default: () => ['doc', 'xls', 'ppt', 'txt', 'pdf'],
     },
-    isShowTip: {        // 是否显示提示
+    isShowTip: {
+      // 是否显示提示
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   setup(props) {
     // @ts-ignore
@@ -33,35 +37,43 @@ export default defineComponent({
 
     const number = ref(0);
     const uploadList = ref<UploadFile[]>([]);
-    const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传文件服务器地址
-    const headers = ref({ Authorization: "Bearer " + CookiesUtils.get() });
+    const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + '/common/upload'); // 上传文件服务器地址
+    const headers = ref({ Authorization: 'Bearer ' + CookiesUtils.get() });
     const fileList = ref<Record<string, any>[]>([]);
 
     const showTip = computed(() => props.isShowTip && (props.fileType || props.fileSize));
 
-    watch(() => props.modelValue, (val: Object) => {
-      if (val) {
-        let temp = 1;
-        // 首先将值转为数组
-        const list = (Array.isArray(val) ? val : () => {
-          return (props.modelValue && typeof props.modelValue === "string") ? props.modelValue.split(',') : [];
-        }) as Array<Record<string, any> | string>;
+    watch(
+      () => props.modelValue,
+      (val: Object) => {
+        if (val) {
+          let temp = 1;
+          // 首先将值转为数组
+          const list = (
+            Array.isArray(val)
+              ? val
+              : () => {
+                  return props.modelValue && typeof props.modelValue === 'string' ? props.modelValue.split(',') : [];
+                }
+          ) as Array<Record<string, any> | string>;
 
-        if (list && list.length > 0) {
-          // 然后将数组转为对象数组
-          fileList.value = list.map((item: string | Record<string, any>) => {
-            if (typeof item === "string") {
-              item = { name: item, url: item };
-            }
-            item.uid = item.uid || new Date().getTime() + temp++;
-            return item;
-          });
+          if (list && list.length > 0) {
+            // 然后将数组转为对象数组
+            fileList.value = list.map((item: string | Record<string, any>) => {
+              if (typeof item === 'string') {
+                item = { name: item, url: item };
+              }
+              item.uid = item.uid || new Date().getTime() + temp++;
+              return item;
+            });
+          }
+        } else {
+          fileList.value = [];
+          return [];
         }
-      } else {
-        fileList.value = [];
-        return [];
-      }
-    },{ deep: true, immediate: true });
+      },
+      { deep: true, immediate: true },
+    );
 
     /**
      * 上传前校检格式和大小
@@ -73,7 +85,7 @@ export default defineComponent({
         const fileExt = fileName[fileName.length - 1];
         const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
         if (!isTypeOk) {
-          proxy.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`);
+          proxy.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join('/')}格式文件!`);
           return false;
         }
       }
@@ -85,7 +97,7 @@ export default defineComponent({
           return false;
         }
       }
-      proxy.$modal.loading("正在上传文件，请稍候...");
+      proxy.$modal.loading('正在上传文件，请稍候...');
       number.value++;
       return true;
     }
@@ -101,7 +113,7 @@ export default defineComponent({
      * 上传失败
      */
     function handleUploadError(err: Error) {
-      proxy.$modal.msgError("上传文件失败");
+      proxy.$modal.msgError('上传文件失败');
     }
 
     /**
@@ -111,7 +123,7 @@ export default defineComponent({
      */
     function handleUploadSuccess(res: Record<string, any>, file: UploadFile) {
       if (res.code === 200) {
-        uploadList.value.push({ name: res.fileName, url: res.fileName, status: "success", uid:  new Date().getTime() });
+        uploadList.value.push({ name: res.fileName, url: res.fileName, status: 'success', uid: new Date().getTime() });
         uploadedSuccessfully();
       } else {
         number.value--;
@@ -127,7 +139,7 @@ export default defineComponent({
      */
     function handleDelete(index: number) {
       fileList.value.splice(index, 1);
-      emit("update:modelValue", listToString(fileList.value));
+      emit('update:modelValue', listToString(fileList.value));
     }
 
     /**
@@ -135,10 +147,12 @@ export default defineComponent({
      */
     function uploadedSuccessfully() {
       if (number.value > 0 && uploadList.value.length === number.value) {
-        fileList.value = fileList.value.filter((f: Record<string, any>) => f.url !== undefined).concat(uploadList.value);
+        fileList.value = fileList.value
+          .filter((f: Record<string, any>) => f.url !== undefined)
+          .concat(uploadList.value);
         uploadList.value = [];
         number.value = 0;
-        emit("update:modelValue", listToString(fileList.value));
+        emit('update:modelValue', listToString(fileList.value));
         proxy.$modal.closeLoading();
       }
     }
@@ -147,10 +161,10 @@ export default defineComponent({
      * 获取文件名称
      */
     function getFileName(name: string) {
-      if (name.lastIndexOf("/") > -1) {
-        return name.slice(name.lastIndexOf("/") + 1);
+      if (name.lastIndexOf('/') > -1) {
+        return name.slice(name.lastIndexOf('/') + 1);
       } else {
-        return "";
+        return '';
       }
     }
 
@@ -158,8 +172,8 @@ export default defineComponent({
      * 对象转成指定字符串分隔
      */
     function listToString(list: Record<string, any>[], separator?: string) {
-      let strs = "";
-      separator = separator || ",";
+      let strs = '';
+      separator = separator || ',';
       for (let i in list) {
         if (list[i].url) {
           strs += list[i].url + separator;
@@ -168,66 +182,91 @@ export default defineComponent({
       return strs != '' ? strs.substr(0, strs.length - 1) : '';
     }
 
-    const renderLink = (slotsCallback: Function, clickCallback: Function, options: LinkProps) => <ElLink
+    const renderLink = (slotsCallback: Function, clickCallback: Function, options: LinkProps) => (
+      <ElLink
         type={options.type}
         href={options.href}
         underline={options.underline}
         onClick={(e: any) => clickCallback(e)}
         v-slots={{
-      default: slotsCallback()
-    }} />
+          default: slotsCallback(),
+        }}
+      />
+    );
 
-    const renderUpload = () => <ElUpload ref="fileUpload"
-                                         class="upload-file-uploader"
-                                         multiple={true}
-                                         action={uploadFileUrl.value}
-                                         headers={headers}
-                                         fileList={fileList.value as UploadFile[]}
-                                         limit={props.limit}
-                                         showFileList={false}
-                                         beforeUpload={handleBeforeUpload}
-                                         onError={handleUploadError}
-                                         onExceed={handleExceed}
-                                         onSuccess={handleUploadSuccess}
-    >
-      <ElButton type="primary">选取文件</ElButton>
-    </ElUpload>
+    const renderUpload = () => (
+      <ElUpload
+        ref="fileUpload"
+        class="upload-file-uploader"
+        multiple={true}
+        action={uploadFileUrl.value}
+        headers={headers}
+        fileList={fileList.value as UploadFile[]}
+        limit={props.limit}
+        showFileList={false}
+        beforeUpload={handleBeforeUpload}
+        onError={handleUploadError}
+        onExceed={handleExceed}
+        onSuccess={handleUploadSuccess}>
+        <ElButton type="primary">选取文件</ElButton>
+      </ElUpload>
+    );
 
-    const renderFileUpload = () => <div class="upload-file">
-      {renderUpload()}
-      {
-        showTip.value && (<div class="el-upload__tip">
+    const renderFileUpload = () => (
+      <div class="upload-file">
+        {renderUpload()}
+        {showTip.value && (
+          <div class="el-upload__tip">
             请上传
-            {props.fileSize && (<> 大小不超过 <b style="color: #f56c6c">{props.fileSize}MB</b> </>)}
-            {props.fileType && (<> 格式为 <b style="color: #f56c6c">{props.fileType.join("/")}</b> </>)}
+            {props.fileSize && (
+              <>
+                {' '}
+                大小不超过 <b style="color: #f56c6c">{props.fileSize}MB</b>{' '}
+              </>
+            )}
+            {props.fileType && (
+              <>
+                {' '}
+                格式为 <b style="color: #f56c6c">{props.fileType.join('/')}</b>{' '}
+              </>
+            )}
             的文件
-          </div>)
-      }
-      { // @ts-ignore
-        <TransitionGroup class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
-          {fileList.value.map((file: Record<string, any>, index: number) => <li class="el-upload-list__item ele-upload-list__item-content" key={file.uid}>
-            {renderLink(
-                () => <span class="el-icon-document">{getFileName(file.name)}</span>,
-                () => {},
-                { type: 'default', disabled: false, href: `${baseUrl}${file.url}`, underline: false })
-            }
-            <div class="ele-upload-list__item-content-action">
-              {renderLink(
-                  () => '删除',
-                  () => handleDelete(index),
-                  { type: 'danger', disabled: false, href: '', underline: false })
-              }
-            </div>
-          </li>)}
-        </TransitionGroup>
-      }
-    </div>
+          </div>
+        )}
+        {
+          // @ts-ignore
+          <TransitionGroup
+            class="upload-file-list el-upload-list el-upload-list--text"
+            name="el-fade-in-linear"
+            tag="ul">
+            {fileList.value.map((file: Record<string, any>, index: number) => (
+              <li class="el-upload-list__item ele-upload-list__item-content" key={file.uid}>
+                {renderLink(
+                  () => (
+                    <span class="el-icon-document">{getFileName(file.name)}</span>
+                  ),
+                  () => {},
+                  { type: 'default', disabled: false, href: `${baseUrl}${file.url}`, underline: false },
+                )}
+                <div class="ele-upload-list__item-content-action">
+                  {renderLink(
+                    () => '删除',
+                    () => handleDelete(index),
+                    { type: 'danger', disabled: false, href: '', underline: false },
+                  )}
+                </div>
+              </li>
+            ))}
+          </TransitionGroup>
+        }
+      </div>
+    );
 
     return {
-      renderFileUpload
-    }
+      renderFileUpload,
+    };
   },
   render() {
     return this.renderFileUpload();
   },
-})
+});

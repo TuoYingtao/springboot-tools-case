@@ -9,7 +9,7 @@
  *  <button v-debounce:3000.click="handleClick">点击试试</button>
  * </template>
  */
-import {App, DirectiveBinding} from 'vue';
+import { App, DirectiveBinding } from 'vue';
 
 export default {
   install(app: App<Element>) {

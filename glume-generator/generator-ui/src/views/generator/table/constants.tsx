@@ -1,7 +1,7 @@
-import { FormRules } from "element-plus";
-import { TableEntity } from "@/api/generator/models/TableEntity";
-import { DatasourceEntity } from "@/api/generator/models/DatasourceEntity";
-import { BaseClassEntity } from "@/api/generator/models/BaseClassEntity";
+import { FormRules } from 'element-plus';
+import { TableEntity } from '@/api/generator/models/TableEntity';
+import { DatasourceEntity } from '@/api/generator/models/DatasourceEntity';
+import { BaseClassEntity } from '@/api/generator/models/BaseClassEntity';
 
 interface IData {
   form: TableEntity;
@@ -35,7 +35,7 @@ export const DEFAULT_FORM: TableEntity = {
   enableBaseService: 0,
   commonPackagePath: '',
   fieldList: [],
-}
+};
 
 export const DATA: IData = {
   form: DEFAULT_FORM,
@@ -44,21 +44,21 @@ export const DATA: IData = {
     limit: 10,
   },
   rules: {
-    className: [{ required: true, message: "类名不能为空", trigger: "blur" }],
-    moduleName: [{ required: true, message: "模块名不能为空", trigger: "blur" }],
-    functionName: [{ required: true, message: "功能名不能为空", trigger: "blur" }],
-    packageName: [{ required: true, message: "项目包名不能为空", trigger: "blur" }],
-    version: [{ required: true, message: "版本号不能为空", trigger: "blur" }],
-    backendPath: [{ required: true, message: "后端生成路径不能为空", trigger: "blur" }],
-    frontendPath: [{ required: true, message: "前端生成路径不能为空", trigger: "blur" }],
-    columnType: [{ required: true, message: "字段类型不能为空", trigger: "blur" }],
-    attrType: [{ required: true, message: "属性类型不能为空", trigger: "blur" }],
+    className: [{ required: true, message: '类名不能为空', trigger: 'blur' }],
+    moduleName: [{ required: true, message: '模块名不能为空', trigger: 'blur' }],
+    functionName: [{ required: true, message: '功能名不能为空', trigger: 'blur' }],
+    packageName: [{ required: true, message: '项目包名不能为空', trigger: 'blur' }],
+    version: [{ required: true, message: '版本号不能为空', trigger: 'blur' }],
+    backendPath: [{ required: true, message: '后端生成路径不能为空', trigger: 'blur' }],
+    frontendPath: [{ required: true, message: '前端生成路径不能为空', trigger: 'blur' }],
+    columnType: [{ required: true, message: '字段类型不能为空', trigger: 'blur' }],
+    attrType: [{ required: true, message: '属性类型不能为空', trigger: 'blur' }],
   },
   fill: [
     { label: 'DEFAULT', value: 'DEFAULT' },
     { label: 'INSERT', value: 'INSERT' },
     { label: 'UPDATE', value: 'UPDATE' },
-    { label: 'INSERT_UPDATE', value: 'INSERT_UPDATE' }
+    { label: 'INSERT_UPDATE', value: 'INSERT_UPDATE' },
   ],
   dateFills: [
     { label: 'DEFAULT', value: 'DEFAULT' },
@@ -94,7 +94,7 @@ export const DATA: IData = {
     { label: '<=', value: '<=' },
     { label: 'like', value: 'like' },
     { label: 'left like', value: 'left like' },
-    { label: 'right like', value: 'right like' }
+    { label: 'right like', value: 'right like' },
   ],
   formType: [
     { label: '单行文本', value: 'text' },
@@ -104,9 +104,9 @@ export const DATA: IData = {
     { label: '单选按钮', value: 'radio' },
     { label: '复选框', value: 'checkbox' },
     { label: '日期', value: 'date' },
-    { label: '日期时间', value: 'datetime' }
+    { label: '日期时间', value: 'datetime' },
   ],
-}
+};
 
 export interface Props {
   title: string;

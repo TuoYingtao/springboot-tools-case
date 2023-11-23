@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 // 自动导入modules文件夹下所有ts文件
 const modules: Record<string, any> = import.meta.glob('./modules/**/*.ts', { eager: true });
@@ -32,11 +32,11 @@ const router = createRouter({
   routes: constantRoutes as RouteRecordRaw[],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     } else {
-      return {top: 0}
+      return { top: 0 };
     }
   },
-})
+});
 
-export default router
+export default router;

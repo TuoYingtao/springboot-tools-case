@@ -1,9 +1,8 @@
-import { IServiceApi } from "@/utils/request/abstract/IServiceApi";
-import { BaseClassEntity, BaseClassEntityList } from "@/api/generator/models/BaseClassEntity";
-import request from "@/utils/request/index";
+import { IServiceApi } from '@/utils/request/abstract/IServiceApi';
+import { BaseClassEntity, BaseClassEntityList } from '@/api/generator/models/BaseClassEntity';
+import request from '@/utils/request/index';
 
 export class BaseClassApiService extends IServiceApi<BaseClassEntity, BaseClassEntityList> {
-
   list(param?: Params): Promise<Result<BaseClassEntity[]>> {
     return request.get<Result<BaseClassEntity[]>>({
       url: '/baseclass/list',
