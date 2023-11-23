@@ -10,12 +10,12 @@
     "production": "vite --open --mode production",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build --mode production",
     "build:test": "vite build --mode production",
-    "build:release": "vue-tsc --noEmit --skipLibCheck && vite build --mode release",
+    "build:release": "vue-tsc --noEmit --skipLibCheck && vite build --mode production",
     "build-only": "vite build",
     "build:check": "run-p type-check \"build-only {@}\" --",
     "preview": "vite --mode staging",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
     "format": "prettier --write src/"
   },
   "repository": {
