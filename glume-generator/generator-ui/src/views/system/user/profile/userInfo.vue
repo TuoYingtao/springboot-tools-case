@@ -23,7 +23,9 @@
 </template>
 
 <script setup>
-import { updateUserProfile } from '@/api/system/user';
+import { LoginApiService } from "@/api/logins/LoginApiService";
+
+const loginApi = new LoginApiService();
 
 const props = defineProps({
   user: {
@@ -49,7 +51,7 @@ const rules = ref({
 function submit() {
   proxy.$refs.userRef.validate((valid) => {
     if (valid) {
-      updateUserProfile(props.user).then((response) => {
+      loginApi.updateUserProfile(props.user).then((response) => {
         proxy.$modal.msgSuccess('修改成功');
       });
     }

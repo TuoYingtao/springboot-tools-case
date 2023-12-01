@@ -55,11 +55,12 @@
 <script setup>
 import 'vue-cropper/dist/index.css';
 import { VueCropper } from 'vue-cropper';
-import { uploadAvatar } from '@/api/system/user';
 import useUserStore from '@/stores/modules/user';
+import { LoginApiService } from "@/api/logins/LoginApiService";
 
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
+const loginApi = new LoginApiService();
 
 const open = ref(false);
 const visible = ref(false);
@@ -116,7 +117,7 @@ function uploadImg() {
   proxy.$refs.cropper.getCropBlob((data) => {
     let formData = new FormData();
     formData.append('avatarfile', data);
-    uploadAvatar(formData).then((response) => {
+    loginApi.uploadAvatar(formData).then((response) => {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.imgUrl;
       userStore.avatar = options.img;

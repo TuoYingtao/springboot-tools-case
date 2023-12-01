@@ -63,12 +63,13 @@
 </template>
 
 <script setup>
-import { getCodeImg } from '@/api/login';
 import { JSEncryptUtils } from '@/utils/security/jsencrypt';
 import useUserStore from '@/stores/modules/user';
 import { CookiesUtils } from '@/utils/request/utils/Cookies';
 import { COPYRIGHT_INFO, VITE_APP_NAME } from '@/config/global';
+import { LoginApiService } from "@/api/logins/LoginApiService";
 
+const loginApi = new LoginApiService();
 const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
@@ -152,7 +153,7 @@ function handleLogin() {
 }
 
 function getCode() {
-  getCodeImg().then((res) => {
+  loginApi.getCodeImg().then((res) => {
     captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
     if (captchaEnabled.value) {
       codeUrl.value = 'data:image/gif;base64,' + res.img;

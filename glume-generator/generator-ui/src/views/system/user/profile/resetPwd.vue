@@ -17,9 +17,10 @@
 </template>
 
 <script setup>
-import { updateUserPwd } from '@/api/system/user';
+import { LoginApiService } from "@/api/logins/LoginApiService";
 
 const { proxy } = getCurrentInstance();
+const loginApi = new LoginApiService();
 
 const user = reactive({
   oldPassword: undefined,
@@ -50,7 +51,7 @@ const rules = ref({
 function submit() {
   proxy.$refs.pwdRef.validate((valid) => {
     if (valid) {
-      updateUserPwd(user.oldPassword, user.newPassword).then((response) => {
+      loginApi.updateUserPwd(user.oldPassword, user.newPassword).then((response) => {
         proxy.$modal.msgSuccess('修改成功');
       });
     }
