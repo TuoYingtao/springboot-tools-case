@@ -1,0 +1,9 @@
+generator-ui/dist/
+generator-ui/node_modules/
+generator-ui/package-analyse.html
+generator-ui/.eslintrc-auto-import.json
+
+glume-generator-server-docker/glume/jar/*.jar
+glume-generator-server-docker/mysql/db/*.sql
+
+glume-generator-service/**/resources/static/
