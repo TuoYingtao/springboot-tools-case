@@ -7,6 +7,12 @@ spring:
     active: @profile.active@
     include:
       - two
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/ui/
+  mvc:
+    static-path-pattern: classpath:/static/ui/**
 # MyBatis Plus 配置
 mybatis-plus:
   global-config:
