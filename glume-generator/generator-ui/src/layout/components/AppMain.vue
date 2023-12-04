@@ -24,8 +24,6 @@ import useAppStore from '@/stores/modules/app';
 const tagsViewStore = useTagsViewStore();
 
 const size = computed(() => useAppStore().size || 'small');
-
-<!--路由中添加key解决切换路由时页面不展示内容，刷新后才展示内容问题-->
 </script>
 
 <style lang="scss" scoped>
