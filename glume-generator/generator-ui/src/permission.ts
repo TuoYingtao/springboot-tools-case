@@ -13,8 +13,9 @@ import { IS_TOKEN_AUTH } from '@/config/global';
 
 NProgress.configure({ showSpinner: false });
 
+// 路由是否需要初始化
+let routerInitialStatus = true;
 const whiteList = ['/login', '/register'];
-
 function initStorage() {
   // 持久化初始加载
   useAppStore();
@@ -47,7 +48,8 @@ router.beforeEach(async (to, from, next) => {
                   router.addRoute(route as RouteRecordRaw); // 动态添加可访问路由表
                 }
               });
-              if (!router.hasRoute(to.name!)) {
+              if (!router.hasRoute(to.name!) && routerInitialStatus) {
+                routerInitialStatus = false;
                 next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
               } else {
                 next();
