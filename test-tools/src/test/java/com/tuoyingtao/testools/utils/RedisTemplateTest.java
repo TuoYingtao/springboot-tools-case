@@ -1,9 +1,9 @@
 package com.tuoyingtao.testools.utils;
 
 import com.alibaba.fastjson2.JSON;
-import com.commons.compound.redis.properties.RedisClientProperties;
-import com.commons.compound.redis.utils.RedisTemplateUtils;
-import com.commons.compound.redis.utils.RedisUtils;
+import com.common.redis.properties.RedisClientProperties;
+import com.common.redis.utils.RedisTemplateUtils;
+import com.common.redis.utils.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -59,8 +59,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.commons.compound.log</groupId>
-            <artifactId>commons-compound-log</artifactId>
+            <groupId>com.common.log</groupId>
+            <artifactId>common-log</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

@@ -1,7 +1,7 @@
 package com.tuoyingtao.mybatisplus.service;
 
 
-import com.commons.compound.mybatis.utils.PageUtils;
+import com.common.mybatis.utils.PageUtils;
 import com.tuoyingtao.mybatisplus.domain.entity.UserEntity;
 
 import java.util.List;

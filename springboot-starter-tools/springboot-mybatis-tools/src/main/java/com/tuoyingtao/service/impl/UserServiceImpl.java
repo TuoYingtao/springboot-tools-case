@@ -1,6 +1,6 @@
 package com.tuoyingtao.service.impl;
 
-import com.commons.compound.core.utils.StringUtils;
+import com.common.core.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tuoyingtao.entity.UserEntity;

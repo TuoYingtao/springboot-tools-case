@@ -1,9 +1,9 @@
 package com.tuoyingtao.mybatisplus.controller;
 
-import com.commons.compound.core.domain.Result;
-import com.commons.compound.log.annotation.Log;
-import com.commons.compound.log.enums.BusinessType;
-import com.commons.compound.mybatis.utils.PageUtils;
+import com.common.core.domain.Result;
+import com.common.log.annotation.Log;
+import com.common.log.enums.BusinessType;
+import com.common.mybatis.utils.PageUtils;
 import com.tuoyingtao.mybatisplus.domain.entity.UserEntity;
 import com.tuoyingtao.mybatisplus.service.UserService;
 import io.swagger.annotations.Api;

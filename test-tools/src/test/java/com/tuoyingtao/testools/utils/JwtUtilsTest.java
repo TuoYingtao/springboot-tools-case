@@ -1,10 +1,10 @@
 package com.tuoyingtao.testools.utils;
 
-import com.commons.compound.core.constant.SecurityConstants;
-import com.commons.compound.core.text.StrFormatter;
-import com.commons.compound.core.utils.DateUtils;
-import com.commons.compound.core.utils.ExceptionUtil;
-import com.commons.compound.core.utils.JwtUtils;
+import com.common.core.constant.SecurityConstants;
+import com.common.core.text.StrFormatter;
+import com.common.core.utils.DateUtils;
+import com.common.core.utils.ExceptionUtil;
+import com.common.core.utils.JwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

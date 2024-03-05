@@ -1,7 +1,7 @@
 package com.tuoyingtao.controller;
 
-import com.commons.compound.log.annotation.Log;
-import com.commons.compound.log.enums.BusinessType;
+import com.common.log.annotation.Log;
+import com.common.log.enums.BusinessType;
 import com.github.pagehelper.PageInfo;
 import com.tuoyingtao.entity.UserEntity;
 import com.tuoyingtao.service.UserService;

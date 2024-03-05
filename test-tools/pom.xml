@@ -18,26 +18,32 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.commons.compound.core</groupId>
-            <artifactId>commons-compound-core</artifactId>
+            <groupId>com.common.core</groupId>
+            <artifactId>common-core</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.commons.compound.redis</groupId>
-            <artifactId>commons-compound-redis</artifactId>
+            <groupId>com.common.redis</groupId>
+            <artifactId>common-redis</artifactId>
             <version>1.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>com.commons.compound.log</groupId>
-            <artifactId>commons-compound-log</artifactId>
+            <groupId>com.common.log</groupId>
+            <artifactId>common-log</artifactId>
             <version>1.0.0</version>
         </dependency>
 
+        <!--<dependency>-->
+        <!--    <groupId>com.common.mybatis</groupId>-->
+        <!--    <artifactId>common-mybatis</artifactId>-->
+        <!--    <version>1.0.0</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.commons.compound.mybatis</groupId>
-            <artifactId>commons-compound-mybatis</artifactId>
+            <groupId>com.common.limiting</groupId>
+            <artifactId>common-limiting</artifactId>
             <version>1.0.0</version>
         </dependency>
 
@@ -46,10 +52,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-data-redis</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>

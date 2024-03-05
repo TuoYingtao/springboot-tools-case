@@ -23,7 +23,7 @@
         <module>glume-generator-service</module>
         <module>glume-generator-boot-starter</module>
         <module>glume-generator-admin</module>
-        <module>../commons-compound-tools/commons-compound-swagger</module>
+        <module>../commons-tools/common-swagger</module>
     </modules>
 
     <properties>

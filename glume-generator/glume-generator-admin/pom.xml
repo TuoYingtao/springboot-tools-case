@@ -34,8 +34,8 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.commons.compound.swagger</groupId>
-            <artifactId>commons-compound-swagger</artifactId>
+            <groupId>com.common.swagger</groupId>
+            <artifactId>common-swagger</artifactId>
             <version>1.0.0</version>
         </dependency>
         <!-- Lombok -->
