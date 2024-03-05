@@ -4,6 +4,7 @@ package com.common.limiting.handler;
  * 漏桶算法
  * 包含了桶的容量和漏桶出水速率等参数，
  * 以及当前桶中的水量和上次漏水时间戳等状态。
+ *
  * @Author: TuoYingtao
  * @Date: 2024-03-05 15:13
  * @Version: v1.0.0
@@ -36,6 +37,7 @@ public class LeakyBucketRateLimiter {
 
     /**
      * 方法用于尝试向桶中放入一定量的水。
+     *
      * @param waterRequested 待进水量
      * @return 如果桶中还有足够的空间返回 false，否则返回 true。
      */

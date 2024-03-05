@@ -28,6 +28,7 @@ public class TokenBucketRateLimiter {
 
     /**
      * 构造函数中传入令牌桶的容量和令牌生成速率。
+     *
      * @param capacity
      * @param rate
      */
@@ -40,6 +41,7 @@ public class TokenBucketRateLimiter {
 
     /**
      * 方法表示一个请求是否允许通过，该方法使用 synchronized 关键字进行同步，以保证线程安全。
+     *
      * @return 桶中还有令牌返回false 否在返回true
      */
     public synchronized boolean allowRequest() {

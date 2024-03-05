@@ -30,7 +30,7 @@ public class SlidingWindowsRateLimiter {
     private TreeMap<Long, AtomicInteger> counters = new TreeMap<>();
 
     /**
-     * @param subCycle 单位时间划分的小周期（单位时间是1分钟，10s一个小格子窗口，一共6个格子）
+     * @param subCycle        单位时间划分的小周期（单位时间是1分钟，10s一个小格子窗口，一共6个格子）
      * @param thresholdPerMin 每分钟限流请求数
      */
     public SlidingWindowsRateLimiter(Integer subCycle, Integer thresholdPerMin) {
@@ -42,6 +42,7 @@ public class SlidingWindowsRateLimiter {
 
     /**
      * 滑动窗口时间算法实现
+     *
      * @return true: 未达到阈值不限流，false：以达到阈值范围准备限流
      */
     public synchronized boolean slidingWindowsTryAcquire() {
