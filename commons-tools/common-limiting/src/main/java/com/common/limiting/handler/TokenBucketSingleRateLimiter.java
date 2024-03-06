@@ -1,5 +1,9 @@
 package com.common.limiting.handler;
 
+import com.common.limiting.abstraction.AbstractSingleRateLimiter;
+
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * 令牌桶算法
  *
@@ -7,35 +11,35 @@ package com.common.limiting.handler;
  * @Date: 2024-03-05 15:50
  * @Version: v1.0.0
  */
-public class TokenBucketRateLimiter {
+public class TokenBucketSingleRateLimiter extends AbstractSingleRateLimiter {
 
     /**
      * 令牌桶容量
      */
-    private final int capacity;
+    private final Long capacity;
     /**
      * 令牌生成速率，单位：令牌/秒
      */
-    private final int rate;
+    private final Long rate;
     /**
-     * 当前令牌数量
+     * 当前桶中令牌数量
      */
-    private int tokens;
+    private AtomicLong tokens;
     /**
      * 上次令牌生成时间戳
      */
-    private long lastRefillTimestamp;
+    private Long lastRefillTimestamp;
 
     /**
      * 构造函数中传入令牌桶的容量和令牌生成速率。
      *
-     * @param capacity
-     * @param rate
+     * @param capacity 令牌桶容量
+     * @param rate 令牌生成速率，单位：令牌/秒
      */
-    public TokenBucketRateLimiter(int capacity, int rate) {
+    public TokenBucketSingleRateLimiter(Long capacity, Long rate) {
         this.capacity = capacity;
         this.rate = rate;
-        this.tokens = capacity;
+        this.tokens = new AtomicLong(capacity);
         this.lastRefillTimestamp = System.currentTimeMillis();
     }
 
@@ -44,10 +48,11 @@ public class TokenBucketRateLimiter {
      *
      * @return 桶中还有令牌返回false 否在返回true
      */
-    public synchronized boolean allowRequest() {
+    @Override
+    public synchronized boolean tryAcquire() {
         refill();
-        if (tokens > 0) {
-            tokens--;
+        if (tokens.get() > 0) {
+            tokens.decrementAndGet();
             return false;
         }
         return true;
@@ -59,10 +64,13 @@ public class TokenBucketRateLimiter {
      * lastRefillTimestamp 变量表示上次令牌生成的时间戳。
      */
     private void refill() {
-        long now = System.currentTimeMillis();
+        Long now = System.currentTimeMillis();
         if (now > lastRefillTimestamp) {
-            int generatedTokens = (int) ((now - lastRefillTimestamp) / 1000 * rate);
-            tokens = Math.min(tokens + generatedTokens, capacity);
+            // 计算当前时间与上一次时间的时差（秒）
+            Long elapsedTime = (now - lastRefillTimestamp) / 1000;
+            // 计算这段时间差所生成的Token数量
+            Long generatedTokens = elapsedTime * rate;
+            tokens = new AtomicLong(Math.min(tokens.get() + generatedTokens, capacity));
             lastRefillTimestamp = now;
         }
     }

@@ -1,5 +1,6 @@
 package com.common.limiting.handler;
 
+import com.common.limiting.abstraction.AbstractSingleRateLimiter;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 
@@ -12,8 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date: 2024-03-05 14:33
  * @Version: v1.0.0
  */
-public class FixedWindowsRateLimiter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FixedWindowsRateLimiter.class);
+public class FixedWindowsSingleRateLimiter extends AbstractSingleRateLimiter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FixedWindowsSingleRateLimiter.class);
 
     /**
      * 上一次获取时间
@@ -38,7 +39,7 @@ public class FixedWindowsRateLimiter {
      * @param windowUnit      固定时间窗口是1000ms
      * @param threshold       窗口阀值是10
      */
-    public FixedWindowsRateLimiter(Long lastAcquireTime, Long windowUnit, Integer threshold) {
+    public FixedWindowsSingleRateLimiter(Long lastAcquireTime, Long windowUnit, Integer threshold) {
         this.lastAcquireTime = lastAcquireTime;
         this.windowUnit = windowUnit;
         this.threshold = threshold;
@@ -50,7 +51,8 @@ public class FixedWindowsRateLimiter {
      *
      * @return true: 未达到阈值不限流，false：以达到阈值范围准备限流
      */
-    public synchronized boolean fixedWindowsTryAcquire() {
+    @Override
+    public synchronized boolean tryAcquire() {
         // 获取当前时间
         long now = System.currentTimeMillis();
         // 检查是否在时间窗口内

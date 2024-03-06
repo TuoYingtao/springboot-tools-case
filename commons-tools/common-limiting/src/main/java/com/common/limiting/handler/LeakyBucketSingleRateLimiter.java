@@ -1,5 +1,9 @@
 package com.common.limiting.handler;
 
+import com.common.limiting.abstraction.AbstractSingleRateLimiter;
+
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * 漏桶算法
  * 包含了桶的容量和漏桶出水速率等参数，
@@ -9,30 +13,39 @@ package com.common.limiting.handler;
  * @Date: 2024-03-05 15:13
  * @Version: v1.0.0
  */
-public class LeakyBucketRateLimiter {
+public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
 
     /**
      * 桶的容量
      */
-    private final long capacity;
+    private final Long capacity;
     /**
-     * 漏桶出水速率
+     * 漏桶出水速率（单位：个/s）
      */
-    private final long rate;
+    private final Long rate;
     /**
      * 当前桶中的水量
      */
-    private long water;
+    private AtomicLong water;
     /**
-     * 上次漏水时间戳
+     * 上次漏水时间戳（单位：ms）
      */
-    private long lastLeakTimestamp;
+    private Long lastLeakTimestamp;
 
-    public LeakyBucketRateLimiter(long capacity, long rate) {
+    /**
+     * @param capacity 桶的容量
+     * @param rate 漏桶出水速率
+     */
+    public LeakyBucketSingleRateLimiter(Long capacity, Long rate) {
         this.capacity = capacity;
         this.rate = rate;
-        this.water = 0;
+        this.water = new AtomicLong(0L);
         this.lastLeakTimestamp = System.currentTimeMillis();
+    }
+
+    @Override
+    public boolean tryAcquire() {
+        return false;
     }
 
     /**
@@ -44,9 +57,9 @@ public class LeakyBucketRateLimiter {
     public synchronized boolean tryConsume(Long waterRequested) {
         leak();
         // 计算桶中水量+待进水量是否超出桶总容量
-        if (water + waterRequested <= capacity) {
+        if (water.get() + waterRequested <= capacity) {
             // 没有超出
-            water += waterRequested;
+            water.addAndGet(waterRequested);
             return false;
         }
         // 超出了
@@ -58,13 +71,13 @@ public class LeakyBucketRateLimiter {
      */
     private void leak() {
         // 获取当前时间
-        long now = System.currentTimeMillis();
-        // 计算当前时间与上一次时间的时差
-        long elapsedTime = now - lastLeakTimestamp;
+        Long now = System.currentTimeMillis();
+        // 计算当前时间与上一次时间的时差（秒）
+        Long elapsedTime = (now - lastLeakTimestamp) / 1000;
         // 露出的水量
-        long leakedWater = elapsedTime * rate / 1000;
+        Long leakedWater = elapsedTime * rate;
         if (leakedWater > 0) {
-            water = Math.max(0, water - leakedWater);
+            water = new AtomicLong(Math.max(0, water.get() - leakedWater));
             lastLeakTimestamp = now;
         }
     }
