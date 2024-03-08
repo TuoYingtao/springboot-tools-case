@@ -2,7 +2,7 @@ package com.common.core.asserts;
 
 import com.common.core.enums.IResponseEnum;
 import com.common.core.exception.BaseException;
-import com.common.core.exception.BusinessException;
+import com.common.core.exception.BusinessAssertException;
 
 import java.text.MessageFormat;
 
@@ -18,12 +18,12 @@ public interface BusinessExceptionAssert extends IResponseEnum, Assert {
     @Override
     default BaseException newException(Object... args) {
         String message = MessageFormat.format(this.getMessage(), args);
-        return new BusinessException(this, args, message);
+        return new BusinessAssertException(this, args, message);
     }
 
     @Override
     default BaseException newException(Throwable t, Object... args) {
         String message = MessageFormat.format(this.getMessage(), args);
-        return new BusinessException(this, args, message, t);
+        return new BusinessAssertException(this, args, message, t);
     }
 }

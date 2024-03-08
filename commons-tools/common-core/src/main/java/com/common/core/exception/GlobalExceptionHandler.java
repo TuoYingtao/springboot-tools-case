@@ -69,8 +69,8 @@ public class GlobalExceptionHandler {
     /**
      * 业务异常
      */
-    @ExceptionHandler(ServiceException.class)
-    public Result handleServiceException(ServiceException e, HttpServletRequest request) {
+    @ExceptionHandler(BusinessException.class)
+    public Result handleServiceException(BusinessException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',业务异常'{}'",requestURI, e.getMessage(), e);
         Integer code = e.getCode();
@@ -80,8 +80,8 @@ public class GlobalExceptionHandler {
     /**
      * 断言-业务异常
      */
-    @ExceptionHandler(BusinessException.class)
-    public Result handlerBusinessException(BusinessException e, HttpServletRequest request) {
+    @ExceptionHandler(BusinessAssertException.class)
+    public Result handlerBusinessException(BusinessAssertException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         Throwable cause = e.getCause() == null ? e : e.getCause();
         LOGGER.error("请求地址'{}',业务异常'{}'\r\n", requestURI, e.getMessage(), cause);

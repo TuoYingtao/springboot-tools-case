@@ -13,37 +13,34 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date: 2024-03-05 14:33
  * @Version: v1.0.0
  */
-public class FixedWindowsSingleRateLimiter extends AbstractSingleRateLimiter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FixedWindowsSingleRateLimiter.class);
+public class FixedWindowSingleRateLimiter extends AbstractSingleRateLimiter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FixedWindowSingleRateLimiter.class);
 
-    /**
-     * 上一次获取时间
-     */
-    public Long lastAcquireTime = 0L;
-    /**
-     * 固定时间窗口是1000ms
-     */
-    public Long windowUnit = 1000L;
     /**
      * 窗口阀值是10
      */
     public Integer threshold = 10;
     /**
+     * 固定时间窗口是1000ms
+     */
+    public Long windowUnit = 1000L;
+    /**
+     * 上一次获取时间
+     */
+    public Long lastAcquireTime = 0L;
+    /**
      * 统计请求数
      */
-    public AtomicInteger atomicCount = new AtomicInteger(0);
+    public final AtomicInteger atomicCount = new AtomicInteger(0);
 
 
     /**
-     * @param lastAcquireTime 上一次获取时间
-     * @param windowUnit      固定时间窗口是1000ms
      * @param threshold       窗口阀值是10
+     * @param windowUnit      固定时间窗口是1000ms
      */
-    public FixedWindowsSingleRateLimiter(Long lastAcquireTime, Long windowUnit, Integer threshold) {
-        this.lastAcquireTime = lastAcquireTime;
-        this.windowUnit = windowUnit;
+    public FixedWindowSingleRateLimiter(Integer threshold, Long windowUnit) {
         this.threshold = threshold;
-        this.atomicCount = new AtomicInteger(0);
+        this.windowUnit = windowUnit;
     }
 
     /**

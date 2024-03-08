@@ -1,6 +1,6 @@
 package com.common.core.utils.html;
 
-import com.common.core.exception.ServiceException;
+import com.common.core.exception.BusinessException;
 import com.common.core.utils.StringUtils;
 
 /**
@@ -35,7 +35,7 @@ public class SQLFilter {
         //判断是否包含非法字符
         for (String keyword : keywords) {
             if (str.indexOf(keyword) != -1) {
-                throw new ServiceException("包含非法字符");
+                throw new BusinessException("包含非法字符");
             }
         }
 

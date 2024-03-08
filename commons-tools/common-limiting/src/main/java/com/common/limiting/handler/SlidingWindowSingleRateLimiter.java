@@ -15,28 +15,28 @@ import java.util.TreeMap;
  * @Date: 2024-03-05 14:53
  * @Version: v1.0.0
  */
-public class SlidingWindowsSingleRateLimiter extends AbstractSingleRateLimiter {
+public class SlidingWindowSingleRateLimiter extends AbstractSingleRateLimiter {
 
-    /**
-     * 单位时间划分的小周期（单位：S）
-     */
-    private final Long subCycle;
     /**
      * 每分钟限流请求数
      */
     private final Integer permitsPerMinute;
+    /**
+     * 单位时间划分的小周期（单位：S）
+     */
+    private final Long subCycle;
     /**
      * 计数器, k-为当前窗口的开始时间值秒，value为当前窗口的计数
      */
     private final TreeMap<Long, Integer> counters = new TreeMap<>();
 
     /**
-     * @param subCycle      单位时间划分的小周期（单位时间是1分钟，10s一个小格子窗口，一共6个格子）
      * @param permitsPerMinute 每分钟限流请求数
+     * @param subCycle      单位时间划分的小周期（单位时间是1分钟，10s一个小格子窗口，一共6个格子）
      */
-    public SlidingWindowsSingleRateLimiter(Long subCycle, Integer permitsPerMinute) {
-        this.subCycle = subCycle;
+    public SlidingWindowSingleRateLimiter(Integer permitsPerMinute, Long subCycle) {
         this.permitsPerMinute = permitsPerMinute;
+        this.subCycle = subCycle;
     }
 
     /**

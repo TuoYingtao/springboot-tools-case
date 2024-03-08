@@ -1,11 +1,19 @@
 package com.tuoyingtao.testools.limiter;
 
+import com.common.core.utils.SpringUtils;
+import com.common.limiting.annotation.RateLimitRule;
+import com.common.limiting.annotation.RateLimiter;
+import com.common.limiting.enums.LimitTacticsType;
+import com.common.limiting.enums.LimitTargetType;
 import com.common.limiting.handler.TokenBucketSingleRateLimiter;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -35,8 +43,8 @@ public class RateLimiterTest {
     @Test
     void fixedWindowsRateLimiter() throws InterruptedException {
         int permitsPerMinute = 3;
-        // FixedWindowsRateLimiter rateLimiter = new FixedWindowsRateLimiter(0L, 1000L, 10);
-        // SlidingWindowsRateLimiter rateLimiter = new SlidingWindowsRateLimiter(10L, permitsPerMinute);
+        // FixedWindowsRateLimiter rateLimiter = new FixedWindowsRateLimiter(10, 1000L);
+        // SlidingWindowsRateLimiter rateLimiter = new SlidingWindowsRateLimiter(permitsPerMinute, 10L);
         // LeakyBucketRateLimiter rateLimiter = new LeakyBucketRateLimiter(15L, 2L);
         TokenBucketSingleRateLimiter rateLimiter = new TokenBucketSingleRateLimiter(15L, 2L);
 
@@ -60,7 +68,21 @@ public class RateLimiterTest {
             countDownLatch.await();
             // 休眠1min
             TimeUnit.SECONDS.sleep(1);
-            System.out.println("开始新的"+ i +"轮：--------------------------------------");
+            System.out.println("开始新的" + i + "轮：--------------------------------------");
+        }
+    }
+
+    @Test
+    @RateLimiter(rules = {@RateLimitRule(value = LimitTacticsType.LEAKY_BUCKET, threshold = 2, time = 5),}, targetType = LimitTargetType.IP)
+    @RateLimiter(rules = {@RateLimitRule(value = LimitTacticsType.FIXED_WINDOWS, threshold = 10, time = 10),}, targetType = LimitTargetType.DEFAULT)
+    void annotationRateLimiter() {
+        System.out.println("success");
+        String[] beanDefinitionNames = SpringUtils.getApplicationContext().getBeanDefinitionNames();
+        for (String name : beanDefinitionNames) {
+            System.out.println(name);
+            if (name.equals("rateLimiterAspect")) {
+                System.out.println("存在 RateLimiterAspect");
+            }
         }
     }
 }
