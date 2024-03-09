@@ -46,16 +46,16 @@ public class TokenBucketSingleRateLimiter extends AbstractSingleRateLimiter {
     /**
      * 方法表示一个请求是否允许通过，该方法使用 synchronized 关键字进行同步，以保证线程安全。
      *
-     * @return 桶中还有令牌返回false 否在返回true
+     * @return 桶中还有令牌返回true 否在返回false
      */
     @Override
     public synchronized boolean tryAcquire() {
         refill();
         if (tokens.get() > 0) {
             tokens.decrementAndGet();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

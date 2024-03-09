@@ -71,18 +71,4 @@ public class RateLimiterTest {
             System.out.println("开始新的" + i + "轮：--------------------------------------");
         }
     }
-
-    @Test
-    @RateLimiter(rules = {@RateLimitRule(value = LimitTacticsType.LEAKY_BUCKET, threshold = 2, time = 5),}, targetType = LimitTargetType.IP)
-    @RateLimiter(rules = {@RateLimitRule(value = LimitTacticsType.FIXED_WINDOWS, threshold = 10, time = 10),}, targetType = LimitTargetType.DEFAULT)
-    void annotationRateLimiter() {
-        System.out.println("success");
-        String[] beanDefinitionNames = SpringUtils.getApplicationContext().getBeanDefinitionNames();
-        for (String name : beanDefinitionNames) {
-            System.out.println(name);
-            if (name.equals("rateLimiterAspect")) {
-                System.out.println("存在 RateLimiterAspect");
-            }
-        }
-    }
 }

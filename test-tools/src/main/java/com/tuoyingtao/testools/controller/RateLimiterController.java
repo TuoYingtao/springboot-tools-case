@@ -1,12 +1,15 @@
 package com.tuoyingtao.testools.controller;
 
+import com.common.core.exception.BusinessException;
 import com.common.limiting.annotation.RateLimitRule;
 import com.common.limiting.annotation.RateLimiter;
 import com.common.limiting.enums.LimitTacticsType;
 import com.common.limiting.enums.LimitTargetType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Random;
 
 /**
  * TODO
@@ -15,18 +18,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date: 2024-03-08 15:19
  * @Version: v1.0.0
  */
-@Controller
+@RestController
 @RequestMapping("rate_limiter")
 public class RateLimiterController {
 
     @GetMapping("index")
-    @RateLimiter(targetType = LimitTargetType.IP, rules = {
-            @RateLimitRule(value = LimitTacticsType.LEAKY_BUCKET, threshold = 2, time = 5),
-            @RateLimitRule(value = LimitTacticsType.TOKEN_BUCKET, threshold = 3, time = 5)
+    // @RateLimiter(targetType = LimitTargetType.IP, tacticsType = LimitTacticsType.LEAKY_BUCKET, rules = {
+    //         @RateLimitRule(threshold = 20, time = 4),
+    //         @RateLimitRule(threshold = 50, time = 2)
+    // })
+    @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.LEAKY_BUCKET, rules = {
+            @RateLimitRule(threshold = 700, time = 300)
     })
-    @RateLimiter(rules = {@RateLimitRule(value = LimitTacticsType.FIXED_WINDOWS, threshold = 10, time = 10),}, targetType = LimitTargetType.DEFAULT)
     public String annotationRateLimiter() {
-
+        try {
+            int min = 100;
+            int max = 1000;
+            int sleepTime = new Random().nextInt(Math.max(min, max) - Math.min(min, max)) + 5;
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "success";
+    }
+
+    @GetMapping("index2")
+    public String annotationRateLimiter2() {
+        throw new BusinessException(500, "访问过于频繁，请稍后再试！");
     }
 }

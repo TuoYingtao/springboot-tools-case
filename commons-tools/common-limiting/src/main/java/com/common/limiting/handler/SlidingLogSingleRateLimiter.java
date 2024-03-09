@@ -25,6 +25,9 @@ public class SlidingLogSingleRateLimiter extends AbstractSingleRateLimiter {
      */
     private final TreeMap<Long, Integer> requestLogCountMap = new TreeMap<>();
 
+    /**
+     * @return true: 未达到阈值不限流，false：以达到阈值范围准备限流
+     */
     @Override
     public synchronized boolean tryAcquire() {
         // 最小时间粒度为s

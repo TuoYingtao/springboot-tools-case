@@ -5,6 +5,7 @@ import com.common.core.domain.Result;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -74,7 +75,7 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',业务异常'{}'",requestURI, e.getMessage(), e);
         Integer code = e.getCode();
-        return code == null ? Result.fail(e.getMessage()) : Result.fail(code, e.getMessage());
+        return code == null ? Result.fail(e.getMessage()) : Result.fail((int) code, e.getMessage());
     }
 
     /**
@@ -182,4 +183,16 @@ public class GlobalExceptionHandler {
         LOGGER.error("请求地址'{}',发生系统异常.", requestURI, e);
         return Result.fail(e.getMessage());
     }
+
+    /**
+     * 响应异常
+     */
+    @ExceptionHandler(ResponseException.class)
+    public ResponseEntity handleResponseException(ResponseException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        LOGGER.error("请求地址'{}',发生系统异常.", requestURI, e);
+        return new ResponseEntity<>(e.getMessage(), org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.common.limiting.component;
 
+import com.common.limiting.abstraction.AbstractSingleRateLimiter;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,15 @@ public class GlobalMapCache {
     /**
      * 使用ConcurrentHashMap作为全局的缓存存储
      */
-    private final Map<String, Object> globalCache = new ConcurrentHashMap<>();
+    private final Map<String, AbstractSingleRateLimiter> globalCache = new ConcurrentHashMap<>();
+
+    /**
+     * 获取全局缓存实例对象
+     * @return 全局缓存实例对象
+     */
+    public Map<String, AbstractSingleRateLimiter> getInstance() {
+        return globalCache;
+    }
 
     /**
      * 使用@Cacheable注解来定义缓存行为
@@ -27,7 +36,7 @@ public class GlobalMapCache {
      * @return 值
      */
     @Cacheable(value = "globalMapCache", key = "#key")
-    public Object getFromCache(String key) {
+    public AbstractSingleRateLimiter getFromCache(String key) {
         // 从全局缓存中获取数据
         return globalCache.get(key);
     }
@@ -37,7 +46,7 @@ public class GlobalMapCache {
      * @param key 键
      * @param value 值
      */
-    public void putIntoCache(String key, Object value) {
+    public void putIntoCache(String key, AbstractSingleRateLimiter value) {
         globalCache.put(key, value);
     }
 
@@ -49,4 +58,12 @@ public class GlobalMapCache {
         globalCache.remove(key);
     }
 
+    /**
+     * 全局缓存中是否包含此键
+     * @param key 键
+     * @return true：存在此键 false：不存在此键
+     */
+    public boolean containsKey(String key) {
+        return globalCache.containsKey(key);
+    }
 }

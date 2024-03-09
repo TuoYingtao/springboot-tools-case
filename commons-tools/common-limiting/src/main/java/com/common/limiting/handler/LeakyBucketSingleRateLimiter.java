@@ -1,6 +1,9 @@
 package com.common.limiting.handler;
 
 import com.common.limiting.abstraction.AbstractSingleRateLimiter;
+import com.common.limiting.aspect.RateLimiterAspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -14,6 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @Version: v1.0.0
  */
 public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RateLimiterAspect.class);
 
     /**
      * 桶的容量
@@ -34,7 +38,7 @@ public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
 
     /**
      * @param capacity 桶的容量
-     * @param rate 漏桶出水速率
+     * @param rate 漏桶出水速率（单位：个/s）
      */
     public LeakyBucketSingleRateLimiter(Long capacity, Long rate) {
         this.capacity = capacity;
@@ -45,14 +49,14 @@ public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
 
     @Override
     public boolean tryAcquire() {
-        return false;
+        return tryConsume(1L);
     }
 
     /**
      * 方法用于尝试向桶中放入一定量的水。
      *
      * @param waterRequested 待进水量
-     * @return 如果桶中还有足够的空间返回 false，否则返回 true。
+     * @return 如果桶中还有足够的空间返回 true，否则返回 false。
      */
     public synchronized boolean tryConsume(Long waterRequested) {
         leak();
@@ -60,10 +64,10 @@ public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
         if (water.get() + waterRequested <= capacity) {
             // 没有超出
             water.addAndGet(waterRequested);
-            return false;
+            return true;
         }
         // 超出了
-        return true;
+        return false;
     }
 
     /**
@@ -79,6 +83,7 @@ public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
         if (leakedWater > 0) {
             water = new AtomicLong(Math.max(0, water.get() - leakedWater));
             lastLeakTimestamp = now;
+            LOGGER.info("LeakyBucketSingleRateLimiter 漏水：{}，目前桶中剩：{}", leakedWater, water.get());
         }
     }
 }
