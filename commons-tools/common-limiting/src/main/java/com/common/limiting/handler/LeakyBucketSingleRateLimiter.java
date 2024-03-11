@@ -1,7 +1,6 @@
 package com.common.limiting.handler;
 
 import com.common.limiting.abstraction.AbstractSingleRateLimiter;
-import com.common.limiting.aspect.RateLimiterAspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @Version: v1.0.0
  */
 public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RateLimiterAspect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LeakyBucketSingleRateLimiter.class);
 
     /**
      * 桶的容量
@@ -83,7 +82,7 @@ public class LeakyBucketSingleRateLimiter extends AbstractSingleRateLimiter {
         if (leakedWater > 0) {
             water = new AtomicLong(Math.max(0, water.get() - leakedWater));
             lastLeakTimestamp = now;
-            LOGGER.info("LeakyBucketSingleRateLimiter 漏水：{}，目前桶中剩：{}", leakedWater, water.get());
+            LOGGER.debug("漏水：{}，目前桶中剩：{}", leakedWater, water.get());
         }
     }
 }

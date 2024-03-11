@@ -1,19 +1,12 @@
 package com.tuoyingtao.testools.limiter;
 
-import com.common.core.utils.SpringUtils;
-import com.common.limiting.annotation.RateLimitRule;
-import com.common.limiting.annotation.RateLimiter;
-import com.common.limiting.enums.LimitTacticsType;
-import com.common.limiting.enums.LimitTargetType;
+import com.common.limiting.handler.SlidingWindowSingleRateLimiter;
 import com.common.limiting.handler.TokenBucketSingleRateLimiter;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -33,7 +26,7 @@ public class RateLimiterTest {
 
     @Test
     void dateTime() {
-        System.out.println(System.currentTimeMillis());
+        System.out.println(System.currentTimeMillis() % 1000 / (1000 / 10));
         System.out.println(LocalDateTime.now());
         System.out.println(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         System.out.println(10 * (60L / 10 - 1));
@@ -44,16 +37,16 @@ public class RateLimiterTest {
     void fixedWindowsRateLimiter() throws InterruptedException {
         int permitsPerMinute = 3;
         // FixedWindowsRateLimiter rateLimiter = new FixedWindowsRateLimiter(10, 1000L);
-        // SlidingWindowsRateLimiter rateLimiter = new SlidingWindowsRateLimiter(permitsPerMinute, 10L);
+        SlidingWindowSingleRateLimiter rateLimiter = new SlidingWindowSingleRateLimiter(permitsPerMinute, 10L);
         // LeakyBucketRateLimiter rateLimiter = new LeakyBucketRateLimiter(15L, 2L);
-        TokenBucketSingleRateLimiter rateLimiter = new TokenBucketSingleRateLimiter(15L, 2L);
+        // TokenBucketSingleRateLimiter rateLimiter = new TokenBucketSingleRateLimiter(15L, 2L);
 
         for (int i = 0; i < 20; i++) {
             CountDownLatch countDownLatch = new CountDownLatch(permitsPerMinute);
             for (int j = 0; j < permitsPerMinute; j++) {
                 executor.execute(() -> {
                     String name = Thread.currentThread().getName();
-                    if (!rateLimiter.tryAcquire()) {
+                    if (rateLimiter.tryAcquire()) {
                         long lastCount = countDownLatch.getCount();
                         countDownLatch.countDown();
                         System.out.println(LocalDateTime.now() + " " + name + "--正常放行: " + lastCount + "---剩余：" + countDownLatch.getCount());
@@ -68,7 +61,7 @@ public class RateLimiterTest {
             countDownLatch.await();
             // 休眠1min
             TimeUnit.SECONDS.sleep(1);
-            System.out.println("开始新的" + i + "轮：--------------------------------------");
+            System.out.println("开始新的" + (i + 1) + "轮：--------------------------------------");
         }
     }
 }

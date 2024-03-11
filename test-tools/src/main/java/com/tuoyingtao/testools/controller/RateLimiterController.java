@@ -23,13 +23,21 @@ import java.util.Random;
 public class RateLimiterController {
 
     @GetMapping("index")
-    // @RateLimiter(targetType = LimitTargetType.IP, tacticsType = LimitTacticsType.LEAKY_BUCKET, rules = {
-    //         @RateLimitRule(threshold = 20, time = 4),
-    //         @RateLimitRule(threshold = 50, time = 2)
-    // })
-    @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.LEAKY_BUCKET, rules = {
-            @RateLimitRule(threshold = 700, time = 300)
+    @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.FIXED_WINDOWS, rules = {
+            @RateLimitRule(threshold = 5, time = 500)
     })
+    // @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.SLIDING_WINDOWS, rules = {
+    //         @RateLimitRule(threshold = 5, time = 10)
+    // })
+    // @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.TOKEN_BUCKET, rules = {
+    //         @RateLimitRule(threshold = 3, time = 3)
+    // })
+    // @RateLimiter(targetType = LimitTargetType.IP, tacticsType = LimitTacticsType.LEAKY_BUCKET, rules = {
+    //         @RateLimitRule(threshold = 10, time = 3)
+    // })
+    // @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.LEAKY_BUCKET, rules = {
+    //         @RateLimitRule(threshold = 700, time = 300)
+    // })
     public String annotationRateLimiter() {
         try {
             int min = 100;

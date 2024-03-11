@@ -1,6 +1,8 @@
 package com.common.limiting.handler;
 
 import com.common.limiting.abstraction.AbstractSingleRateLimiter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -12,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @Version: v1.0.0
  */
 public class TokenBucketSingleRateLimiter extends AbstractSingleRateLimiter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenBucketSingleRateLimiter.class);
 
     /**
      * 令牌桶容量
@@ -67,11 +70,14 @@ public class TokenBucketSingleRateLimiter extends AbstractSingleRateLimiter {
         Long now = System.currentTimeMillis();
         if (now > lastRefillTimestamp) {
             // 计算当前时间与上一次时间的时差（秒）
-            Long elapsedTime = (now - lastRefillTimestamp) / 1000;
+            long elapsedTime = (now - lastRefillTimestamp) / 1000;
             // 计算这段时间差所生成的Token数量
-            Long generatedTokens = elapsedTime * rate;
+            long generatedTokens = elapsedTime * rate;
             tokens = new AtomicLong(Math.min(tokens.get() + generatedTokens, capacity));
-            lastRefillTimestamp = now;
+            if (elapsedTime > 0) {
+                lastRefillTimestamp = now;
+                LOGGER.debug("生成：{}，目前桶中剩：{}", generatedTokens, tokens.get());
+            }
         }
     }
 }

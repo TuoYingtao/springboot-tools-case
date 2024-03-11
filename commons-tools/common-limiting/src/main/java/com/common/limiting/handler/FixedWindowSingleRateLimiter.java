@@ -1,8 +1,8 @@
 package com.common.limiting.handler;
 
 import com.common.limiting.abstraction.AbstractSingleRateLimiter;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,6 +63,7 @@ public class FixedWindowSingleRateLimiter extends AbstractSingleRateLimiter {
             atomicCount.incrementAndGet();
             return true;
         }
+        LOGGER.debug("当前时间窗：{} 时间窗总阈值：{} 当前时间窗阈值：{}", now, threshold, atomicCount.get());
         return false;
     }
 

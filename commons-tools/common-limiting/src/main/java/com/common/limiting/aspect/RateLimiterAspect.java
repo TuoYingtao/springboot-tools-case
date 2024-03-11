@@ -113,9 +113,9 @@ public class RateLimiterAspect {
         return keys.stream().allMatch((key) -> {
             boolean acquire = globalMapCache.getFromCache(key).tryAcquire();
             if (!acquire) {
-                LOGGER.info("限流了：{}", key);
+                LOGGER.debug("限流了：{}", key);
             } else {
-                LOGGER.info("正常执行：{}", key);
+                LOGGER.debug("正常执行：{}", key);
             }
             return acquire;
         });

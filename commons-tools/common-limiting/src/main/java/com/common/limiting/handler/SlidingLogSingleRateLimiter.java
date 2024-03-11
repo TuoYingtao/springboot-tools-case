@@ -1,6 +1,8 @@
 package com.common.limiting.handler;
 
 import com.common.limiting.abstraction.AbstractSingleRateLimiter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -15,6 +17,7 @@ import java.util.TreeMap;
  * @Version: v1.0.0
  */
 public class SlidingLogSingleRateLimiter extends AbstractSingleRateLimiter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SlidingLogSingleRateLimiter.class);
 
     /**
      * 每分钟限制请求数
@@ -33,7 +36,7 @@ public class SlidingLogSingleRateLimiter extends AbstractSingleRateLimiter {
         // 最小时间粒度为s
         long currentTimestamp = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
         // 获取当前窗口的请求总数
-        int currentWindowCount = getCurrentWindowCount(currentTimestamp);
+        Integer currentWindowCount = getCurrentWindowCount(currentTimestamp);
         if (currentWindowCount >= PERMITS_PER_MINUTE) {
             return false;
         }
@@ -48,12 +51,14 @@ public class SlidingLogSingleRateLimiter extends AbstractSingleRateLimiter {
      * @param currentTime 当前时间
      * @return - 当前窗口中的计数
      */
-    private int getCurrentWindowCount(long currentTime) {
+    private Integer getCurrentWindowCount(long currentTime) {
         // 计算出窗口的开始位置时间
         long startTime = currentTime - 59;
         // 遍历当前存储的计数器，删除无效的子窗口计数器，并累加当前窗口中的所有计数器之和
-        return requestLogCountMap.entrySet().stream()
+        Integer sum = requestLogCountMap.entrySet().stream()
                 .filter(entry -> entry.getKey() >= startTime)
                 .mapToInt(Map.Entry::getValue).sum();
+        LOGGER.debug("当前时间窗口：{} 当前时间窗口位置：{} 当前窗口的请求总数：{}", currentTime, startTime, sum);
+        return sum;
     }
 }
