@@ -4,14 +4,18 @@
     <!-- 自定义转换器 -->
     <conversionRule conversionWord="ipd" converterClass="com.common.core.components.logging.ProcessIdClassicConverter" />
     <conversionRule conversionWord="myHighlight" converterClass="com.common.core.components.logging.EasyHighlightingCompositeConverter" />
-    <contextName>MyLogback</contextName>
 
+    <!-- 日志变量文件 -->
+    <!--<property resource="logback.properties" />-->
+    <!-- 默认变量 -->
+    <property name="log.context.name" value="MyLogback" />
     <!-- 日志存放路径 -->
-    <property name="log.path" value="logs/commons" />
+    <property name="log.path" value="logs" />
     <!-- 日志输出格式：信息跳转 %cyan(at %class.%method) : \\(%file:%line\\) -->
     <property name="log.filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName %-5level %ipd -- [%15.15thread] %-42.42logger{42} : [%method:%line] %msg%n%xThrowable" />
     <property name="log.pattern" value="%white(%d{yyyy-MM-dd HH:mm:ss.SSS}) %black(%contextName) %myHighlight(%-5level) %gray(%ipd) -- %boldMagenta([%15.15thread]) %cyan(%-42.42logger{42}) : %blue([%method:%line]) %msg%n%xThrowable" />
 
+    <contextName>${log.context.name}</contextName>
     <!-- 控制台输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -27,7 +31,7 @@
         <!-- 日志保存策略：基于时间、文件大小切分创建日志 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/info.%d{HHmm}.%i.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
             <!-- 这是活动文件的大小，默认值是10MB，测试时可改成5KB看效果 -->
@@ -56,7 +60,7 @@
         <!-- 日志保存策略：基于时间、文件大小切分创建日志 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/error.%d{HHmm}.%i.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
             <!-- 这是活动文件的大小，默认值是10MB，测试时可改成5KB看效果 -->
@@ -85,7 +89,7 @@
         <!-- 日志保存策略：基于时间切分创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/warn.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/warn.%d{HHmm}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
             <!-- 用来指定日志文件的上限大小，但最大到500MB，最多保留60天，哪怕没到60天也要删除多余的日志 -->
@@ -112,7 +116,7 @@
         <!-- 日志保存策略：基于时间切分创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/debug.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/debug.%d{HHmm}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
             <!-- 用来指定日志文件的上限大小，但最大到500MB，最多保留60天，哪怕没到60天也要删除多余的日志 -->
@@ -159,6 +163,8 @@
     <logger name="com.rabbitmq.*" level="DEBUG" />
     <logger name="com.alibaba.nacos.client.naming" level="WARN" />
     <logger name="com.alibaba.cloud.nacos.refresh" level="DEBUG" />
+    <!--工具日志级别控制-->
+    <logger name="com.common" level="DEBUG" />
     <!-- 系统模块日志级别控制  -->
     <logger name="com.tuoyingtao" level="INFO" />
     <logger name="com.tuoyingtao.main.dao" level="DEBUG" />
