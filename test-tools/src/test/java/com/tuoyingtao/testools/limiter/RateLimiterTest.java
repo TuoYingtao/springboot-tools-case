@@ -2,6 +2,7 @@ package com.tuoyingtao.testools.limiter;
 
 import com.common.limiting.handler.SlidingWindowSingleRateLimiter;
 import com.common.limiting.handler.TokenBucketSingleRateLimiter;
+import com.google.common.util.concurrent.RateLimiter;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -63,5 +64,9 @@ public class RateLimiterTest {
             TimeUnit.SECONDS.sleep(1);
             System.out.println("开始新的" + (i + 1) + "轮：--------------------------------------");
         }
+    }
+
+    void guavaRateLimiter() {
+        RateLimiter rateLimiter = RateLimiter.create(10.0);
     }
 }
