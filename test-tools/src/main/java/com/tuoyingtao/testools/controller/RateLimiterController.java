@@ -27,7 +27,7 @@ public class RateLimiterController {
             @RateLimitRule(threshold = 5, time = 500)
     })
     // @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.SLIDING_WINDOWS, rules = {
-    //         @RateLimitRule(threshold = 5, time = 10)
+    //         @RateLimitRule(threshold = 10, time = 2)
     // })
     // @RateLimiter(targetType = LimitTargetType.DEFAULT, tacticsType = LimitTacticsType.TOKEN_BUCKET, rules = {
     //         @RateLimitRule(threshold = 3, time = 3)

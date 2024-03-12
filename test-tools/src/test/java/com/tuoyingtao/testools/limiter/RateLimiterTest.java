@@ -37,11 +37,11 @@ public class RateLimiterTest {
     void fixedWindowsRateLimiter() throws InterruptedException {
         int permitsPerMinute = 3;
         // FixedWindowsRateLimiter rateLimiter = new FixedWindowsRateLimiter(10, 1000L);
-        SlidingWindowSingleRateLimiter rateLimiter = new SlidingWindowSingleRateLimiter(permitsPerMinute, 10L);
+        SlidingWindowSingleRateLimiter rateLimiter = new SlidingWindowSingleRateLimiter(permitsPerMinute, 4L);
         // LeakyBucketRateLimiter rateLimiter = new LeakyBucketRateLimiter(15L, 2L);
         // TokenBucketSingleRateLimiter rateLimiter = new TokenBucketSingleRateLimiter(15L, 2L);
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 30; i++) {
             CountDownLatch countDownLatch = new CountDownLatch(permitsPerMinute);
             for (int j = 0; j < permitsPerMinute; j++) {
                 executor.execute(() -> {
