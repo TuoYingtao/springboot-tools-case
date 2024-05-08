@@ -1,5 +1,0 @@
-com.common.redis.config.JedisRedisConfig
-com.common.redis.config.LettuceRedisConfig
-com.common.redis.config.RedisClientTemplate
-com.common.redis.utils.RedisTemplateUtils
-com.common.redis.utils.RedisUtils

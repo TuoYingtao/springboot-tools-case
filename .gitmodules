@@ -1,0 +1,3 @@
+[submodule "acedia-common-tools"]
+	path = acedia-common-tools
+	url = https://github.com/TuoYingtao/acedia-common-tools.git

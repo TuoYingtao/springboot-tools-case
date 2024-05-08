@@ -1,2 +1,0 @@
-com.common.limiting.aspect.RateLimiterAspect
-com.common.limiting.component.GlobalMapCache
